@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=20 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
@@ -6,6 +6,12 @@
 [ext_resource type="Script" path="res://scripts/post.gd" id="4_rw33u"]
 [ext_resource type="Script" path="res://scripts/bug_manager.gd" id="5_oxs3t"]
 [ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="6_ejmxh"]
+[ext_resource type="Script" path="res://scripts/ui/hunger_bar.gd" id="7_4fqci"]
+[ext_resource type="Script" path="res://scripts/ui/scoring.gd" id="7_kfn1v"]
+[ext_resource type="Script" path="res://scripts/ui/stamina_bar.gd" id="8_8xv2t"]
+[ext_resource type="Script" path="res://scripts/ui/menu.gd" id="9_d5te7"]
+[ext_resource type="Texture2D" uid="uid://boiotn6f2jmyj" path="res://art/spider_menu_legs_tintable.png" id="11_rcgev"]
+[ext_resource type="Texture2D" uid="uid://bplttmxn1o2s3" path="res://art/spider_menu_eyes.png" id="12_bvxt0"]
 
 [sub_resource type="Curve2D" id="Curve2D_gp3s6"]
 _data = {
@@ -21,6 +27,32 @@ size = Vector2(86, 1219)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6o2lh"]
 radius = 390.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tsdmm"]
+bg_color = Color(0, 0, 0, 0.490196)
+border_width_left = 500
+border_width_top = 300
+border_width_right = 500
+border_width_bottom = 300
+border_color = Color(0, 0, 0, 0.686275)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2kcko"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ehj7v"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 50
+border_width_top = 50
+border_width_right = 50
+border_width_bottom = 50
+border_color = Color(0.215686, 0.215686, 0.215686, 1)
+border_blend = true
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
+corner_detail = 12
 
 [node name="existence" type="Node2D"]
 
@@ -42,7 +74,6 @@ polygon = PackedVector2Array(-88, -75, -75, 1234, 2071, 1177, 2103, -85)
 z_index = 50
 position = Vector2(1290.33, 349.649)
 rotation = 0.796442
-scale = Vector2(1, 1)
 script = ExtResource("1_pvme1")
 web_strand = ExtResource("2_7m7h1")
 web = NodePath("../web")
@@ -137,6 +168,242 @@ shape = SubResource("CircleShape2D_6o2lh")
 
 [node name="bugs" type="Node2D" parent="bugstuff"]
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="hud" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="margins" type="MarginContainer" parent="CanvasLayer/hud"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 75
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 75
+
+[node name="body" type="Control" parent="CanvasLayer/hud/margins"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="bars" type="VBoxContainer" parent="CanvasLayer/hud/margins/body"]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 200.0
+theme_override_constants/separation = 50
+
+[node name="score_container" type="HBoxContainer" parent="CanvasLayer/hud/margins/body/bars"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="title" type="Label" parent="CanvasLayer/hud/margins/body/bars/score_container"]
+layout_mode = 2
+theme_type_variation = &"BasicHeader"
+theme_override_font_sizes/font_size = 48
+text = "Score"
+
+[node name="score" type="Label" parent="CanvasLayer/hud/margins/body/bars/score_container"]
+layout_mode = 2
+theme_type_variation = &"BasicHeader"
+text = "1000"
+script = ExtResource("7_kfn1v")
+
+[node name="hunger" type="VBoxContainer" parent="CanvasLayer/hud/margins/body/bars"]
+layout_mode = 2
+theme_override_constants/separation = -30
+
+[node name="Label" type="Label" parent="CanvasLayer/hud/margins/body/bars/hunger"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"BasicHeader"
+theme_override_font_sizes/font_size = 48
+text = " HUNGER"
+horizontal_alignment = 1
+
+[node name="hunger_bar" type="ProgressBar" parent="CanvasLayer/hud/margins/body/bars/hunger"]
+self_modulate = Color(0.685733, 3.10443e-06, 5.77569e-07, 1)
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"HealthBar"
+value = 50.0
+show_percentage = false
+script = ExtResource("7_4fqci")
+
+[node name="stamina" type="VBoxContainer" parent="CanvasLayer/hud/margins/body/bars"]
+layout_mode = 2
+theme_override_constants/separation = -30
+
+[node name="Label" type="Label" parent="CanvasLayer/hud/margins/body/bars/stamina"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"BasicHeader"
+theme_override_font_sizes/font_size = 48
+text = " STAMINA"
+horizontal_alignment = 1
+
+[node name="stamina_bar" type="ProgressBar" parent="CanvasLayer/hud/margins/body/bars/stamina"]
+self_modulate = Color(4.81307e-07, 0.426583, 0.305101, 1)
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"HealthBar"
+value = 50.0
+show_percentage = false
+script = ExtResource("8_8xv2t")
+
+[node name="fade" type="Panel" parent="CanvasLayer/hud"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tsdmm")
+
+[node name="pause_container" type="Control" parent="CanvasLayer/hud" node_paths=PackedStringArray("fade")]
+process_mode = 3
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("9_d5te7")
+fade = NodePath("../fade")
+
+[node name="web" type="Panel" parent="CanvasLayer/hud/pause_container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.5
+offset_top = -796.0
+offset_right = 2.5
+offset_bottom = -196.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2kcko")
+
+[node name="legs" type="TextureRect" parent="CanvasLayer/hud/pause_container"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+layout_mode = 0
+offset_left = -301.0
+offset_top = -508.0
+offset_right = 312.0
+offset_bottom = 522.0
+texture = ExtResource("11_rcgev")
+
+[node name="eyes" type="TextureRect" parent="CanvasLayer/hud/pause_container"]
+z_index = 1
+layout_mode = 0
+offset_left = -63.0
+offset_top = 173.0
+offset_right = 107.0
+offset_bottom = 225.0
+texture = ExtResource("12_bvxt0")
+
+[node name="pause_menu" type="Panel" parent="CanvasLayer/hud/pause_container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -225.0
+offset_right = 200.0
+offset_bottom = 225.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ehj7v")
+
+[node name="margins" type="MarginContainer" parent="CanvasLayer/hud/pause_container/pause_menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 100
+
+[node name="body" type="Control" parent="CanvasLayer/hud/pause_container/pause_menu/margins"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/hud/pause_container/pause_menu/margins/body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.0
+offset_top = -105.5
+offset_right = 117.0
+offset_bottom = 105.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"BasicHeader"
+theme_override_font_sizes/font_size = 48
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="btn_resume" type="Button" parent="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"TextButton"
+theme_override_colors/font_hover_color = Color(0, 0.605905, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.352941, 0, 1)
+text = "Resume"
+
+[node name="btn_settings" type="Button" parent="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"TextButton"
+disabled = true
+text = "Settings"
+
+[node name="btn_quit" type="Button" parent="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"TextButton"
+theme_override_colors/font_hover_color = Color(0.679014, 8.30255e-06, 4.62055e-06, 1)
+theme_override_colors/font_pressed_color = Color(0.410327, 5.83585e-07, 1.44392e-07, 1)
+text = "Quit"
+
 [connection signal="area_entered" from="player_spider/spider_body" to="player_spider" method="on_area_entered"]
 [connection signal="area_exited" from="player_spider/spider_body" to="player_spider" method="on_area_exited"]
 [connection signal="area_entered" from="borders/post_top" to="borders/post_top" method="AreaEntered"]
@@ -147,3 +414,5 @@ shape = SubResource("CircleShape2D_6o2lh")
 [connection signal="area_exited" from="borders/post_bottom" to="borders/post_bottom" method="AreaExited"]
 [connection signal="area_entered" from="borders/post_left" to="borders/post_left" method="AreaEntered"]
 [connection signal="area_exited" from="borders/post_left" to="borders/post_left" method="AreaExited"]
+[connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_resume" to="CanvasLayer/hud/pause_container" method="Hide"]
+[connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_quit" to="CanvasLayer/hud/pause_container" method="Quit"]

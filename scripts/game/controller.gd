@@ -5,6 +5,7 @@ var path : PathFollow2D
 var speed : float
 var strands : Array[Line2D]
 var bugs : Array[Node2D]
+var is_sprinting : bool = false
 @export var web_strand : PackedScene
 @export var web : Node2D
 
@@ -19,41 +20,62 @@ func _process(delta: float) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	if strands.size() > 0:
-		for i in strands:
-			i.Firing()
-	
-	if bugs.size() > 0:
-		for i in bugs:
-			i.Damage(GameManager.strength)
-	
-	var movement_vector = Vector2(Input.get_axis("Move Left", "Move Right"), Input.get_axis("Move Up", "Move Down"))
-	position += movement_vector * speed
-	
-	# Path follow movement-ish
-	#if movement_vector.x > 0 and path:
-		#path.progress += GameManager.move
-	#if movement_vector.x < 0 and path:
-		#path.progress -= GameManager.move
+	if !GameManager.is_ended:
+		GameManager.Hunger(-0.02 * GameManager.hunger_drain_rate)
+		GameManager.Stamina(0.02 * GameManager.stamina_regen)
+		
+		if strands.size() > 0:
+			for i in strands:
+				i.Firing()
+		
+		if bugs.size() > 0:
+			for i in bugs:
+				i.Damage(GameManager.strength)
+		
+		var movement_vector = Vector2(Input.get_axis("Move Left", "Move Right"), Input.get_axis("Move Up", "Move Down"))
+		
+		if is_sprinting:
+			if GameManager.stamina > GameManager.stamina_sprint_rate:
+				GameManager.Stamina(-0.1 * GameManager.stamina_sprint_rate)
+				speed = GameManager.sprint
+			else:
+				speed = GameManager.move
+				
+		position += movement_vector * speed
+		
+		# Path follow movement-ish
+		#if movement_vector.x > 0 and path:
+			#path.progress += GameManager.move
+		#if movement_vector.x < 0 and path:
+			#path.progress -= GameManager.move
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Sprint"):
 		speed = GameManager.sprint
+		is_sprinting = true
 		
 	if event.is_action_released("Sprint"):
 		speed = GameManager.move
+		is_sprinting = false
 		
 	if event.is_action_released("Fire"):
 		ShotWeb(get_global_mouse_position())
+		
 
 func ShotWeb(target : Vector2):
-	var direction = target - global_position
-	var new_strand = web_strand.instantiate()
-	web.add_child(new_strand, true)
-	#print("Drawing line from %s to %s" % [global_position, target])
-	new_strand.Initialize(global_position, direction)
-	strands.append(new_strand)
-	new_strand.completed_firing.connect(EndStrand)
+	if GameManager.stamina > GameManager.stamina_shot_cost:
+		GameManager.Stamina(-GameManager.stamina_shot_cost)
+		var direction = target - global_position
+		var new_strand = web_strand.instantiate()
+		web.add_child(new_strand, true)
+		#print("Drawing line from %s to %s" % [global_position, target])
+		new_strand.Initialize(global_position, direction)
+		strands.append(new_strand)
+		new_strand.completed_firing.connect(EndStrand)
+	
+	else:
+		# Do error feedback here
+		print("Cannot shot web")
 
 func EndStrand(element : Line2D):
 	strands.erase(element)

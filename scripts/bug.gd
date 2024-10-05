@@ -77,10 +77,12 @@ func Struggle():
 	var tween = create_tween()
 	tween.tween_property(struggle_bar, "value", struggle_bar.max_value, struggle_time)
 	await tween.finished
-	
-	strand.Break()
-	FlyAway()
-	print("Bug has broken free")
+	if caught:
+		FlyAway()
+		
+		if is_instance_valid(strand):
+			strand.Break()
+		#print("Bug has broken free")
 
 func CheckWeb() -> void:
 	if collider.has_overlapping_areas():
@@ -88,15 +90,19 @@ func CheckWeb() -> void:
 		for i in areas:
 			if i.has_meta("type"):
 				if i.get_meta("type") == ("web"):
-					print("Caught Bug")
+					#print("Caught Bug")
 					caught = true
 					strand = i.get_parent()
+					strand.bugs.append(self)
 					Struggle()
 					return
 					
-	print("Bug is FREE")
+	#print("Bug is FREE")
 
 func FlyAway() -> void:
+	if is_instance_valid(strand):
+		strand.bugs.erase(self)
+		
 	caught = false
 	health_bar.visible = false
 	struggle_bar.visible = false
@@ -105,6 +111,8 @@ func FlyAway() -> void:
 		
 	var tween = create_tween()
 	tween.tween_property(self, "position", direction, 6.0)
+	await tween.finished
+	queue_free()
 
 func FlyThrough() -> void:
 	var fade_in = create_tween()
@@ -144,6 +152,8 @@ func Damage(amount : float):
 	
 func Kill():
 	GameManager.Score(value)
+	GameManager.Hunger(value)
+	strand.bugs.erase(self)
 	# Death animation stuff here
 	queue_free()
 

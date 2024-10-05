@@ -6,6 +6,7 @@ extends Line2D
 @export var thickness : float = 10.0
 var target : Vector2
 var can_stop : bool = true
+var bugs : Array[Node2D]
 
 signal completed_firing(element : Line2D)
 
@@ -42,6 +43,8 @@ func UpdateCollider():
 	collider.global_position = a + (b - a) * 0.5
 
 func Break():
+	for i in bugs:
+		i.FlyAway()
 	# Breaking animation stuff goes here
 	queue_free()
 

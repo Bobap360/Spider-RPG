@@ -11,13 +11,19 @@ func _ready() -> void:
 	radius = $CollisionShape2D.shape.radius
 	Cycle()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Spawn Bug"):
+		Spawn(get_global_mouse_position())
+
+func Spawn(new_pos : Vector2):
+	var new_bug = bug.instantiate()
+	container.add_child(new_bug)
+	new_bug.position = new_pos
+	new_bug.Spawning()
+
 func Cycle():
 	while spawning:
-		var new_bug = bug.instantiate()
-		container.add_child(new_bug)
-		var new_pos = PickRandomLocation() 
-		new_bug.position = new_pos
-		new_bug.Spawning()
+		Spawn(PickRandomLocation())
 		#print("Bug Location is at %s" % new_pos)
 		timer.start(delay)
 		await timer.timeout

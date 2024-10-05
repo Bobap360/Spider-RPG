@@ -1,0 +1,59 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://cfc7oqaw0ie84"]
+
+[ext_resource type="FontFile" uid="uid://cfpeiqnxmsu4c" path="res://fonts/BD_Cartoon_Shout.ttf" id="1_vfme4"]
+[ext_resource type="FontFile" uid="uid://cdbdqm34c6u3t" path="res://fonts/Stanberry.ttf" id="2_3034m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ya83w"]
+bg_color = Color(0, 0, 0, 0.392157)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 0.588235)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_31664"]
+bg_color = Color(0.784314, 0.784314, 0.784314, 1)
+border_width_top = 15
+border_width_bottom = 15
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aif2g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ov0a5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dfuoc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0g323"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wib5e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s4xg4"]
+
+[resource]
+BasicHeader/base_type = &"Label"
+BasicHeader/colors/font_color = Color(1, 1, 1, 1)
+BasicHeader/colors/font_outline_color = Color(0, 0, 0, 0.784314)
+BasicHeader/colors/font_shadow_color = Color(0, 0, 0, 0.588235)
+BasicHeader/constants/outline_size = 8
+BasicHeader/constants/shadow_offset_x = 3
+BasicHeader/constants/shadow_offset_y = 3
+BasicHeader/font_sizes/font_size = 48
+BasicHeader/fonts/font = ExtResource("1_vfme4")
+HealthBar/base_type = &"ProgressBar"
+HealthBar/styles/background = SubResource("StyleBoxFlat_ya83w")
+HealthBar/styles/fill = SubResource("StyleBoxFlat_31664")
+TextButton/base_type = &"Button"
+TextButton/colors/font_color = Color(1, 1, 1, 1)
+TextButton/colors/font_disabled_color = Color(1, 1, 1, 0.392157)
+TextButton/colors/font_outline_color = Color(0, 0, 0, 1)
+TextButton/constants/outline_size = 4
+TextButton/font_sizes/font_size = 32
+TextButton/fonts/font = ExtResource("2_3034m")
+TextButton/styles/disabled = SubResource("StyleBoxEmpty_aif2g")
+TextButton/styles/disabled_mirrored = SubResource("StyleBoxEmpty_ov0a5")
+TextButton/styles/focus = SubResource("StyleBoxEmpty_dfuoc")
+TextButton/styles/hover = SubResource("StyleBoxEmpty_0g323")
+TextButton/styles/normal = SubResource("StyleBoxEmpty_wib5e")
+TextButton/styles/pressed = SubResource("StyleBoxEmpty_s4xg4")
