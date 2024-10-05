@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://0uudghagpufw"]
+
+[ext_resource type="Script" path="res://scripts/web_strand.gd" id="1_0q10t"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hrbxm"]
+radius = 5.0
+
+[node name="strand" type="Line2D" node_paths=PackedStringArray("node_a", "node_b", "collider")]
+texture_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("1_0q10t")
+node_a = NodePath("node_a")
+node_b = NodePath("node_b")
+collider = NodePath("sticky_area/CollisionShape2D")
+
+[node name="node_a" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 20
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="node_a"]
+shape = SubResource("CircleShape2D_hrbxm")
+
+[node name="node_b" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 20
+metadata/type = "web"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="node_b"]
+shape = SubResource("CircleShape2D_hrbxm")
+
+[node name="sticky_area" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 14
+metadata/type = "web"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="sticky_area"]
+
+[connection signal="area_entered" from="sticky_area" to="." method="on_area_entered"]
+[connection signal="area_exited" from="sticky_area" to="." method="on_area_exited"]

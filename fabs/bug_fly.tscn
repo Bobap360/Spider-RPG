@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://353woarrmja8"]
+
+[ext_resource type="Script" path="res://scripts/bug.gd" id="1_7pfeh"]
+[ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="1_bm0k7"]
+[ext_resource type="Texture2D" uid="uid://3bdig5i54lgv" path="res://art/reticle_aoe_white.png" id="2_r20ir"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kkf8"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a348t"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bf1yu"]
+
+[node name="bug_fly" type="Node2D" node_paths=PackedStringArray("indicator", "collider", "timer", "art", "health_bar", "struggle_bar")]
+z_index = 60
+script = ExtResource("1_7pfeh")
+indicator = NodePath("spawn_indicator")
+collider = NodePath("bug_box")
+timer = NodePath("Timer")
+art = NodePath("Sprite2D")
+health_bar = NodePath("health_bar")
+struggle_bar = NodePath("struggle_bar")
+
+[node name="health_bar" type="ProgressBar" parent="."]
+z_index = 100
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+value = 50.0
+show_percentage = false
+
+[node name="struggle_bar" type="ProgressBar" parent="."]
+self_modulate = Color(0.670588, 0, 0, 1)
+z_index = 100
+offset_left = -20.0
+offset_top = 15.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+show_percentage = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.215686, 0.215686, 0.215686, 0)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_bm0k7")
+
+[node name="spawn_indicator" type="Sprite2D" parent="."]
+z_index = 95
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_r20ir")
+
+[node name="bug_box" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 6
+metadata/type = "bug"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bug_box"]
+shape = SubResource("CircleShape2D_bf1yu")
+
+[node name="Timer" type="Timer" parent="."]

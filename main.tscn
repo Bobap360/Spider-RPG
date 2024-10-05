@@ -1,0 +1,149 @@
+[gd_scene load_steps=11 format=3 uid="uid://ckjw4fmb28yp6"]
+
+[ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
+[ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
+[ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="2_u87pv"]
+[ext_resource type="Script" path="res://scripts/post.gd" id="4_rw33u"]
+[ext_resource type="Script" path="res://scripts/bug_manager.gd" id="5_oxs3t"]
+[ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="6_ejmxh"]
+
+[sub_resource type="Curve2D" id="Curve2D_gp3s6"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1009.33, 310.649, 0, 0, 0, 0, 1435.49, 508.329)
+}
+point_count = 2
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_icybq"]
+radius = 23.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vct8i"]
+size = Vector2(86, 1219)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6o2lh"]
+radius = 390.0
+
+[node name="existence" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(281, 39)
+curve = SubResource("Curve2D_gp3s6")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(1009.33, 310.649)
+rotation = 0.434323
+rotates = false
+
+[node name="sky" type="Polygon2D" parent="."]
+z_index = -100
+color = Color(0.632249, 0.747282, 1, 1)
+polygon = PackedVector2Array(-88, -75, -75, 1234, 2071, 1177, 2103, -85)
+
+[node name="player_spider" type="Node2D" parent="." node_paths=PackedStringArray("web")]
+z_index = 50
+position = Vector2(1290.33, 349.649)
+rotation = 0.796442
+scale = Vector2(1, 1)
+script = ExtResource("1_pvme1")
+web_strand = ExtResource("2_7m7h1")
+web = NodePath("../web")
+
+[node name="spider_sprite" type="Sprite2D" parent="player_spider"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_u87pv")
+
+[node name="spider_body" type="Area2D" parent="player_spider"]
+scale = Vector2(0.044, 0.044)
+collision_layer = 2
+collision_mask = 10
+metadata/type = "player"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player_spider/spider_body"]
+scale = Vector2(22.7273, 22.7273)
+shape = SubResource("CircleShape2D_icybq")
+
+[node name="borders" type="Node2D" parent="."]
+
+[node name="post_top" type="Area2D" parent="borders"]
+position = Vector2(949, 93)
+rotation = 1.57314
+collision_layer = 22
+collision_mask = 22
+script = ExtResource("4_rw33u")
+
+[node name="Polygon2D" type="Polygon2D" parent="borders/post_top"]
+color = Color(0.364706, 0.286275, 0.152941, 1)
+polygon = PackedVector2Array(-104.574, -1095.91, -132.55, 1052.1, 43.5105, 1070.9, 44.4142, -1103.11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_top"]
+shape = SubResource("RectangleShape2D_vct8i")
+
+[node name="post_right" type="Area2D" parent="borders"]
+position = Vector2(1482, 554)
+collision_layer = 22
+collision_mask = 22
+script = ExtResource("4_rw33u")
+
+[node name="Polygon2D" type="Polygon2D" parent="borders/post_right"]
+color = Color(0.364706, 0.286275, 0.152941, 1)
+polygon = PackedVector2Array(-42, -610, -43, 610, 241, 607, 237, -609)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_right"]
+shape = SubResource("RectangleShape2D_vct8i")
+
+[node name="post_bottom" type="Area2D" parent="borders"]
+position = Vector2(949, 987)
+rotation = 1.57314
+collision_layer = 22
+collision_mask = 22
+script = ExtResource("4_rw33u")
+
+[node name="Polygon2D" type="Polygon2D" parent="borders/post_bottom"]
+color = Color(0.364706, 0.286275, 0.152941, 1)
+polygon = PackedVector2Array(-42.3465, -1000.9, -43.2759, 1162.1, 126.55, 1087.9, 118.634, -1006.11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_bottom"]
+shape = SubResource("RectangleShape2D_vct8i")
+
+[node name="post_left" type="Area2D" parent="borders"]
+position = Vector2(437, 554)
+collision_layer = 22
+collision_mask = 22
+script = ExtResource("4_rw33u")
+
+[node name="Polygon2D" type="Polygon2D" parent="borders/post_left"]
+color = Color(0.364706, 0.286275, 0.152941, 1)
+polygon = PackedVector2Array(-241, -610, -239, 610, 42, 607, 42, -609)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_left"]
+shape = SubResource("RectangleShape2D_vct8i")
+
+[node name="web" type="Node2D" parent="."]
+
+[node name="bugstuff" type="Node2D" parent="."]
+
+[node name="spawn_area" type="Area2D" parent="bugstuff" node_paths=PackedStringArray("timer", "container")]
+position = Vector2(960, 540)
+script = ExtResource("5_oxs3t")
+timer = NodePath("../spawn_timer")
+bug = ExtResource("6_ejmxh")
+container = NodePath("../bugs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bugstuff/spawn_area"]
+position = Vector2(-10, -1)
+shape = SubResource("CircleShape2D_6o2lh")
+
+[node name="spawn_timer" type="Timer" parent="bugstuff"]
+
+[node name="bugs" type="Node2D" parent="bugstuff"]
+
+[connection signal="area_entered" from="player_spider/spider_body" to="player_spider" method="on_area_entered"]
+[connection signal="area_exited" from="player_spider/spider_body" to="player_spider" method="on_area_exited"]
+[connection signal="area_entered" from="borders/post_top" to="borders/post_top" method="AreaEntered"]
+[connection signal="area_exited" from="borders/post_top" to="borders/post_top" method="AreaExited"]
+[connection signal="area_entered" from="borders/post_right" to="borders/post_right" method="AreaEntered"]
+[connection signal="area_exited" from="borders/post_right" to="borders/post_right" method="AreaExited"]
+[connection signal="area_entered" from="borders/post_bottom" to="borders/post_bottom" method="AreaEntered"]
+[connection signal="area_exited" from="borders/post_bottom" to="borders/post_bottom" method="AreaExited"]
+[connection signal="area_entered" from="borders/post_left" to="borders/post_left" method="AreaEntered"]
+[connection signal="area_exited" from="borders/post_left" to="borders/post_left" method="AreaExited"]
