@@ -1,5 +1,7 @@
 extends Node2D
 
+var pos_input : Vector2 = Vector2.UP
+var current_strand : Line2D
 var moving = false
 var path : PathFollow2D
 var curve : Curve2D
@@ -22,6 +24,8 @@ func _ready() -> void:
 	GameManager.intersections = intersections
 	GameManager.web = web
 	StartCurve()
+	current_strand = starting_strand
+	current_strand.broken.connect(SafePlace)
 
 func _physics_process(delta: float) -> void:
 	if !GameManager.is_ended:
@@ -49,10 +53,15 @@ func _physics_process(delta: float) -> void:
 		
 		# Path follow movement-ish
 		if path:
-			if movement_vector.x > 0 or movement_vector.y < 0:
+			if movement_vector == pos_input:
 				path.progress += speed
-			elif movement_vector.x < 0 or movement_vector.y > 0:
+			elif movement_vector == -pos_input:
 				path.progress -= speed
+		#if path:
+			#if movement_vector.x > 0 or movement_vector.y < 0:
+				#path.progress += speed
+			#elif movement_vector.x < 0 or movement_vector.y > 0:
+				#path.progress -= speed
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Sprint"):
@@ -72,20 +81,31 @@ func _unhandled_input(event: InputEvent) -> void:
 	if navigation_node:
 		if event.is_action_pressed("Move Up"):
 			if navigation_node.nav_up:
-				SetNewCurve(navigation_node.nav_up)
-			print("Go up")
+				ChangeCurrentStrand(navigation_node.nav_up.strand)
+				SetNewCurve(navigation_node.nav_up.target)
+				pos_input = Vector2.UP
+				#print("Go up: %s" % pos_input)
+			
 		if event.is_action_pressed("Move Down"):
 			if navigation_node.nav_down:
-				SetNewCurve(navigation_node.nav_down)
-			print("Go down")
+				ChangeCurrentStrand(navigation_node.nav_down.strand)
+				SetNewCurve(navigation_node.nav_down.target)
+				pos_input = Vector2.DOWN
+				#print("Go down: %s" % pos_input)
+			
 		if event.is_action_pressed("Move Left"):
 			if navigation_node.nav_left:
-				SetNewCurve(navigation_node.nav_left)
-			print("Go left")
+				ChangeCurrentStrand(navigation_node.nav_left.strand)
+				SetNewCurve(navigation_node.nav_left.target)
+				pos_input = Vector2.LEFT
+				#print("Go left: %s" % pos_input)
+			
 		if event.is_action_pressed("Move Right"):
 			if navigation_node.nav_right:
-				SetNewCurve(navigation_node.nav_right)
-			print("Go right")
+				ChangeCurrentStrand(navigation_node.nav_right.strand)
+				SetNewCurve(navigation_node.nav_right.target)
+				pos_input = Vector2.RIGHT
+				#print("Go right: %s" % pos_input)
 		
 
 func ShotWeb(target : Vector2):
@@ -98,6 +118,7 @@ func ShotWeb(target : Vector2):
 		new_strand.Initialize(global_position, direction)
 		strands.append(new_strand)
 		new_strand.completed_firing.connect(EndStrand)
+		new_strand.node_a.CreateIntersect(current_strand)
 	
 	else:
 		# Do error feedback here
@@ -141,3 +162,18 @@ func SetNewCurve(target : Vector2):
 	new_curve.add_point(target, Vector2.ZERO, Vector2.ZERO)
 	curve = new_curve
 	path.progress = 0
+	#pos_input = position.direction_to(target)
+	#print("Direction to target on path %s" % pos_input)
+
+func ChangeCurrentStrand(new_strand : Line2D):
+	if is_instance_valid(current_strand):
+		current_strand.broken.disconnect(SafePlace)
+	current_strand = new_strand
+	current_strand.broken.connect(SafePlace)
+
+func SafePlace():
+	current_strand.broken.disconnect(SafePlace)
+	var stored = path.progress_ratio
+	path.progress_ratio = roundf(path.progress_ratio)
+	print("Moving to safety from %s to %s" % [stored, path.progress_ratio])
+	curve.clear_points()

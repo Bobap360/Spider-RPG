@@ -81,16 +81,17 @@ func Struggle():
 		#print("Bug has broken free")
 
 func CheckWeb() -> void:
+	await get_tree().physics_frame
+	
 	if collider.has_overlapping_areas():
 		var areas = collider.get_overlapping_areas()
 		for i in areas:
 			if i.has_meta("type"):
 				if i.get_meta("type") == ("web"):
-					#print("Caught Bug")
+					#print("Caught Bug on %s" % i.get_parent())
 					caught = true
 					strand = i.get_parent()
 					strand.bugs.append(self)
-					Struggle()
 					return
 					
 	#print("Bug is FREE")
@@ -119,7 +120,7 @@ func FlyThrough() -> void:
 	
 	# Appears behind spider now
 	z_index = 40
-	CheckWeb()
+	await CheckWeb()
 	
 	if !caught:
 		# Appears behind web now
@@ -129,6 +130,8 @@ func FlyThrough() -> void:
 		fade_out.parallel().tween_property(art, "scale", Vector2.ZERO, 1.0)
 		await fade_out.finished
 		queue_free()
+	else:
+		Struggle()
 	
 func Damage(amount : float):
 	if caught:

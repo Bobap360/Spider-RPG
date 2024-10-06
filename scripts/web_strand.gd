@@ -11,6 +11,7 @@ var target : Vector2
 var bugs : Array[Node2D]
 
 signal completed_firing(element : Line2D)
+signal broken()
 
 # Fills variables required to operate
 func Initialize(start : Vector2, new_target : Vector2) -> void:
@@ -46,6 +47,7 @@ func End(source : Line2D):
 	node_b.set_deferred("monitorable", true)
 	#node_a.CheckIntersects()
 	#node_b.CheckIntersects()
+	node_a.SetNav()
 	node_b.call_deferred("CreateIntersect", source)
 	completed_firing.emit(self)
 	
@@ -60,12 +62,19 @@ func UpdateCollider():
 	collider.global_rotation = a.angle_to_point(b)
 	collider.global_position = a + (b - a) * 0.5
 
+func Vanish():
+	# Breaking animation stuff goes here
+	node_a.Remove(self)
+	node_b.Remove(self)
+	queue_free()
+
 func Break():
 	for i in bugs:
 		i.FlyAway()
 	# Breaking animation stuff goes here
 	node_a.Remove(self)
 	node_b.Remove(self)
+	broken.emit()
 	queue_free()
 
 func CreateNav(new_pos : Vector2) -> Node2D:
@@ -80,22 +89,14 @@ func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	set_points(PackedVector2Array([node_a.position, node_b.position]))
 	UpdateCollider()
 
-func on_area_entered(area : Area2D):
-	pass
-	#if area.has_meta("type"):
-		## Checks against self collision and valid "Stop" objects
-		#if area.get_meta("type") == "web":
-			#print("Firing End")
-			#area.get_parent().End(self)
-			#
-		# Disables self collision
-		#if area.get_meta("type") == "player":
-			#can_stop = false
-
-func on_area_exited(area : Area2D):
-	pass
-		#if area.has_meta("type"):
-			## Re-enables the strand stopping collision
-			#if area.get_meta("type") == "player":
-				#can_stop = true
-				#print("Exiting player")
+func ReassignBugs():
+	if bugs.size() > 0:
+		print("Reassigning bugs")
+		
+		var list : Array[Node2D]
+		list.assign(bugs)
+		bugs.clear()
+		
+		for i in list:
+			print("Checking")
+			i.CheckWeb()
