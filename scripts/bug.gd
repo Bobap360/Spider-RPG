@@ -127,6 +127,8 @@ func FlyThrough() -> void:
 		var fade_out = create_tween()
 		fade_out.tween_property(art, "self_modulate", Color(0.216, 0.216, 0.216, 0), 1.0)
 		fade_out.parallel().tween_property(art, "scale", Vector2.ZERO, 1.0)
+		await fade_out.finished
+		queue_free()
 	
 func Damage(amount : float):
 	if caught:

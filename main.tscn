@@ -1,9 +1,10 @@
-[gd_scene load_steps=25 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=30 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
 [ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="2_u87pv"]
 [ext_resource type="Script" path="res://scripts/post.gd" id="4_rw33u"]
+[ext_resource type="PackedScene" uid="uid://dfi3myqmhmjws" path="res://fabs/nav_node.tscn" id="5_3c7bo"]
 [ext_resource type="Script" path="res://scripts/bug_manager.gd" id="5_oxs3t"]
 [ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="6_ejmxh"]
 [ext_resource type="Script" path="res://scripts/ui/hunger_bar.gd" id="7_4fqci"]
@@ -17,15 +18,23 @@
 
 [sub_resource type="Curve2D" id="Curve2D_gp3s6"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 1009.33, 310.649, 0, 0, 0, 0, 1435.49, 508.329)
+"points": PackedVector2Array(0, 0, 0, 0, 473, 940, 0, 0, 0, 0, 475, 137)
 }
 point_count = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_icybq"]
 radius = 23.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vct8i"]
-size = Vector2(86, 1219)
+[sub_resource type="CircleShape2D" id="CircleShape2D_yvbpu"]
+radius = 5.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qu461"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ku2h0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tx3aq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_go5ev"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6o2lh"]
 radius = 390.0
@@ -81,99 +90,142 @@ shadow_offset = Vector2(2, 2)
 [node name="existence" type="Node2D"]
 
 [node name="Path2D" type="Path2D" parent="."]
-position = Vector2(281, 39)
 curve = SubResource("Curve2D_gp3s6")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-position = Vector2(1009.33, 310.649)
-rotation = 0.434323
+position = Vector2(473, 940)
 rotates = false
+loop = false
+
+[node name="player_spider" type="Node2D" parent="Path2D/PathFollow2D" node_paths=PackedStringArray("web", "intersections", "starting_strand")]
+z_index = 50
+script = ExtResource("1_pvme1")
+web_strand = ExtResource("2_7m7h1")
+web = NodePath("../../../web/strands")
+intersections = NodePath("../../../web/intersections")
+starting_strand = NodePath("../../../borders/post_left/indicator")
+
+[node name="spider_sprite" type="Sprite2D" parent="Path2D/PathFollow2D/player_spider"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_u87pv")
+
+[node name="spider_body" type="Area2D" parent="Path2D/PathFollow2D/player_spider"]
+scale = Vector2(0.044, 0.044)
+collision_layer = 2
+collision_mask = 10
+metadata/type = "player"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/player_spider/spider_body"]
+scale = Vector2(22.7273, 22.7273)
+shape = SubResource("CircleShape2D_icybq")
+
+[node name="spider_nav" type="Area2D" parent="Path2D/PathFollow2D/player_spider"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/player_spider/spider_nav"]
+shape = SubResource("CircleShape2D_yvbpu")
+metadata/type = "nav"
 
 [node name="sky" type="Polygon2D" parent="."]
 z_index = -100
 color = Color(0.632249, 0.747282, 1, 1)
 polygon = PackedVector2Array(-88, -75, -75, 1234, 2071, 1177, 2103, -85)
 
-[node name="player_spider" type="Node2D" parent="." node_paths=PackedStringArray("web")]
-z_index = 50
-position = Vector2(1290.33, 349.649)
-rotation = 0.796442
-script = ExtResource("1_pvme1")
-web_strand = ExtResource("2_7m7h1")
-web = NodePath("../web")
-
-[node name="spider_sprite" type="Sprite2D" parent="player_spider"]
-self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_u87pv")
-
-[node name="spider_body" type="Area2D" parent="player_spider"]
-scale = Vector2(0.044, 0.044)
-collision_layer = 2
-collision_mask = 10
-metadata/type = "player"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player_spider/spider_body"]
-scale = Vector2(22.7273, 22.7273)
-shape = SubResource("CircleShape2D_icybq")
-
 [node name="borders" type="Node2D" parent="."]
 
-[node name="post_top" type="Area2D" parent="borders"]
+[node name="post_top" type="Polygon2D" parent="borders"]
 position = Vector2(949, 93)
 rotation = 1.57314
-collision_layer = 22
-collision_mask = 22
-script = ExtResource("4_rw33u")
-
-[node name="Polygon2D" type="Polygon2D" parent="borders/post_top"]
 color = Color(0.364706, 0.286275, 0.152941, 1)
 polygon = PackedVector2Array(-104.574, -1095.91, -132.55, 1052.1, 43.5105, 1070.9, 44.4142, -1103.11)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_top"]
-shape = SubResource("RectangleShape2D_vct8i")
-
-[node name="post_right" type="Area2D" parent="borders"]
-position = Vector2(1482, 554)
-collision_layer = 22
-collision_mask = 22
+[node name="indicator" type="Line2D" parent="borders/post_top" node_paths=PackedStringArray("node_a", "node_b", "collider")]
 script = ExtResource("4_rw33u")
+node_a = NodePath("../../../web/intersections/nav_node")
+node_b = NodePath("../../../web/intersections/nav_node2")
+collider = NodePath("Area2D/CollisionShape2D")
 
-[node name="Polygon2D" type="Polygon2D" parent="borders/post_right"]
+[node name="Area2D" type="Area2D" parent="borders/post_top/indicator"]
+collision_layer = 16
+collision_mask = 22
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_top/indicator/Area2D"]
+shape = SubResource("RectangleShape2D_qu461")
+
+[node name="post_right" type="Polygon2D" parent="borders"]
+position = Vector2(1482, 554)
 color = Color(0.364706, 0.286275, 0.152941, 1)
 polygon = PackedVector2Array(-42, -610, -43, 610, 241, 607, 237, -609)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_right"]
-shape = SubResource("RectangleShape2D_vct8i")
+[node name="indicator" type="Line2D" parent="borders/post_right" node_paths=PackedStringArray("node_a", "node_b", "collider")]
+script = ExtResource("4_rw33u")
+node_a = NodePath("../../../web/intersections/nav_node2")
+node_b = NodePath("../../../web/intersections/nav_node3")
+collider = NodePath("Area2D/CollisionShape2D")
 
-[node name="post_bottom" type="Area2D" parent="borders"]
+[node name="Area2D" type="Area2D" parent="borders/post_right/indicator"]
+collision_layer = 16
+collision_mask = 22
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_right/indicator/Area2D"]
+shape = SubResource("RectangleShape2D_ku2h0")
+
+[node name="post_bottom" type="Polygon2D" parent="borders"]
 position = Vector2(949, 987)
 rotation = 1.57314
-collision_layer = 22
-collision_mask = 22
-script = ExtResource("4_rw33u")
-
-[node name="Polygon2D" type="Polygon2D" parent="borders/post_bottom"]
 color = Color(0.364706, 0.286275, 0.152941, 1)
 polygon = PackedVector2Array(-42.3465, -1000.9, -43.2759, 1162.1, 126.55, 1087.9, 118.634, -1006.11)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_bottom"]
-shape = SubResource("RectangleShape2D_vct8i")
-
-[node name="post_left" type="Area2D" parent="borders"]
-position = Vector2(437, 554)
-collision_layer = 22
-collision_mask = 22
+[node name="indicator" type="Line2D" parent="borders/post_bottom" node_paths=PackedStringArray("node_a", "node_b", "collider")]
 script = ExtResource("4_rw33u")
+node_a = NodePath("../../../web/intersections/nav_node3")
+node_b = NodePath("../../../web/intersections/nav_node4")
+collider = NodePath("Area2D/CollisionShape2D")
 
-[node name="Polygon2D" type="Polygon2D" parent="borders/post_left"]
+[node name="Area2D" type="Area2D" parent="borders/post_bottom/indicator"]
+collision_layer = 16
+collision_mask = 22
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_bottom/indicator/Area2D"]
+shape = SubResource("RectangleShape2D_tx3aq")
+
+[node name="post_left" type="Polygon2D" parent="borders"]
+position = Vector2(437, 554)
 color = Color(0.364706, 0.286275, 0.152941, 1)
 polygon = PackedVector2Array(-241, -610, -239, 610, 42, 607, 42, -609)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_left"]
-shape = SubResource("RectangleShape2D_vct8i")
+[node name="indicator" type="Line2D" parent="borders/post_left" node_paths=PackedStringArray("node_a", "node_b", "collider")]
+script = ExtResource("4_rw33u")
+node_a = NodePath("../../../web/intersections/nav_node4")
+node_b = NodePath("../../../web/intersections/nav_node")
+collider = NodePath("Area2D/CollisionShape2D")
+
+[node name="Area2D" type="Area2D" parent="borders/post_left/indicator"]
+collision_layer = 16
+collision_mask = 22
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_left/indicator/Area2D"]
+shape = SubResource("RectangleShape2D_go5ev")
 
 [node name="web" type="Node2D" parent="."]
+
+[node name="intersections" type="Node2D" parent="web"]
+
+[node name="nav_node" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(475, 131)
+
+[node name="nav_node2" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(1445, 133)
+
+[node name="nav_node3" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(1444, 951)
+
+[node name="nav_node4" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(473, 948)
+
+[node name="strands" type="Node2D" parent="web"]
 
 [node name="bugstuff" type="Node2D" parent="."]
 
@@ -918,16 +970,18 @@ theme_type_variation = &"BasicHeader"
 theme_override_font_sizes/font_size = 16
 text = "%"
 
-[connection signal="area_entered" from="player_spider/spider_body" to="player_spider" method="on_area_entered"]
-[connection signal="area_exited" from="player_spider/spider_body" to="player_spider" method="on_area_exited"]
-[connection signal="area_entered" from="borders/post_top" to="borders/post_top" method="AreaEntered"]
-[connection signal="area_exited" from="borders/post_top" to="borders/post_top" method="AreaExited"]
-[connection signal="area_entered" from="borders/post_right" to="borders/post_right" method="AreaEntered"]
-[connection signal="area_exited" from="borders/post_right" to="borders/post_right" method="AreaExited"]
-[connection signal="area_entered" from="borders/post_bottom" to="borders/post_bottom" method="AreaEntered"]
-[connection signal="area_exited" from="borders/post_bottom" to="borders/post_bottom" method="AreaExited"]
-[connection signal="area_entered" from="borders/post_left" to="borders/post_left" method="AreaEntered"]
-[connection signal="area_exited" from="borders/post_left" to="borders/post_left" method="AreaExited"]
+[connection signal="area_entered" from="Path2D/PathFollow2D/player_spider/spider_body" to="Path2D/PathFollow2D/player_spider" method="on_area_entered"]
+[connection signal="area_exited" from="Path2D/PathFollow2D/player_spider/spider_body" to="Path2D/PathFollow2D/player_spider" method="on_area_exited"]
+[connection signal="area_entered" from="Path2D/PathFollow2D/player_spider/spider_nav" to="Path2D/PathFollow2D/player_spider" method="on_nav_entered"]
+[connection signal="area_exited" from="Path2D/PathFollow2D/player_spider/spider_nav" to="Path2D/PathFollow2D/player_spider" method="on_nav_exited"]
+[connection signal="area_entered" from="borders/post_top/indicator/Area2D" to="borders/post_top/indicator" method="AreaEntered"]
+[connection signal="area_exited" from="borders/post_top/indicator/Area2D" to="borders/post_top/indicator" method="AreaExited"]
+[connection signal="area_entered" from="borders/post_right/indicator/Area2D" to="borders/post_right/indicator" method="AreaEntered"]
+[connection signal="area_exited" from="borders/post_right/indicator/Area2D" to="borders/post_right/indicator" method="AreaExited"]
+[connection signal="area_entered" from="borders/post_bottom/indicator/Area2D" to="borders/post_bottom/indicator" method="AreaEntered"]
+[connection signal="area_exited" from="borders/post_bottom/indicator/Area2D" to="borders/post_bottom/indicator" method="AreaExited"]
+[connection signal="area_entered" from="borders/post_left/indicator/Area2D" to="borders/post_left/indicator" method="AreaEntered"]
+[connection signal="area_exited" from="borders/post_left/indicator/Area2D" to="borders/post_left/indicator" method="AreaExited"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_resume" to="CanvasLayer/hud/pause_container" method="Hide"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_quit" to="CanvasLayer/hud/pause_container" method="Quit"]
 [connection signal="button_down" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_button_down"]

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfi3myqmhmjws"]
+
+[ext_resource type="Script" path="res://scripts/nav_node.gd" id="1_5c4xc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hrbxm"]
+radius = 20.0
+
+[node name="nav_node" type="Area2D"]
+collision_layer = 32
+collision_mask = 36
+monitorable = false
+script = ExtResource("1_5c4xc")
+metadata/type = "nav"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_hrbxm")

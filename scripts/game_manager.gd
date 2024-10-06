@@ -1,5 +1,8 @@
 extends Node2D
 
+const strand : PackedScene = preload("res://fabs/strand.tscn")
+const nav_node : PackedScene = preload("res://fabs/nav_node.tscn")
+
 # Hunger
 var hunger_max : float = 100.0
 var hunger : float = 100.0
@@ -38,6 +41,8 @@ var level_threshold : int = 10
 # Status bools
 var is_paused : bool = false
 var is_ended : bool = false
+var intersections : Node2D
+var web : Node2D
 
 # Signals
 signal score_changed(amount : int)
@@ -133,3 +138,8 @@ func LevelIntelligence():
 	spawn_time += 0.15
 	struggle_mod += 0.05
 	stats_changed.emit()
+
+func NewStrand() -> Line2D:
+	var new_strand = strand.instantiate()
+	web.add_child(new_strand, true)
+	return new_strand
