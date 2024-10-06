@@ -1,5 +1,6 @@
 extends Control
 
+@export var spider_class : Label
 @export var strength : Label
 @export var dex : Label
 @export var intel : Label
@@ -23,6 +24,7 @@ func _ready() -> void:
 	CheckButtons()
 	GameManager.stats_changed.connect(UpdateAll)
 
+
 func UpdateAll():
 	strength.text = "STR\n%s" % GameManager.strength
 	dex.text = "DEX\n%s" % GameManager.dex
@@ -41,21 +43,75 @@ func UpdateAll():
 	xp_gain.text = str(GameManager.xp_mod * 100.0)
 	hunger_restored.text = str(GameManager.hunger_gain_mod * 100.0)
 	CheckButtons()
+	GetClass()
+
+
+func GetClass():
+	var attributes : Array = [GameManager.strength, GameManager.dex, GameManager.intel]
+	var which : int = 0
+	var highest : int = 0
+	
+	for i in attributes.size():
+		if attributes[i] > highest:
+			highest = attributes[i]
+			which = i
+	
+	var diffs : Array[int] 
+	for i in attributes.size():
+		if i != which:
+			diffs.append(highest - attributes[i])
+	var max_dif : int = diffs.min()
+	
+	if max_dif < 2:
+		which = -1
+		
+	match which:
+		-1: # Default build
+			spider_class.text = "SPIDER"
+			#print("Diffs less than 2")
+			
+		0: # Strength build
+			if max_dif >= 5:
+				spider_class.text = "RECLUSE"
+			else:
+				spider_class.text = "WIDOW"
+			#print("Build is Str heavy by %s" % max_dif)
+			
+		1: # Dex build
+			if max_dif >= 5:
+				spider_class.text = "HUNTSMAN"
+			else:
+				spider_class.text = "WOLF"
+			#print("Build is Dex heavy by %s" % max_dif)
+			
+		2: # Int build
+			if max_dif >= 5:
+				spider_class.text = "WEAVER"
+			else:
+				spider_class.text = "TANGLE"
+			#print("Build is Int heavy by %s" % max_dif)
+			
+		_: # Error
+			printerr("Something went wrong with class check")
+			
 
 func CheckButtons():
 		if GameManager.attribute_points <= 0:
 			for i in attribute_buttons:
 				i.disabled = true
-				i.t.visible = false
+				i.Hide()
 		else:
 			for i in attribute_buttons:
 				i.disabled = false
 
+
 func Strength():
 	GameManager.LevelStrength()
 
+
 func Dex():
 	GameManager.LevelDexterity()
+
 
 func Intel():
 	GameManager.LevelIntelligence()

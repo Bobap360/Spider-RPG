@@ -23,7 +23,7 @@ var score : int = 0
 var move : float = 2.0
 var sprint : float = 3.0
 var speed_mod : float = 1.0
-var web_speed : float = 1.0
+var web_speed : float = 10.0
 var spawn_time : float = 3.0
 var damage : float = 50.0
 var struggle_mod : float = 1.0
@@ -33,7 +33,7 @@ var xp : int = 0
 var xp_mod : float = 1.0
 var level : int = 1
 var attribute_points : int = 0
-const level_thresholds : Array[int] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+var level_threshold : int = 10
 
 # Status bools
 var is_paused : bool = false
@@ -84,12 +84,13 @@ func XP(amount : int):
 	xp += amount * xp_mod
 	xp_changed.emit(amount * xp_mod)
 	
-	if xp >= level_thresholds[level]:
-		xp -= level_thresholds[level]
+	if xp >= level_threshold:
+		xp -= level_threshold
 		attribute_points += 1
 		level += 1
+		level_threshold += 10
 		leveled_up.emit()
-		xp_changed.emit(level_thresholds[level])
+		xp_changed.emit(level_threshold - 10)
 		stats_changed.emit()
 
 func Stamina(amount : float):
@@ -129,5 +130,6 @@ func LevelDexterity():
 func LevelIntelligence():
 	attribute_points -= 1
 	intel += 1
+	spawn_time += 0.15
 	struggle_mod += 0.05
 	stats_changed.emit()

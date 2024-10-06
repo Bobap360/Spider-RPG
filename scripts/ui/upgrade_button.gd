@@ -1,6 +1,7 @@
 extends Button
 
 @export var t : Label
+@export var tooltip : Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -9,10 +10,11 @@ func _ready() -> void:
 func _on_mouse_entered() -> void:
 	if !disabled:
 		t.visible = true
+		tooltip.visible = true
 
 
 func _on_mouse_exited() -> void:
-	t.visible = false
+	Hide()
 
 
 func _on_button_down() -> void:
@@ -21,3 +23,7 @@ func _on_button_down() -> void:
 
 func _on_button_up() -> void:
 	t.self_modulate = Color(1, 1, 1, 1)
+
+func Hide():
+	t.visible = false
+	tooltip.visible = false

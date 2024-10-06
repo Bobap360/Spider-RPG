@@ -4,6 +4,7 @@ extends Line2D
 @export var node_b : Area2D
 @export var collider : CollisionShape2D
 @export var thickness : float = 10.0
+@export var glob : Node2D
 var target : Vector2
 var can_stop : bool = true
 var bugs : Array[Node2D]
@@ -14,14 +15,14 @@ signal completed_firing(element : Line2D)
 func Initialize(start : Vector2, new_target : Vector2) -> void:
 	node_a.position = start
 	node_b.position = start
-	target = new_target
+	target = new_target.normalized()
 	collider.shape = RectangleShape2D.new()
 
 # Grows the strand
 func Firing():
 	#node_b.position = node_b.position.move_toward(target, GameManager.web_speed)
 	# Animates the motion of the web strand
-	node_b.position += target * GameManager.web_speed / 50.0
+	node_b.position += target * GameManager.web_speed
 	set_points(PackedVector2Array([node_a.position, node_b.position]))
 	
 	# Scales the collider for the strand
@@ -32,6 +33,7 @@ func Firing():
 		#completed_firing.emit(self)
 
 func End():
+	glob.queue_free()
 	completed_firing.emit(self)
 
 # Sizes the collider to match the path
