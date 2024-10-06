@@ -2,13 +2,13 @@ extends Line2D
 
 var node_a : Node2D
 var node_b : Node2D
+@export var web_area : Area2D
 @export var collider : CollisionShape2D
 @export var thickness : float = 10.0
 @export var glob : Node2D
 var target : Vector2
-var can_stop : bool = false
+#var can_stop : bool = false
 var bugs : Array[Node2D]
-var is_firing : bool = false
 
 signal completed_firing(element : Line2D)
 
@@ -22,6 +22,7 @@ func Initialize(start : Vector2, new_target : Vector2) -> void:
 	node_b.strands.append(self)
 	target = new_target.normalized()
 	collider.shape = RectangleShape2D.new()
+
 
 # Grows the strand
 func Firing():
@@ -39,7 +40,7 @@ func Firing():
 		#completed_firing.emit(self)
 
 func End(source : Line2D):
-	can_stop = true
+	#can_stop = true
 	#call_deferred("CreateNav", node_b.position)
 	node_a.set_deferred("monitorable", true)
 	node_b.set_deferred("monitorable", true)
@@ -80,19 +81,21 @@ func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	UpdateCollider()
 
 func on_area_entered(area : Area2D):
-	if area.has_meta("type"):
-		# Checks against self collision and valid "Stop" objects
-		if can_stop and area.get_meta("type") == "web" and !area.get_parent().can_stop:
-			print("Firing End")
-			area.get_parent().End(self)
-			
+	pass
+	#if area.has_meta("type"):
+		## Checks against self collision and valid "Stop" objects
+		#if area.get_meta("type") == "web":
+			#print("Firing End")
+			#area.get_parent().End(self)
+			#
 		# Disables self collision
-		if area.get_meta("type") == "player":
-			can_stop = false
+		#if area.get_meta("type") == "player":
+			#can_stop = false
 
 func on_area_exited(area : Area2D):
-		if area.has_meta("type"):
-			# Re-enables the strand stopping collision
-			if area.get_meta("type") == "player":
-				can_stop = true
-				print("Exiting player")
+	pass
+		#if area.has_meta("type"):
+			## Re-enables the strand stopping collision
+			#if area.get_meta("type") == "player":
+				#can_stop = true
+				#print("Exiting player")

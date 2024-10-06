@@ -12,7 +12,10 @@ func _ready() -> void:
 	GameManager.leveled_up.connect(LevelUp)
 
 func update(_amount : float):
-	readout.text = "%s/%s" %[GameManager.xp, GameManager.level_threshold]
+	if GameManager.is_max_level:
+		readout.text = "MAX LEVEL"
+	else:
+		readout.text = "%s/%s" %[GameManager.xp, GameManager.level_threshold]
 	bar.value = GameManager.xp
 
 func LevelUp():

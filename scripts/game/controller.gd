@@ -65,7 +65,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event.is_action_released("Fire"):
 		ShotWeb(get_global_mouse_position())
-		
+	
+	if event.is_action_pressed("Cheat Level"):
+		GameManager.XP(GameManager.level_threshold)
+	
 	if navigation_node:
 		if event.is_action_pressed("Move Up"):
 			if navigation_node.nav_up:

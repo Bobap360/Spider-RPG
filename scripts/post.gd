@@ -21,20 +21,22 @@ func UpdateCollider() -> void:
 	collider.global_position = a + (b - a) * 0.5
 
 func AreaEntered(area : Area2D) -> void:
-	if area.has_meta("type"):
-		# Catches the web strands that hit it
-		if can_stop and area.get_meta("type") == "web" and !area.get_parent().can_stop:
-			area.get_parent().End(self)
-		
-		# Disables self collisions
-		if area.get_meta("type") == "player":
-			can_stop = false
+	pass
+	#if area.has_meta("type"):
+		## Catches the web strands that hit it
+		#if can_stop and area.get_meta("type") == "web" and !area.get_parent().can_stop:
+			#area.get_parent().End(self)
+		#
+		## Disables self collisions
+		#if area.get_meta("type") == "player":
+			#can_stop = false
 
 func AreaExited(area : Area2D) -> void:
-		if area.has_meta("type"):
-			# Re-enables the web collision
-			if area.get_meta("type") == "player":
-				can_stop = true
+	#if area.has_meta("type"):
+		## Re-enables the web collision
+		#if area.get_meta("type") == "player":
+			#can_stop = true
+	pass
 
 func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	node_a = new_a

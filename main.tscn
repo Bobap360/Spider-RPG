@@ -150,6 +150,7 @@ collider = NodePath("Area2D/CollisionShape2D")
 [node name="Area2D" type="Area2D" parent="borders/post_top/indicator"]
 collision_layer = 16
 collision_mask = 22
+metadata/type = "web"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_top/indicator/Area2D"]
 shape = SubResource("RectangleShape2D_qu461")
@@ -168,6 +169,7 @@ collider = NodePath("Area2D/CollisionShape2D")
 [node name="Area2D" type="Area2D" parent="borders/post_right/indicator"]
 collision_layer = 16
 collision_mask = 22
+metadata/type = "web"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_right/indicator/Area2D"]
 shape = SubResource("RectangleShape2D_ku2h0")
@@ -187,6 +189,7 @@ collider = NodePath("Area2D/CollisionShape2D")
 [node name="Area2D" type="Area2D" parent="borders/post_bottom/indicator"]
 collision_layer = 16
 collision_mask = 22
+metadata/type = "web"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_bottom/indicator/Area2D"]
 shape = SubResource("RectangleShape2D_tx3aq")
@@ -205,6 +208,7 @@ collider = NodePath("Area2D/CollisionShape2D")
 [node name="Area2D" type="Area2D" parent="borders/post_left/indicator"]
 collision_layer = 16
 collision_mask = 22
+metadata/type = "web"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="borders/post_left/indicator/Area2D"]
 shape = SubResource("RectangleShape2D_go5ev")
@@ -428,7 +432,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 script = ExtResource("10_isho5")
-spider_class = NodePath("HBoxContainer/value")
+spider_class = NodePath("VBoxContainer/class_value")
 strength = NodePath("attributes/strength")
 dex = NodePath("attributes/dexterity")
 intel = NodePath("attributes/intelligence")
@@ -445,18 +449,38 @@ hunger_drain = NodePath("stat_hunger_drain/value")
 xp_gain = NodePath("stat_xp_gain/value")
 hunger_restored = NodePath("stat_hunger_restored/value")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="class_header" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"StatHeader"
+theme_override_font_sizes/font_size = 20
+text = "Class"
+
+[node name="class_value" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"StatHeader"
+theme_override_font_sizes/font_size = 22
+text = "Class"
+
+[node name="class_container" type="HBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
+visible = false
 layout_mode = 2
 
-[node name="header" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/HBoxContainer"]
+[node name="header" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/class_container"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"StatHeader"
 text = "Class"
 
-[node name="value" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/HBoxContainer"]
+[node name="value" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/class_container"]
 layout_mode = 2
 theme_type_variation = &"StatHeader"
+theme_override_font_sizes/font_size = 18
 text = "SPIDER"
 
 [node name="xp_container" type="VBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout" node_paths=PackedStringArray("bar", "readout", "level")]
@@ -974,14 +998,6 @@ text = "%"
 [connection signal="area_exited" from="Path2D/PathFollow2D/player_spider/spider_body" to="Path2D/PathFollow2D/player_spider" method="on_area_exited"]
 [connection signal="area_entered" from="Path2D/PathFollow2D/player_spider/spider_nav" to="Path2D/PathFollow2D/player_spider" method="on_nav_entered"]
 [connection signal="area_exited" from="Path2D/PathFollow2D/player_spider/spider_nav" to="Path2D/PathFollow2D/player_spider" method="on_nav_exited"]
-[connection signal="area_entered" from="borders/post_top/indicator/Area2D" to="borders/post_top/indicator" method="AreaEntered"]
-[connection signal="area_exited" from="borders/post_top/indicator/Area2D" to="borders/post_top/indicator" method="AreaExited"]
-[connection signal="area_entered" from="borders/post_right/indicator/Area2D" to="borders/post_right/indicator" method="AreaEntered"]
-[connection signal="area_exited" from="borders/post_right/indicator/Area2D" to="borders/post_right/indicator" method="AreaExited"]
-[connection signal="area_entered" from="borders/post_bottom/indicator/Area2D" to="borders/post_bottom/indicator" method="AreaEntered"]
-[connection signal="area_exited" from="borders/post_bottom/indicator/Area2D" to="borders/post_bottom/indicator" method="AreaExited"]
-[connection signal="area_entered" from="borders/post_left/indicator/Area2D" to="borders/post_left/indicator" method="AreaEntered"]
-[connection signal="area_exited" from="borders/post_left/indicator/Area2D" to="borders/post_left/indicator" method="AreaExited"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_resume" to="CanvasLayer/hud/pause_container" method="Hide"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_quit" to="CanvasLayer/hud/pause_container" method="Quit"]
 [connection signal="button_down" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_button_down"]

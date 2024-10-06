@@ -39,6 +39,7 @@ var attribute_points : int = 0
 var level_threshold : int = 10
 
 # Status bools
+var is_max_level : bool = false
 var is_paused : bool = false
 var is_ended : bool = false
 var intersections : Node2D
@@ -86,17 +87,24 @@ func Quit():
 	get_tree().quit()
 
 func XP(amount : int):
-	xp += amount * xp_mod
-	xp_changed.emit(amount * xp_mod)
-	
-	if xp >= level_threshold:
-		xp -= level_threshold
-		attribute_points += 1
-		level += 1
-		level_threshold += 10
-		leveled_up.emit()
-		xp_changed.emit(level_threshold - 10)
-		stats_changed.emit()
+	if level <= 60:
+		xp += amount * xp_mod
+		
+		if xp >= level_threshold:
+			if level < 60:
+				xp -= level_threshold
+				attribute_points += 1
+				level += 1
+				level_threshold += 10
+				leveled_up.emit()
+				#xp_changed.emit(level_threshold - 10)
+				stats_changed.emit()
+			elif !is_max_level:
+				is_max_level = true
+				attribute_points += 1
+				stats_changed.emit()
+		
+		xp_changed.emit(amount * xp_mod)
 
 func Stamina(amount : float):
 	stamina += amount
