@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=23 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
@@ -13,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://boiotn6f2jmyj" path="res://art/spider_menu_legs_tintable.png" id="11_rcgev"]
 [ext_resource type="Texture2D" uid="uid://bplttmxn1o2s3" path="res://art/spider_menu_eyes.png" id="12_bvxt0"]
 [ext_resource type="Script" path="res://scripts/ui/xp_bar.gd" id="13_r8ng5"]
-[ext_resource type="Script" path="res://scripts/ui/upgrade_button.gd" id="14_j206p"]
 
 [sub_resource type="Curve2D" id="Curve2D_gp3s6"]
 _data = {
@@ -352,7 +351,7 @@ theme_override_constants/margin_bottom = 40
 [node name="body" type="Control" parent="CanvasLayer/hud/character_stats/margins"]
 layout_mode = 2
 
-[node name="layout" type="VBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body" node_paths=PackedStringArray("strength", "dex", "intel", "attribute_points", "attribute_buttons", "damage", "speed", "web_cost", "sprint_cost", "stam_regen", "warning_time", "struggle_time", "hunger_drain", "xp_gain", "hunger_restored")]
+[node name="layout" type="VBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -361,21 +360,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 script = ExtResource("10_isho5")
-strength = NodePath("attributes/strength")
-dex = NodePath("attributes/dexterity")
-intel = NodePath("attributes/intelligence")
-attribute_points = NodePath("points")
-attribute_buttons = [NodePath("attributes/strength/btn_upgrade"), NodePath("attributes/dexterity/btn_upgrade"), NodePath("attributes/intelligence/btn_upgrade")]
-damage = NodePath("stat_damage/value")
-speed = NodePath("stat_speed/value")
-web_cost = NodePath("stat_web_cost/value")
-sprint_cost = NodePath("stat_sprint_cost/value")
-stam_regen = NodePath("stat_stam_regen/value")
-warning_time = NodePath("stat_warning_time/value")
-struggle_time = NodePath("stat_struggle_time/value")
-hunger_drain = NodePath("stat_hunger_drain/value")
-xp_gain = NodePath("stat_xp_gain/value")
-hunger_restored = NodePath("stat_hunger_restored/value")
 
 [node name="xp_container" type="VBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout" node_paths=PackedStringArray("bar", "readout", "level")]
 layout_mode = 2
@@ -470,15 +454,8 @@ theme_type_variation = &"HealthBar"
 show_percentage = false
 
 [node name="HSeparator" type="HSeparator" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
-visible = false
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxEmpty_ck2g1")
-
-[node name="header" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
-layout_mode = 2
-theme_type_variation = &"StatCategory"
-text = "ATTRIBUTES"
-horizontal_alignment = 1
 
 [node name="attributes" type="HBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
 layout_mode = 2
@@ -492,31 +469,6 @@ text = "Str
 0"
 horizontal_alignment = 1
 
-[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength" node_paths=PackedStringArray("t")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"AttributeButton"
-script = ExtResource("14_j206p")
-t = NodePath("Label")
-
-[node name="Label" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"BasicHeader"
-theme_override_font_sizes/font_size = 36
-text = "+1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="dexterity" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -525,31 +477,6 @@ theme_override_font_sizes/font_size = 24
 text = "DEX
 0"
 horizontal_alignment = 1
-
-[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity" node_paths=PackedStringArray("t")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"AttributeButton"
-script = ExtResource("14_j206p")
-t = NodePath("Label")
-
-[node name="Label" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"BasicHeader"
-theme_override_font_sizes/font_size = 36
-text = "+1"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="intelligence" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes"]
 layout_mode = 2
@@ -560,39 +487,7 @@ text = "INT
 0"
 horizontal_alignment = 1
 
-[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence" node_paths=PackedStringArray("t")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"AttributeButton"
-script = ExtResource("14_j206p")
-t = NodePath("Label")
-
-[node name="Label" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"BasicHeader"
-theme_override_font_sizes/font_size = 36
-text = "+1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="points" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
-layout_mode = 2
-theme_type_variation = &"StatCategory"
-text = "POINTS: 0"
-horizontal_alignment = 1
-
 [node name="HSeparator2" type="HSeparator" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
-visible = false
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxEmpty_ck2g1")
 
@@ -837,18 +732,3 @@ text = "%"
 [connection signal="area_exited" from="borders/post_left" to="borders/post_left" method="AreaExited"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_resume" to="CanvasLayer/hud/pause_container" method="Hide"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_quit" to="CanvasLayer/hud/pause_container" method="Quit"]
-[connection signal="button_down" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_button_down"]
-[connection signal="button_up" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_button_up"]
-[connection signal="mouse_entered" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_mouse_exited"]
-[connection signal="pressed" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout" method="Strength"]
-[connection signal="button_down" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" method="_on_button_down"]
-[connection signal="button_up" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" method="_on_button_up"]
-[connection signal="mouse_entered" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" method="_on_mouse_exited"]
-[connection signal="pressed" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout" method="Dex"]
-[connection signal="button_down" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" method="_on_button_down"]
-[connection signal="button_up" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" method="_on_button_up"]
-[connection signal="mouse_entered" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" method="_on_mouse_exited"]
-[connection signal="pressed" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout" method="Intel"]

@@ -24,10 +24,6 @@ func _ready() -> void:
 	health_bar.visible = false
 	struggle_bar.visible = false
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func Spawning() -> void:
 	#var step : float = 1.0/24.0
 	#var i : float = 0
@@ -68,14 +64,14 @@ func Struggle():
 		#times.push_front(new_time)
 		#new_time -= time_step
 		#time_tracker -= new_time
-		
+	var delay = struggle_time * GameManager.struggle_mod
 	for i in 20:
 		dist += step
 		
-		struggle_anim.tween_property(art, "position", Vector2(randf_range(-dist, dist), randf_range(-dist, dist)), struggle_time/20)
+		struggle_anim.tween_property(art, "position", Vector2(randf_range(-dist, dist), randf_range(-dist, dist)), delay/20)
 		
 	var tween = create_tween()
-	tween.tween_property(struggle_bar, "value", struggle_bar.max_value, struggle_time)
+	tween.tween_property(struggle_bar, "value", struggle_bar.max_value, delay)
 	await tween.finished
 	if caught:
 		FlyAway()
@@ -152,6 +148,7 @@ func Damage(amount : float):
 	
 func Kill():
 	GameManager.Score(value)
+	GameManager.XP(value)
 	GameManager.Hunger(value)
 	strand.bugs.erase(self)
 	# Death animation stuff here

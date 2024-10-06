@@ -1,0 +1,91 @@
+[gd_scene load_steps=4 format=3 uid="uid://cib23667q0xbs"]
+
+[ext_resource type="Script" path="res://scripts/ui/scoring.gd" id="1_f2nxq"]
+[ext_resource type="Script" path="res://scripts/ui/hunger_bar.gd" id="2_jo2sh"]
+[ext_resource type="Script" path="res://scripts/ui/stamina_bar.gd" id="3_d1ft7"]
+
+[node name="margins" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 75
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 75
+
+[node name="body" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="bars" type="VBoxContainer" parent="body"]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 200.0
+theme_override_constants/separation = 50
+
+[node name="score_container" type="HBoxContainer" parent="body/bars"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="title" type="Label" parent="body/bars/score_container"]
+layout_mode = 2
+theme_type_variation = &"BasicHeader"
+theme_override_font_sizes/font_size = 48
+text = "Score"
+
+[node name="score" type="Label" parent="body/bars/score_container"]
+layout_mode = 2
+theme_type_variation = &"BasicHeader"
+text = "1000"
+script = ExtResource("1_f2nxq")
+
+[node name="hunger" type="VBoxContainer" parent="body/bars"]
+layout_mode = 2
+theme_override_constants/separation = -30
+
+[node name="Label" type="Label" parent="body/bars/hunger"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"BasicHeader"
+theme_override_font_sizes/font_size = 48
+text = " HUNGER"
+horizontal_alignment = 1
+
+[node name="hunger_bar" type="ProgressBar" parent="body/bars/hunger" node_paths=PackedStringArray("bar")]
+self_modulate = Color(0.685733, 3.10443e-06, 5.77569e-07, 1)
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"HealthBar"
+value = 50.0
+show_percentage = false
+script = ExtResource("2_jo2sh")
+bar = NodePath(".")
+
+[node name="stamina" type="VBoxContainer" parent="body/bars"]
+layout_mode = 2
+theme_override_constants/separation = -30
+
+[node name="Label" type="Label" parent="body/bars/stamina"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"BasicHeader"
+theme_override_font_sizes/font_size = 48
+text = " STAMINA"
+horizontal_alignment = 1
+
+[node name="stamina_bar" type="ProgressBar" parent="body/bars/stamina"]
+self_modulate = Color(4.81307e-07, 0.426583, 0.305101, 1)
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"HealthBar"
+value = 50.0
+show_percentage = false
+script = ExtResource("3_d1ft7")

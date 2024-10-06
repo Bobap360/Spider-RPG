@@ -5,11 +5,6 @@ var can_stop : bool = true
 func _ready() -> void:
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func AreaEntered(area : Area2D):
 	if area.has_meta("type"):
 		# Catches the web strands that hit it

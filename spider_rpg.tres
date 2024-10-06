@@ -1,7 +1,56 @@
-[gd_resource type="Theme" load_steps=11 format=3 uid="uid://cfc7oqaw0ie84"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://cfc7oqaw0ie84"]
 
 [ext_resource type="FontFile" uid="uid://cfpeiqnxmsu4c" path="res://fonts/BD_Cartoon_Shout.ttf" id="1_vfme4"]
 [ext_resource type="FontFile" uid="uid://cdbdqm34c6u3t" path="res://fonts/Stanberry.ttf" id="2_3034m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b4663"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b4y0s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1oind"]
+bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 0.784314)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_top = 10.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0lojd"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 0.784314)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_top = 10.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8jbtb"]
+bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 0.392157)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_top = 10.0
+expand_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ya83w"]
 bg_color = Color(0, 0, 0, 0.392157)
@@ -32,6 +81,12 @@ border_blend = true
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s4xg4"]
 
 [resource]
+AttributeButton/base_type = &"Button"
+AttributeButton/styles/disabled = SubResource("StyleBoxEmpty_b4663")
+AttributeButton/styles/focus = SubResource("StyleBoxEmpty_b4y0s")
+AttributeButton/styles/hover = SubResource("StyleBoxFlat_1oind")
+AttributeButton/styles/normal = SubResource("StyleBoxFlat_0lojd")
+AttributeButton/styles/pressed = SubResource("StyleBoxFlat_8jbtb")
 BasicHeader/base_type = &"Label"
 BasicHeader/colors/font_color = Color(1, 1, 1, 1)
 BasicHeader/colors/font_outline_color = Color(0, 0, 0, 0.784314)
@@ -44,6 +99,14 @@ BasicHeader/fonts/font = ExtResource("1_vfme4")
 HealthBar/base_type = &"ProgressBar"
 HealthBar/styles/background = SubResource("StyleBoxFlat_ya83w")
 HealthBar/styles/fill = SubResource("StyleBoxFlat_31664")
+StatCategory/base_type = &"Label"
+StatCategory/colors/font_color = Color(1, 1, 1, 1)
+StatCategory/colors/font_outline_color = Color(0, 0, 0, 1)
+StatCategory/constants/outline_size = 8
+StatCategory/constants/shadow_offset_x = 3
+StatCategory/constants/shadow_offset_y = 3
+StatCategory/font_sizes/font_size = 20
+StatCategory/fonts/font = ExtResource("1_vfme4")
 TextButton/base_type = &"Button"
 TextButton/colors/font_color = Color(1, 1, 1, 1)
 TextButton/colors/font_disabled_color = Color(1, 1, 1, 0.392157)

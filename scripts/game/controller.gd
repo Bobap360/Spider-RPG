@@ -15,14 +15,10 @@ func _ready() -> void:
 	#path = get_parent()
 	speed = GameManager.move
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _physics_process(delta: float) -> void:
 	if !GameManager.is_ended:
-		GameManager.Hunger(-0.02 * GameManager.hunger_drain_rate)
-		GameManager.Stamina(0.02 * GameManager.stamina_regen)
+		GameManager.Hunger(-delta * GameManager.hunger_drain_rate)
+		GameManager.Stamina(delta * GameManager.stamina_regen)
 		
 		if strands.size() > 0:
 			for i in strands:
@@ -30,18 +26,18 @@ func _physics_process(delta: float) -> void:
 		
 		if bugs.size() > 0:
 			for i in bugs:
-				i.Damage(GameManager.strength)
+				i.Damage(delta * GameManager.damage)
 		
 		var movement_vector = Vector2(Input.get_axis("Move Left", "Move Right"), Input.get_axis("Move Up", "Move Down"))
 		
 		if is_sprinting:
-			if GameManager.stamina > GameManager.stamina_sprint_rate:
-				GameManager.Stamina(-0.1 * GameManager.stamina_sprint_rate)
+			if GameManager.stamina > GameManager.stamina_sprint_cost:
+				GameManager.Stamina(-delta * GameManager.stamina_sprint_cost)
 				speed = GameManager.sprint
 			else:
 				speed = GameManager.move
 				
-		position += movement_vector * speed
+		position += movement_vector * speed * GameManager.speed_mod
 		
 		# Path follow movement-ish
 		#if movement_vector.x > 0 and path:

@@ -1,28 +1,51 @@
 extends Node2D
 
+# Hunger
 var hunger_max : float = 100.0
 var hunger : float = 100.0
 var hunger_drain_rate : float = 1.0
+var hunger_gain_mod : float = 1.0
 
+# Stamina
 var stamina_max : float = 100.0
 var stamina : float = 100.0
 var stamina_shot_cost : float = 10.0
 var stamina_regen : float = 1.0
-var stamina_sprint_rate : float = 1.0
+var stamina_sprint_cost : float = 5.0
 
+# Attributes
+var strength : int = 0
+var dex : int = 0
+var intel : int = 0
+
+# Stat values
 var score : int = 0
 var move : float = 2.0
 var sprint : float = 3.0
+var speed_mod : float = 1.0
 var web_speed : float = 1.0
 var spawn_time : float = 3.0
-var strength : float = 1.0
+var damage : float = 50.0
+var struggle_mod : float = 1.0
 
+# Level tracking
+var xp : int = 0
+var xp_mod : float = 1.0
+var level : int = 1
+var attribute_points : int = 0
+const level_thresholds : Array[int] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+
+# Status bools
 var is_paused : bool = false
 var is_ended : bool = false
 
+# Signals
 signal score_changed(amount : int)
+signal stats_changed()
 signal hunger_changed()
 signal stamina_changed()
+signal xp_changed(amount : int)
+signal leveled_up()
 signal game_ended()
 signal game_started()
 signal game_paused()
@@ -31,10 +54,6 @@ signal game_resumed()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func Score(amount : int):
 	score += amount
@@ -61,6 +80,18 @@ func End():
 func Quit():
 	get_tree().quit()
 
+func XP(amount : int):
+	xp += amount * xp_mod
+	xp_changed.emit(amount * xp_mod)
+	
+	if xp >= level_thresholds[level]:
+		xp -= level_thresholds[level]
+		attribute_points += 1
+		level += 1
+		leveled_up.emit()
+		xp_changed.emit(level_thresholds[level])
+		stats_changed.emit()
+
 func Stamina(amount : float):
 	stamina += amount
 	stamina_changed.emit()
@@ -72,7 +103,7 @@ func Stamina(amount : float):
 		stamina = 0
 
 func Hunger(amount : float):
-	hunger += amount
+	hunger += amount * hunger_gain_mod
 	hunger_changed.emit()
 	
 	if hunger > hunger_max:
@@ -80,3 +111,23 @@ func Hunger(amount : float):
 	elif hunger <= 0:
 		hunger = 0
 		End()
+
+func LevelStrength():
+	attribute_points -= 1
+	strength += 1
+	damage += 5
+	hunger_max += 10
+	stats_changed.emit()
+
+func LevelDexterity():
+	attribute_points -= 1
+	dex += 1
+	speed_mod += 0.05
+	stamina_max += 10
+	stats_changed.emit()
+	
+func LevelIntelligence():
+	attribute_points -= 1
+	intel += 1
+	struggle_mod += 0.05
+	stats_changed.emit()
