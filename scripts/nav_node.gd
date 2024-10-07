@@ -17,12 +17,17 @@ func CreateIntersect(strand : Line2D):
 	
 	strand.AdjustPlacement(self, a)
 	
-	print("Creating a new intersection between %s and %s" % [a, b])
-	
-	var new_strand = GameManager.NewStrand()
-	new_strand.collider.shape = RectangleShape2D.new()
-	new_strand.glob.queue_free()
-	new_strand.AdjustPlacement(self, b)
+	#print("Creating a new intersection between %s and %s" % [a, b])
+	print("Checking on %s" % strand.name)
+	if strand.get_meta("type") == "post":
+		var new_post = GameManager.NewPost()
+		new_post.collider.shape = RectangleShape2D.new()
+		new_post.AdjustPlacement(self, b)
+	else:
+		var new_strand = GameManager.NewStrand()
+		new_strand.collider.shape = RectangleShape2D.new()
+		new_strand.glob.queue_free()
+		new_strand.AdjustPlacement(self, b)
 	
 	strand.ReassignBugs()
 
@@ -74,10 +79,10 @@ func InLine(a : Node2D, b: Node2D) -> bool:
 	
 	#print ("%s differs by %s" % [self, dif])
 	if dif.x < 0.05 and dif.y < 0.05:
-		#print("STRAIGHT LINE")
+		print("%s is a STRAIGHT LINE" % self.name)
 		return true
 	else:
-		#print("CURVY BITCH")
+		print("%s is a CURVY BITCH" % self.name)
 		return false
 		
 func SendDirection(input_dir : Vector2, start : Vector2) -> Vector2:

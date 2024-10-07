@@ -16,6 +16,7 @@ var navigation_node : Area2D
 @export var starting_strand : Line2D
 @export var nav_controller : Area2D
 @export var joystick_target : Node2D
+@export var anim : AnimatedSprite2D
 var joystick_web_lock : bool = false
 var target_location : Vector2
 var start_location : Vector2
@@ -28,7 +29,6 @@ func _ready() -> void:
 	GameManager.web = web
 	GameManager.controller = self
 	current_strand = starting_strand
-	current_strand.broken.connect(SafePlace)
 
 func _physics_process(delta: float) -> void:
 	if !GameManager.is_ended:
@@ -63,8 +63,14 @@ func _physics_process(delta: float) -> void:
 			if movement_vector != Vector2.ZERO:
 				if MovingToward(movement_vector, target_location):
 					global_position = global_position.move_toward(target_location, speed)
+					anim.look_at(target_location)
+					anim.play()
 				elif MovingToward(movement_vector, start_location):
 					global_position = global_position.move_toward(start_location, speed)
+					anim.look_at(start_location)
+					anim.play()
+				else:
+					anim.stop()
 				
 				if navigation_node:
 					var new_direction = navigation_node.SendDirection(movement_vector, global_position)
@@ -73,6 +79,8 @@ func _physics_process(delta: float) -> void:
 						target_location = new_direction
 						#global_position = navigation_node.global_position
 						#print("Updating direction to %s" % target_location)
+			else:
+				anim.stop()
 			#position += movement_vector * speed * GameManager.speed_mod
 		
 
@@ -124,6 +132,7 @@ func ShotWeb(target : Vector2):
 		new_strand.completed_firing.connect(EndStrand)
 		if !navigation_node:
 			new_strand.node_a.CreateIntersect(GetCurrentStrand())
+		navigation_node = new_strand.node_a
 	
 	else:
 		# Do error feedback here
@@ -160,25 +169,33 @@ func ChangeCurrentStrand(new_strand : Line2D):
 	current_strand = new_strand
 	current_strand.broken.connect(SafePlace)
 
-func SafePlace():
-	var target : Vector2
-	
-	if global_position.distance_squared_to(target_location) < global_position.distance_squared_to(start_location):
-		target = target_location
-	else:
-		target = start_location
-	
-	# Animate to safety
-	var tween = create_tween()
-	tween.tween_property(self, "global_position", target, 0.25)
-	lock_movement = true
-	await get_tree().create_timer(0.3).timeout
-	
-	# Assign new movement variables
+func SafePlace(check : Line2D):
 	current_strand = GetCurrentStrand()
-	start_location = current_strand.node_a.global_position
-	target_location = current_strand.node_b.global_position
-	lock_movement = false
+	
+	if check == current_strand:
+		var target : Vector2
+		if current_strand.node_a.directions.size() <= 1:
+			target = current_strand.node_b.global_position
+		elif current_strand.node_b.directions.size() <= 1:
+			target = current_strand.node_a.global_position
+		else:
+		# Get closer point
+			if global_position.distance_squared_to(target_location) < global_position.distance_squared_to(start_location):
+				target = target_location
+			else:
+				target = start_location
+		
+		# Animate to safety
+		var tween = create_tween()
+		tween.tween_property(self, "global_position", target, 0.25)
+		lock_movement = true
+		await get_tree().create_timer(0.3).timeout
+		
+		# Assign new movement variables
+		current_strand = GetCurrentStrand()
+		start_location = current_strand.node_a.global_position
+		target_location = current_strand.node_b.global_position
+		lock_movement = false
 
 func GetCurrentStrand() -> Line2D:
 	var stored = nav_controller.get_overlapping_areas()

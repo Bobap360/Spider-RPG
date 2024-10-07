@@ -2,6 +2,7 @@ extends Node2D
 
 const strand : PackedScene = preload("res://fabs/strand.tscn")
 const nav_node : PackedScene = preload("res://fabs/nav_node.tscn")
+const post : PackedScene = preload("res://fabs/strand_hidden.tscn")
 
 # Defaults
 const hunger_default : float = 100.0
@@ -205,3 +206,8 @@ func NewStrand() -> Line2D:
 	var new_strand = strand.instantiate()
 	web.add_child(new_strand, true)
 	return new_strand
+
+func NewPost() -> Line2D:
+	var new_post = post.instantiate()
+	web.add_child(new_post, true)
+	return new_post

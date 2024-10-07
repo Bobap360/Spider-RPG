@@ -8,8 +8,6 @@ extends Line2D
 var bugs : Array[Node2D] = []
 var can_stop : bool = true
 
-signal broken()
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#global_position = Vector2.ZERO

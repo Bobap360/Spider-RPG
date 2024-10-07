@@ -11,7 +11,8 @@ func _ready() -> void:
 func _on_area_entered(area: Area2D) -> void:
 		if area.has_meta("type"):
 			# Checks against self collision and valid "Stop" objects
-			if area.get_meta("type") == "web" and area != strand.web_area:
-				print("Firing End")
-				strand.End(area.get_parent())
-				queue_free()
+			if area != strand.web_area:
+				if area.collision_layer == 16 or area.collision_layer == 4:
+					print("Firing End")
+					strand.End(area.get_parent())
+					queue_free()

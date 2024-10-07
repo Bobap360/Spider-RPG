@@ -1,9 +1,10 @@
-[gd_scene load_steps=32 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=37 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
 [ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="2_u87pv"]
 [ext_resource type="Texture2D" uid="uid://ohvnyjaj062o" path="res://art/targeting_reticle_x.png" id="3_3i7vn"]
+[ext_resource type="Texture2D" uid="uid://b44wceu8eg6q3" path="res://art/spider_sheet_rotated.png" id="4_6spi2"]
 [ext_resource type="PackedScene" uid="uid://dfi3myqmhmjws" path="res://fabs/nav_node.tscn" id="5_3c7bo"]
 [ext_resource type="PackedScene" uid="uid://c18mxe7k8ojk0" path="res://fabs/post.tscn" id="5_6pqxp"]
 [ext_resource type="Script" path="res://scripts/bug_manager.gd" id="5_oxs3t"]
@@ -20,17 +21,47 @@
 [ext_resource type="Texture2D" uid="uid://iwk38pgw73os" path="res://art/spider_dead.png" id="17_p1asq"]
 [ext_resource type="Texture2D" uid="uid://be8sc2c0mtmee" path="res://art/drop_shadow.png" id="18_wsfvt"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_s51p0"]
+atlas = ExtResource("4_6spi2")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0y307"]
+atlas = ExtResource("4_6spi2")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4qwy"]
+atlas = ExtResource("4_6spi2")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0csr"]
+atlas = ExtResource("4_6spi2")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tcvah"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s51p0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0y307")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g4qwy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w0csr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_icybq"]
 radius = 23.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yvbpu"]
 radius = 5.0
-
-[sub_resource type="Curve2D" id="Curve2D_gp3s6"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 473, 940, 0, 0, 0, 0, 475, 137)
-}
-point_count = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6o2lh"]
 radius = 390.0
@@ -95,7 +126,7 @@ border_blend = true
 
 [node name="existence" type="Node2D"]
 
-[node name="player_spider" type="Node2D" parent="." node_paths=PackedStringArray("web", "intersections", "starting_strand", "nav_controller", "joystick_target")]
+[node name="player_spider" type="Node2D" parent="." node_paths=PackedStringArray("web", "intersections", "starting_strand", "nav_controller", "joystick_target", "anim")]
 z_index = 50
 position = Vector2(473, 940)
 script = ExtResource("1_pvme1")
@@ -105,6 +136,7 @@ intersections = NodePath("../web/intersections")
 starting_strand = NodePath("../web/strands/post_left")
 nav_controller = NodePath("spider_nav")
 joystick_target = NodePath("joystick_targeting")
+anim = NodePath("spider_animation")
 
 [node name="joystick_targeting" type="Node2D" parent="player_spider"]
 
@@ -112,7 +144,16 @@ joystick_target = NodePath("joystick_targeting")
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("3_3i7vn")
 
+[node name="spider_animation" type="AnimatedSprite2D" parent="player_spider"]
+self_modulate = Color(0.0980392, 0.0980392, 0.0980392, 1)
+position = Vector2(0, -1)
+rotation = 1.5708
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_tcvah")
+frame_progress = 0.311888
+
 [node name="spider_sprite" type="Sprite2D" parent="player_spider"]
+visible = false
 self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_u87pv")
@@ -134,14 +175,6 @@ collision_mask = 52
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player_spider/spider_nav"]
 shape = SubResource("CircleShape2D_yvbpu")
 metadata/type = "nav"
-
-[node name="Path2D" type="Path2D" parent="."]
-curve = SubResource("Curve2D_gp3s6")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-position = Vector2(473, 940)
-rotates = false
-loop = false
 
 [node name="sky" type="Polygon2D" parent="."]
 z_index = -100
@@ -178,15 +211,19 @@ polygon = PackedVector2Array(-241, -610, -239, 610, 42, 607, 42, -609)
 
 [node name="nav_node" parent="web/intersections" instance=ExtResource("5_3c7bo")]
 position = Vector2(475, 131)
+monitorable = true
 
 [node name="nav_node2" parent="web/intersections" instance=ExtResource("5_3c7bo")]
 position = Vector2(1445, 133)
+monitorable = true
 
 [node name="nav_node3" parent="web/intersections" instance=ExtResource("5_3c7bo")]
 position = Vector2(1444, 951)
+monitorable = true
 
 [node name="nav_node4" parent="web/intersections" instance=ExtResource("5_3c7bo")]
 position = Vector2(473, 948)
+monitorable = true
 
 [node name="strands" type="Node2D" parent="web"]
 
@@ -235,7 +272,6 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="fade" type="Panel" parent="CanvasLayer/hud"]
-visible = false
 z_index = 5
 layout_mode = 1
 anchors_preset = 15
@@ -248,7 +284,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_tsdmm")
 
 [node name="pause_container" type="Control" parent="CanvasLayer/hud" node_paths=PackedStringArray("fade", "game_over_screen", "black_screen", "taunt", "end_buttons", "dead_spider")]
 process_mode = 3
-visible = false
 z_index = 10
 layout_mode = 1
 anchors_preset = 8
@@ -446,6 +481,8 @@ size_flags_horizontal = 3
 theme_type_variation = &"StatHeader"
 theme_override_font_sizes/font_size = 22
 text = "Class"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="class_container" type="HBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout"]
 visible = false

@@ -12,7 +12,6 @@ var target : Vector2
 var bugs : Array[Node2D]
 
 signal completed_firing(element : Line2D)
-signal broken()
 
 func _ready() -> void:
 	debug_label.text = str(self.name)
@@ -27,6 +26,7 @@ func Initialize(start : Vector2, new_target : Vector2, existing_nav : Node2D) ->
 		node_a = CreateNav(start)
 	node_b = CreateNav(start)
 	node_a.strands.append(self)
+	node_a.monitorable = true
 	node_b.strands.append(self)
 	target = new_target.normalized()
 	collider.shape = RectangleShape2D.new()
@@ -50,7 +50,6 @@ func Firing():
 func End(source : Line2D):
 	#can_stop = true
 	#call_deferred("CreateNav", node_b.position)
-	node_a.set_deferred("monitorable", true)
 	node_b.set_deferred("monitorable", true)
 	node_a.UpdateDirections()
 	node_b.call_deferred("CreateIntersect", source)
@@ -77,10 +76,9 @@ func Break():
 	for i in bugs:
 		i.FlyAway()
 	# Breaking animation stuff goes here
+	GameManager.controller.SafePlace(self)
 	node_a.Remove(self)
 	node_b.Remove(self)
-	if GameManager.controller.GetCurrentStrand() == self:
-		GameManager.controller.SafePlace()
 	queue_free()
 
 func CreateNav(new_pos : Vector2) -> Node2D:
@@ -95,8 +93,10 @@ func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	node_b = new_b
 	set_points(PackedVector2Array([node_a.position, node_b.position]))
 	UpdateCollider()
-	node_a.strands.append(self)
-	node_b.strands.append(self)
+	if !node_a.strands.has(self):
+		node_a.strands.append(self)
+	if !node_b.strands.has(self):
+		node_b.strands.append(self)
 	node_a.UpdateDirections()
 	node_b.UpdateDirections()
 

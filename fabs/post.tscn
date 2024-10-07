@@ -2,20 +2,23 @@
 
 [ext_resource type="Script" path="res://scripts/post.gd" id="1_4lmus"]
 
-[node name="post_top" type="Line2D" node_paths=PackedStringArray("collider", "debug_label")]
-z_index = 1
+[node name="post" type="Line2D" node_paths=PackedStringArray("collider", "debug_label")]
+z_index = -10
+default_color = Color(0.364706, 0.286275, 0.152941, 1)
 script = ExtResource("1_4lmus")
 collider = NodePath("Area2D/CollisionShape2D")
 debug_label = NodePath("Area2D/CollisionShape2D/Label")
+metadata/type = "post"
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 16
 collision_mask = 22
-metadata/type = "web"
+metadata/type = "post"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 
 [node name="Label" type="Label" parent="Area2D/CollisionShape2D"]
+visible = false
 z_index = 100
 anchors_preset = 8
 anchor_left = 0.5
