@@ -22,7 +22,7 @@ func Spawn(new_pos : Vector2):
 	new_bug.Spawning()
 
 func Cycle():
-	while spawning:
+	while spawning and !GameManager.is_ended:
 		Spawn(PickRandomLocation())
 		#print("Bug Location is at %s" % new_pos)
 		timer.start(delay)

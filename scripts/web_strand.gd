@@ -6,6 +6,7 @@ var node_b : Node2D
 @export var collider : CollisionShape2D
 @export var thickness : float = 10.0
 @export var glob : Node2D
+@export var debug_label : Label
 var target : Vector2
 #var can_stop : bool = false
 var bugs : Array[Node2D]
@@ -13,11 +14,17 @@ var bugs : Array[Node2D]
 signal completed_firing(element : Line2D)
 signal broken()
 
+func _ready() -> void:
+	debug_label.text = str(self.name)
+
 # Fills variables required to operate
-func Initialize(start : Vector2, new_target : Vector2) -> void:
+func Initialize(start : Vector2, new_target : Vector2, existing_nav : Node2D) -> void:
 	#node_a.position = start
 	#node_b.position = start
-	node_a = CreateNav(start)
+	if existing_nav:
+		node_a = existing_nav
+	else:
+		node_a = CreateNav(start)
 	node_b = CreateNav(start)
 	node_a.strands.append(self)
 	node_b.strands.append(self)
@@ -78,6 +85,7 @@ func Break():
 	queue_free()
 
 func CreateNav(new_pos : Vector2) -> Node2D:
+	print("Creating New Nav Node")
 	var new_nav = GameManager.nav_node.instantiate()
 	GameManager.intersections.add_child(new_nav, true)
 	new_nav.position = new_pos
@@ -88,15 +96,19 @@ func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	node_b = new_b
 	set_points(PackedVector2Array([node_a.position, node_b.position]))
 	UpdateCollider()
+	node_a.strands.append(self)
+	node_b.strands.append(self)
+	node_a.SetNav()
+	node_b.SetNav()
 
 func ReassignBugs():
 	if bugs.size() > 0:
-		print("Reassigning bugs")
+		#print("Reassigning bugs")
 		
 		var list : Array[Node2D]
 		list.assign(bugs)
 		bugs.clear()
 		
 		for i in list:
-			print("Checking")
+			#print("Checking")
 			i.CheckWeb()

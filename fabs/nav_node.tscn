@@ -3,14 +3,31 @@
 [ext_resource type="Script" path="res://scripts/nav_node.gd" id="1_5c4xc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hrbxm"]
-radius = 20.0
 
-[node name="nav_node" type="Area2D"]
+[node name="nav_node" type="Area2D" node_paths=PackedStringArray("debug_label")]
 collision_layer = 32
 collision_mask = 36
-monitorable = false
 script = ExtResource("1_5c4xc")
+debug_label = NodePath("CollisionShape2D/Label")
 metadata/type = "nav"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hrbxm")
+
+[node name="Label" type="Label" parent="CollisionShape2D"]
+visible = false
+z_index = 100
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"DebugLabel"
+horizontal_alignment = 1
+vertical_alignment = 1

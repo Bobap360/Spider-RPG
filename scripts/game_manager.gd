@@ -79,8 +79,9 @@ func Pause():
 	game_paused.emit()
 
 func End():
-	is_ended = true
-	print("You died")
+	if !is_ended:
+		is_ended = true
+		print("You died")
 	game_ended.emit()
 
 func Quit():

@@ -14,6 +14,7 @@ var navigation_node : Area2D
 @export var web : Node2D
 @export var intersections : Node2D
 @export var starting_strand : Line2D
+@export var nav_controller : Area2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -64,48 +65,52 @@ func _physics_process(delta: float) -> void:
 				#path.progress -= speed
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("Sprint"):
-		speed = GameManager.sprint
-		is_sprinting = true
+	if event.is_action_pressed("Game Over"):
+		GameManager.End()
 		
-	if event.is_action_released("Sprint"):
-		speed = GameManager.move
-		is_sprinting = false
+	if !GameManager.is_ended:
+		if event.is_action_pressed("Sprint"):
+			speed = GameManager.sprint
+			is_sprinting = true
+			
+		if event.is_action_released("Sprint"):
+			speed = GameManager.move
+			is_sprinting = false
+			
+		if event.is_action_released("Fire"):
+			ShotWeb(get_global_mouse_position())
 		
-	if event.is_action_released("Fire"):
-		ShotWeb(get_global_mouse_position())
-	
-	if event.is_action_pressed("Cheat Level"):
-		GameManager.XP(GameManager.level_threshold)
-	
-	if navigation_node:
-		if event.is_action_pressed("Move Up"):
-			if navigation_node.nav_up:
-				ChangeCurrentStrand(navigation_node.nav_up.strand)
-				SetNewCurve(navigation_node.nav_up.target)
-				pos_input = Vector2.UP
-				#print("Go up: %s" % pos_input)
-			
-		if event.is_action_pressed("Move Down"):
-			if navigation_node.nav_down:
-				ChangeCurrentStrand(navigation_node.nav_down.strand)
-				SetNewCurve(navigation_node.nav_down.target)
-				pos_input = Vector2.DOWN
-				#print("Go down: %s" % pos_input)
-			
-		if event.is_action_pressed("Move Left"):
-			if navigation_node.nav_left:
-				ChangeCurrentStrand(navigation_node.nav_left.strand)
-				SetNewCurve(navigation_node.nav_left.target)
-				pos_input = Vector2.LEFT
-				#print("Go left: %s" % pos_input)
-			
-		if event.is_action_pressed("Move Right"):
-			if navigation_node.nav_right:
-				ChangeCurrentStrand(navigation_node.nav_right.strand)
-				SetNewCurve(navigation_node.nav_right.target)
-				pos_input = Vector2.RIGHT
-				#print("Go right: %s" % pos_input)
+		if event.is_action_pressed("Cheat Level"):
+			GameManager.XP(GameManager.level_threshold)
+		
+		if navigation_node:
+			if event.is_action_pressed("Move Up"):
+				if navigation_node.nav_up.strand:
+					ChangeCurrentStrand(navigation_node.nav_up.strand)
+					SetNewCurve(navigation_node.nav_up.target)
+					pos_input = Vector2.UP
+					#print("Go up: %s" % pos_input)
+				
+			if event.is_action_pressed("Move Down"):
+				if navigation_node.nav_down.strand:
+					ChangeCurrentStrand(navigation_node.nav_down.strand)
+					SetNewCurve(navigation_node.nav_down.target)
+					pos_input = Vector2.DOWN
+					#print("Go down: %s" % pos_input)
+				
+			if event.is_action_pressed("Move Left"):
+				if navigation_node.nav_left.strand:
+					ChangeCurrentStrand(navigation_node.nav_left.strand)
+					SetNewCurve(navigation_node.nav_left.target)
+					pos_input = Vector2.LEFT
+					#print("Go left: %s" % pos_input)
+				
+			if event.is_action_pressed("Move Right"):
+				if navigation_node.nav_right.strand:
+					ChangeCurrentStrand(navigation_node.nav_right.strand)
+					SetNewCurve(navigation_node.nav_right.target)
+					pos_input = Vector2.RIGHT
+					#print("Go right: %s" % pos_input)
 		
 
 func ShotWeb(target : Vector2):
@@ -115,10 +120,11 @@ func ShotWeb(target : Vector2):
 		var new_strand = GameManager.strand.instantiate()
 		web.add_child(new_strand, true)
 		#print("Drawing line from %s to %s" % [global_position, target])
-		new_strand.Initialize(global_position, direction)
+		new_strand.Initialize(global_position, direction, navigation_node)
 		strands.append(new_strand)
 		new_strand.completed_firing.connect(EndStrand)
-		new_strand.node_a.CreateIntersect(current_strand)
+		if !navigation_node:
+			new_strand.node_a.CreateIntersect(GetCurrentStrand())
 	
 	else:
 		# Do error feedback here
@@ -140,12 +146,14 @@ func on_area_exited(area : Area2D):
 					bugs.erase(new_bug)
 
 func on_nav_entered(area : Area2D):
-	navigation_node = area
-	print("Navigation located")
+	if area.collision_layer == 32:
+		navigation_node = area
+		print("Navigation located")
 
 func on_nav_exited(area : Area2D):
-	if navigation_node == area:
-		navigation_node = null
+	if area.collision_layer == 32:
+		if navigation_node == area:
+			navigation_node = null
 
 func StartCurve():
 	var new_curve : Curve2D = curve
@@ -177,3 +185,13 @@ func SafePlace():
 	path.progress_ratio = roundf(path.progress_ratio)
 	print("Moving to safety from %s to %s" % [stored, path.progress_ratio])
 	curve.clear_points()
+
+func GetCurrentStrand() -> Line2D:
+	var stored = nav_controller.get_overlapping_areas()
+	var overlaps : Array[Area2D]
+	for i in stored:
+		#print("Collision layer is %s" % i.collision_layer)
+		if i.collision_layer == 4 or i.collision_layer == 16:
+			overlaps.append(i)
+			
+	return overlaps[0].get_parent()

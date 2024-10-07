@@ -1,10 +1,10 @@
-[gd_scene load_steps=30 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=31 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
 [ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="2_u87pv"]
-[ext_resource type="Script" path="res://scripts/post.gd" id="4_rw33u"]
 [ext_resource type="PackedScene" uid="uid://dfi3myqmhmjws" path="res://fabs/nav_node.tscn" id="5_3c7bo"]
+[ext_resource type="PackedScene" uid="uid://c18mxe7k8ojk0" path="res://fabs/post.tscn" id="5_6pqxp"]
 [ext_resource type="Script" path="res://scripts/bug_manager.gd" id="5_oxs3t"]
 [ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="6_ejmxh"]
 [ext_resource type="Script" path="res://scripts/ui/hunger_bar.gd" id="7_4fqci"]
@@ -15,6 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://bplttmxn1o2s3" path="res://art/spider_menu_eyes.png" id="12_bvxt0"]
 [ext_resource type="Script" path="res://scripts/ui/xp_bar.gd" id="13_r8ng5"]
 [ext_resource type="Script" path="res://scripts/ui/upgrade_button.gd" id="14_j206p"]
+[ext_resource type="FontFile" uid="uid://ibotlu8uj75v" path="res://fonts/EBGaramond-VariableFont_wght.ttf" id="16_eiq8f"]
+[ext_resource type="Texture2D" uid="uid://iwk38pgw73os" path="res://art/spider_dead.png" id="17_p1asq"]
+[ext_resource type="Texture2D" uid="uid://be8sc2c0mtmee" path="res://art/drop_shadow.png" id="18_wsfvt"]
 
 [sub_resource type="Curve2D" id="Curve2D_gp3s6"]
 _data = {
@@ -27,14 +30,6 @@ radius = 23.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yvbpu"]
 radius = 5.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qu461"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ku2h0"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tx3aq"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_go5ev"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6o2lh"]
 radius = 390.0
@@ -87,6 +82,16 @@ corner_radius_bottom_left = 5
 shadow_size = 2
 shadow_offset = Vector2(2, 2)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7x0vr"]
+bg_color = Color(0.0588235, 0.0588235, 0.0588235, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aeeu1"]
+bg_color = Color(0.0588235, 0.0588235, 0.0588235, 0.921569)
+border_width_top = 50
+border_width_bottom = 50
+border_color = Color(0.0588235, 0.0588235, 0.0588235, 0)
+border_blend = true
+
 [node name="existence" type="Node2D"]
 
 [node name="Path2D" type="Path2D" parent="."]
@@ -97,13 +102,14 @@ position = Vector2(473, 940)
 rotates = false
 loop = false
 
-[node name="player_spider" type="Node2D" parent="Path2D/PathFollow2D" node_paths=PackedStringArray("web", "intersections", "starting_strand")]
+[node name="player_spider" type="Node2D" parent="Path2D/PathFollow2D" node_paths=PackedStringArray("web", "intersections", "starting_strand", "nav_controller")]
 z_index = 50
 script = ExtResource("1_pvme1")
 web_strand = ExtResource("2_7m7h1")
 web = NodePath("../../../web/strands")
 intersections = NodePath("../../../web/intersections")
 starting_strand = NodePath("../../../web/strands/post_left")
+nav_controller = NodePath("spider_nav")
 
 [node name="spider_sprite" type="Sprite2D" parent="Path2D/PathFollow2D/player_spider"]
 self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
@@ -122,7 +128,7 @@ shape = SubResource("CircleShape2D_icybq")
 
 [node name="spider_nav" type="Area2D" parent="Path2D/PathFollow2D/player_spider"]
 collision_layer = 32
-collision_mask = 32
+collision_mask = 52
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/player_spider/spider_nav"]
 shape = SubResource("CircleShape2D_yvbpu")
@@ -175,65 +181,21 @@ position = Vector2(473, 948)
 
 [node name="strands" type="Node2D" parent="web"]
 
-[node name="post_top" type="Line2D" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b", "collider")]
-z_index = 1
-script = ExtResource("4_rw33u")
+[node name="post_top" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
 node_a = NodePath("../../intersections/nav_node")
 node_b = NodePath("../../intersections/nav_node2")
-collider = NodePath("Area2D/CollisionShape2D")
 
-[node name="Area2D" type="Area2D" parent="web/strands/post_top"]
-collision_layer = 16
-collision_mask = 22
-metadata/type = "web"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="web/strands/post_top/Area2D"]
-shape = SubResource("RectangleShape2D_qu461")
-
-[node name="post_right" type="Line2D" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b", "collider")]
-z_index = 1
-script = ExtResource("4_rw33u")
+[node name="post_right" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
 node_a = NodePath("../../intersections/nav_node2")
 node_b = NodePath("../../intersections/nav_node3")
-collider = NodePath("Area2D/CollisionShape2D")
 
-[node name="Area2D" type="Area2D" parent="web/strands/post_right"]
-collision_layer = 16
-collision_mask = 22
-metadata/type = "web"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="web/strands/post_right/Area2D"]
-shape = SubResource("RectangleShape2D_ku2h0")
-
-[node name="post_bottom" type="Line2D" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b", "collider")]
-z_index = 1
-script = ExtResource("4_rw33u")
+[node name="post_down" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
 node_a = NodePath("../../intersections/nav_node3")
 node_b = NodePath("../../intersections/nav_node4")
-collider = NodePath("Area2D/CollisionShape2D")
 
-[node name="Area2D" type="Area2D" parent="web/strands/post_bottom"]
-collision_layer = 16
-collision_mask = 22
-metadata/type = "web"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="web/strands/post_bottom/Area2D"]
-shape = SubResource("RectangleShape2D_tx3aq")
-
-[node name="post_left" type="Line2D" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b", "collider")]
-z_index = 1
-script = ExtResource("4_rw33u")
+[node name="post_left" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
 node_a = NodePath("../../intersections/nav_node4")
 node_b = NodePath("../../intersections/nav_node")
-collider = NodePath("Area2D/CollisionShape2D")
-
-[node name="Area2D" type="Area2D" parent="web/strands/post_left"]
-collision_layer = 16
-collision_mask = 22
-metadata/type = "web"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="web/strands/post_left/Area2D"]
-shape = SubResource("RectangleShape2D_go5ev")
 
 [node name="bugstuff" type="Node2D" parent="."]
 
@@ -275,7 +237,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tsdmm")
 
-[node name="pause_container" type="Control" parent="CanvasLayer/hud" node_paths=PackedStringArray("fade")]
+[node name="pause_container" type="Control" parent="CanvasLayer/hud" node_paths=PackedStringArray("fade", "game_over_screen", "black_screen", "taunt", "end_buttons", "dead_spider")]
 process_mode = 3
 visible = false
 z_index = 10
@@ -294,6 +256,11 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("9_d5te7")
 fade = NodePath("../fade")
+game_over_screen = NodePath("../game_over_screen")
+black_screen = NodePath("../game_over_screen/full_black")
+taunt = NodePath("../game_over_screen/background")
+end_buttons = NodePath("../game_over_screen/buttons")
+dead_spider = NodePath("../game_over_screen/spider")
 
 [node name="web" type="Panel" parent="CanvasLayer/hud/pause_container"]
 layout_mode = 1
@@ -998,6 +965,185 @@ theme_type_variation = &"BasicHeader"
 theme_override_font_sizes/font_size = 16
 text = "%"
 
+[node name="game_over_screen" type="Control" parent="CanvasLayer/hud"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="full_black" type="Panel" parent="CanvasLayer/hud/game_over_screen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7x0vr")
+
+[node name="spider" type="TextureRect" parent="CanvasLayer/hud/game_over_screen"]
+self_modulate = Color(0, 0, 0, 1)
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -14.0
+offset_right = 249.0
+offset_bottom = 342.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("17_p1asq")
+
+[node name="drop" type="TextureRect" parent="CanvasLayer/hud/game_over_screen/spider"]
+self_modulate = Color(0.0980392, 0.0980392, 0.0980392, 1)
+z_index = -1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -442.0
+offset_top = -94.6667
+offset_right = 451.0
+offset_bottom = 225.333
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_wsfvt")
+
+[node name="buttons" type="HBoxContainer" parent="CanvasLayer/hud/game_over_screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -314.5
+offset_top = 286.0
+offset_right = 314.5
+offset_bottom = 326.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 300
+alignment = 1
+
+[node name="align_left" type="Control" parent="CanvasLayer/hud/game_over_screen/buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="btn_hide" type="Button" parent="CanvasLayer/hud/game_over_screen/buttons/align_left"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -71.5
+offset_top = -20.0
+offset_right = 71.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"TextButton"
+theme_override_colors/font_hover_color = Color(0, 0.605905, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.352941, 0, 1)
+theme_override_fonts/font = ExtResource("16_eiq8f")
+theme_override_font_sizes/font_size = 38
+text = "SHOW WEB"
+
+[node name="align_center" type="Control" parent="CanvasLayer/hud/game_over_screen/buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="btn_retry" type="Button" parent="CanvasLayer/hud/game_over_screen/buttons/align_center"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"TextButton"
+theme_override_colors/font_hover_color = Color(0.890805, 0.689483, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.623626, 0.479175, 5.77569e-07, 1)
+theme_override_fonts/font = ExtResource("16_eiq8f")
+theme_override_font_sizes/font_size = 38
+text = "RETRY"
+
+[node name="align_right" type="Control" parent="CanvasLayer/hud/game_over_screen/buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="btn_quit" type="Button" parent="CanvasLayer/hud/game_over_screen/buttons/align_right"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.5
+offset_top = -20.0
+offset_right = 30.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"TextButton"
+theme_override_colors/font_hover_color = Color(0.679014, 8.30255e-06, 4.62055e-06, 1)
+theme_override_colors/font_pressed_color = Color(0.410327, 5.83585e-07, 1.44392e-07, 1)
+theme_override_fonts/font = ExtResource("16_eiq8f")
+theme_override_font_sizes/font_size = 38
+text = "QUIT"
+
+[node name="background" type="Panel" parent="CanvasLayer/hud/game_over_screen"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -201.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aeeu1")
+
+[node name="taunt" type="Label" parent="CanvasLayer/hud/game_over_screen/background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -187.0
+offset_top = -72.0
+offset_right = 187.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 1.3)
+theme_type_variation = &"BasicHeader"
+theme_override_colors/font_color = Color(0.618933, 1.73271e-06, 3.85046e-07, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("16_eiq8f")
+theme_override_font_sizes/font_size = 80
+text = "YOU DIED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="area_entered" from="Path2D/PathFollow2D/player_spider/spider_body" to="Path2D/PathFollow2D/player_spider" method="on_area_entered"]
 [connection signal="area_exited" from="Path2D/PathFollow2D/player_spider/spider_body" to="Path2D/PathFollow2D/player_spider" method="on_area_exited"]
 [connection signal="area_entered" from="Path2D/PathFollow2D/player_spider/spider_nav" to="Path2D/PathFollow2D/player_spider" method="on_nav_entered"]
@@ -1019,3 +1165,6 @@ text = "%"
 [connection signal="mouse_entered" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" method="_on_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout" method="Intel"]
+[connection signal="pressed" from="CanvasLayer/hud/game_over_screen/buttons/align_left/btn_hide" to="CanvasLayer/hud/pause_container" method="PostGame"]
+[connection signal="pressed" from="CanvasLayer/hud/game_over_screen/buttons/align_center/btn_retry" to="CanvasLayer/hud/pause_container" method="Reload"]
+[connection signal="pressed" from="CanvasLayer/hud/game_over_screen/buttons/align_right/btn_quit" to="CanvasLayer/hud/pause_container" method="Quit"]

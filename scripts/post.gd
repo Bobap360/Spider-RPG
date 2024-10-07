@@ -4,6 +4,7 @@ extends Line2D
 @export var node_b : Node2D
 @export var collider : CollisionShape2D
 @export var thickness : float = 10
+@export var debug_label : Label
 var bugs : Array[Node2D] = []
 var can_stop : bool = true
 
@@ -14,9 +15,15 @@ func _ready() -> void:
 	#global_position = Vector2.ZERO
 	#print("From %s to %s" % [node_a.global_position, node_b.global_position])
 	set_points(PackedVector2Array([node_a.global_position, node_b.global_position]))
-	UpdateCollider()
 	node_a.strands.append(self)
 	node_b.strands.append(self)
+	print("Adding %s to %s and %s" % [self.name, node_a.name, node_b.name])
+	debug_label.text = str(self.name)
+	
+	collider.shape = RectangleShape2D.new()
+	UpdateCollider()
+	node_a.SetNav()
+	node_b.SetNav()
 
 # Sizes the collider to match the path
 func UpdateCollider() -> void:
@@ -31,6 +38,10 @@ func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	node_b = new_b
 	set_points(PackedVector2Array([node_a.position, node_b.position]))
 	UpdateCollider()
+	node_a.strands.append(self)
+	node_b.strands.append(self)
+	node_a.SetNav()
+	node_b.SetNav()
 
 func Vanish():
 	# Breaking animation stuff goes here
