@@ -21,6 +21,7 @@ var joystick_web_lock : bool = false
 var target_location : Vector2
 var start_location : Vector2
 var lock_movement : bool = false
+var is_attacking : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -40,8 +41,12 @@ func _physics_process(delta: float) -> void:
 				i.Firing()
 		
 		if bugs.size() > 0:
+			is_attacking = true
+			anim.play("attack")
 			for i in bugs:
 				i.Damage(delta * GameManager.damage)
+		else:
+			is_attacking = false
 		
 		if !lock_movement:
 			var movement_vector = Vector2(Input.get_axis("Move Left", "Move Right"), Input.get_axis("Move Up", "Move Down"))
@@ -64,13 +69,14 @@ func _physics_process(delta: float) -> void:
 				if MovingToward(movement_vector, target_location):
 					global_position = global_position.move_toward(target_location, speed)
 					anim.look_at(target_location)
-					anim.play()
+					anim.play("move")
 				elif MovingToward(movement_vector, start_location):
 					global_position = global_position.move_toward(start_location, speed)
 					anim.look_at(start_location)
-					anim.play()
+					anim.play("move")
 				else:
-					anim.stop()
+					if !is_attacking:
+						anim.stop()
 				
 				if navigation_node:
 					var new_direction = navigation_node.SendDirection(movement_vector, global_position)
@@ -80,7 +86,8 @@ func _physics_process(delta: float) -> void:
 						#global_position = navigation_node.global_position
 						#print("Updating direction to %s" % target_location)
 			else:
-				anim.stop()
+				if !is_attacking:
+					anim.stop()
 			#position += movement_vector * speed * GameManager.speed_mod
 		
 

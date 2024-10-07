@@ -12,6 +12,7 @@ extends Node2D
 @export var art : Sprite2D
 @export var health_bar : ProgressBar
 @export var struggle_bar : ProgressBar
+@export var anim : AnimatedSprite2D
 
 var strand : Node2D
 var caught = false
@@ -23,6 +24,7 @@ func _ready() -> void:
 	health_bar.value = health
 	health_bar.visible = false
 	struggle_bar.visible = false
+	anim.play()
 
 func Spawning() -> void:
 	#var step : float = 1.0/24.0
@@ -37,10 +39,10 @@ func Spawning() -> void:
 		#timer.start(step)
 		#await timer.timeout
 	var tween = create_tween()
-	tween.tween_property(indicator, "scale", art.scale/2, GameManager.spawn_time * spawn_rate)
+	tween.tween_property(indicator, "scale", Vector2(0.03,0.03), GameManager.spawn_time * spawn_rate)
 	await tween.finished
 	
-	art.visible = true
+	anim.visible = true
 	indicator.visible = false
 	FlyThrough()
 
@@ -51,6 +53,7 @@ func Struggle():
 		#timer.start(struggle_delay)
 		#await timer.timeout
 	struggle_bar.visible = true
+	anim.play("default", 0.5)
 	var struggle_anim = create_tween()
 	var dist = 1.0
 	var step = 0.25
@@ -68,13 +71,14 @@ func Struggle():
 	for i in 20:
 		dist += step
 		
-		struggle_anim.tween_property(art, "position", Vector2(randf_range(-dist, dist), randf_range(-dist, dist)), delay/20)
+		struggle_anim.tween_property(anim, "position", Vector2(randf_range(-dist, dist), randf_range(-dist, dist)), delay/20)
 		
 	var tween = create_tween()
 	tween.tween_property(struggle_bar, "value", struggle_bar.max_value, delay)
 	await tween.finished
 	if caught:
 		FlyAway()
+		anim.play("default", 1.0)
 		
 		if is_instance_valid(strand):
 			strand.Break()
@@ -113,8 +117,8 @@ func FlyAway() -> void:
 
 func FlyThrough() -> void:
 	var fade_in = create_tween()
-	fade_in.tween_property(art, "self_modulate", Color(0.216, 0.216, 0.216, 1), 1.0)
-	fade_in.parallel().tween_property(art, "scale", art.scale * 0.5, 1.0)
+	fade_in.tween_property(anim, "self_modulate", Color(1, 1, 1, 1), 1.0)
+	fade_in.parallel().tween_property(anim, "scale", anim.scale * 0.5, 1.0)
 	await fade_in.finished
 	fade_in.stop()
 	
@@ -126,8 +130,8 @@ func FlyThrough() -> void:
 		# Appears behind web now
 		z_index = -10
 		var fade_out = create_tween()
-		fade_out.tween_property(art, "self_modulate", Color(0.216, 0.216, 0.216, 0), 1.0)
-		fade_out.parallel().tween_property(art, "scale", Vector2.ZERO, 1.0)
+		fade_out.tween_property(anim, "self_modulate", Color(1, 1, 1, 0), 1.0)
+		fade_out.parallel().tween_property(anim, "scale", Vector2.ZERO, 1.0)
 		await fade_out.finished
 		queue_free()
 	else:
