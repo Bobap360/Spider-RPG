@@ -22,8 +22,8 @@ func _ready() -> void:
 	
 	collider.shape = RectangleShape2D.new()
 	UpdateCollider()
-	node_a.SetNav()
-	node_b.SetNav()
+	node_a.UpdateDirections()
+	node_b.UpdateDirections()
 
 # Sizes the collider to match the path
 func UpdateCollider() -> void:
@@ -40,8 +40,6 @@ func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	UpdateCollider()
 	node_a.strands.append(self)
 	node_b.strands.append(self)
-	node_a.SetNav()
-	node_b.SetNav()
 
 func Vanish():
 	# Breaking animation stuff goes here

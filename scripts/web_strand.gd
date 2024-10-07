@@ -52,9 +52,7 @@ func End(source : Line2D):
 	#call_deferred("CreateNav", node_b.position)
 	node_a.set_deferred("monitorable", true)
 	node_b.set_deferred("monitorable", true)
-	#node_a.CheckIntersects()
-	#node_b.CheckIntersects()
-	node_a.SetNav()
+	node_a.UpdateDirections()
 	node_b.call_deferred("CreateIntersect", source)
 	completed_firing.emit(self)
 	
@@ -81,7 +79,8 @@ func Break():
 	# Breaking animation stuff goes here
 	node_a.Remove(self)
 	node_b.Remove(self)
-	broken.emit()
+	if GameManager.controller.GetCurrentStrand() == self:
+		GameManager.controller.SafePlace()
 	queue_free()
 
 func CreateNav(new_pos : Vector2) -> Node2D:
@@ -98,8 +97,8 @@ func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	UpdateCollider()
 	node_a.strands.append(self)
 	node_b.strands.append(self)
-	node_a.SetNav()
-	node_b.SetNav()
+	node_a.UpdateDirections()
+	node_b.UpdateDirections()
 
 func ReassignBugs():
 	if bugs.size() > 0:

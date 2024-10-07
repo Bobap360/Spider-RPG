@@ -1,8 +1,9 @@
-[gd_scene load_steps=31 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=32 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
 [ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="2_u87pv"]
+[ext_resource type="Texture2D" uid="uid://ohvnyjaj062o" path="res://art/targeting_reticle_x.png" id="3_3i7vn"]
 [ext_resource type="PackedScene" uid="uid://dfi3myqmhmjws" path="res://fabs/nav_node.tscn" id="5_3c7bo"]
 [ext_resource type="PackedScene" uid="uid://c18mxe7k8ojk0" path="res://fabs/post.tscn" id="5_6pqxp"]
 [ext_resource type="Script" path="res://scripts/bug_manager.gd" id="5_oxs3t"]
@@ -19,17 +20,17 @@
 [ext_resource type="Texture2D" uid="uid://iwk38pgw73os" path="res://art/spider_dead.png" id="17_p1asq"]
 [ext_resource type="Texture2D" uid="uid://be8sc2c0mtmee" path="res://art/drop_shadow.png" id="18_wsfvt"]
 
-[sub_resource type="Curve2D" id="Curve2D_gp3s6"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 473, 940, 0, 0, 0, 0, 475, 137)
-}
-point_count = 2
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_icybq"]
 radius = 23.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yvbpu"]
 radius = 5.0
+
+[sub_resource type="Curve2D" id="Curve2D_gp3s6"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 473, 940, 0, 0, 0, 0, 475, 137)
+}
+point_count = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6o2lh"]
 radius = 390.0
@@ -94,6 +95,46 @@ border_blend = true
 
 [node name="existence" type="Node2D"]
 
+[node name="player_spider" type="Node2D" parent="." node_paths=PackedStringArray("web", "intersections", "starting_strand", "nav_controller", "joystick_target")]
+z_index = 50
+position = Vector2(473, 940)
+script = ExtResource("1_pvme1")
+web_strand = ExtResource("2_7m7h1")
+web = NodePath("../web/strands")
+intersections = NodePath("../web/intersections")
+starting_strand = NodePath("../web/strands/post_left")
+nav_controller = NodePath("spider_nav")
+joystick_target = NodePath("joystick_targeting")
+
+[node name="joystick_targeting" type="Node2D" parent="player_spider"]
+
+[node name="Sprite2D" type="Sprite2D" parent="player_spider/joystick_targeting"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_3i7vn")
+
+[node name="spider_sprite" type="Sprite2D" parent="player_spider"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_u87pv")
+
+[node name="spider_body" type="Area2D" parent="player_spider"]
+scale = Vector2(0.044, 0.044)
+collision_layer = 2
+collision_mask = 10
+metadata/type = "player"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player_spider/spider_body"]
+scale = Vector2(22.7273, 22.7273)
+shape = SubResource("CircleShape2D_icybq")
+
+[node name="spider_nav" type="Area2D" parent="player_spider"]
+collision_layer = 32
+collision_mask = 52
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player_spider/spider_nav"]
+shape = SubResource("CircleShape2D_yvbpu")
+metadata/type = "nav"
+
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource("Curve2D_gp3s6")
 
@@ -101,38 +142,6 @@ curve = SubResource("Curve2D_gp3s6")
 position = Vector2(473, 940)
 rotates = false
 loop = false
-
-[node name="player_spider" type="Node2D" parent="Path2D/PathFollow2D" node_paths=PackedStringArray("web", "intersections", "starting_strand", "nav_controller")]
-z_index = 50
-script = ExtResource("1_pvme1")
-web_strand = ExtResource("2_7m7h1")
-web = NodePath("../../../web/strands")
-intersections = NodePath("../../../web/intersections")
-starting_strand = NodePath("../../../web/strands/post_left")
-nav_controller = NodePath("spider_nav")
-
-[node name="spider_sprite" type="Sprite2D" parent="Path2D/PathFollow2D/player_spider"]
-self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_u87pv")
-
-[node name="spider_body" type="Area2D" parent="Path2D/PathFollow2D/player_spider"]
-scale = Vector2(0.044, 0.044)
-collision_layer = 2
-collision_mask = 10
-metadata/type = "player"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/player_spider/spider_body"]
-scale = Vector2(22.7273, 22.7273)
-shape = SubResource("CircleShape2D_icybq")
-
-[node name="spider_nav" type="Area2D" parent="Path2D/PathFollow2D/player_spider"]
-collision_layer = 32
-collision_mask = 52
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/player_spider/spider_nav"]
-shape = SubResource("CircleShape2D_yvbpu")
-metadata/type = "nav"
 
 [node name="sky" type="Polygon2D" parent="."]
 z_index = -100
@@ -1144,10 +1153,10 @@ text = "YOU DIED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="area_entered" from="Path2D/PathFollow2D/player_spider/spider_body" to="Path2D/PathFollow2D/player_spider" method="on_area_entered"]
-[connection signal="area_exited" from="Path2D/PathFollow2D/player_spider/spider_body" to="Path2D/PathFollow2D/player_spider" method="on_area_exited"]
-[connection signal="area_entered" from="Path2D/PathFollow2D/player_spider/spider_nav" to="Path2D/PathFollow2D/player_spider" method="on_nav_entered"]
-[connection signal="area_exited" from="Path2D/PathFollow2D/player_spider/spider_nav" to="Path2D/PathFollow2D/player_spider" method="on_nav_exited"]
+[connection signal="area_entered" from="player_spider/spider_body" to="player_spider" method="on_area_entered"]
+[connection signal="area_exited" from="player_spider/spider_body" to="player_spider" method="on_area_exited"]
+[connection signal="area_entered" from="player_spider/spider_nav" to="player_spider" method="on_nav_entered"]
+[connection signal="area_exited" from="player_spider/spider_nav" to="player_spider" method="on_nav_exited"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_resume" to="CanvasLayer/hud/pause_container" method="Hide"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_quit" to="CanvasLayer/hud/pause_container" method="Quit"]
 [connection signal="button_down" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_button_down"]

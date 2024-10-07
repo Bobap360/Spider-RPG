@@ -37,6 +37,7 @@ func Quit():
 	GameManager.Quit()
 
 func Reload():
+	GameManager.Reset()
 	get_tree().reload_current_scene()
 
 func PostGame():

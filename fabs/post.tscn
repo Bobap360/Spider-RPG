@@ -16,7 +16,6 @@ metadata/type = "web"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 
 [node name="Label" type="Label" parent="Area2D/CollisionShape2D"]
-visible = false
 z_index = 100
 anchors_preset = 8
 anchor_left = 0.5

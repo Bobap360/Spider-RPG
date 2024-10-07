@@ -3,47 +3,61 @@ extends Node2D
 const strand : PackedScene = preload("res://fabs/strand.tscn")
 const nav_node : PackedScene = preload("res://fabs/nav_node.tscn")
 
+# Defaults
+const hunger_default : float = 100.0
+const stamina_default : float = 100.0
+const shot_cost_default : float = 10.0
+const damage_default : float = 50.0
+const sprint_default : float = 3.0
+const move_default : float = 2.0
+const warning_default : float = 3.0
+const hunger_drain_default : float = 1.0
+const stamina_regen_default : float = 1.0
+const sprint_cost_default : float = 5.0
+const first_level_threshold : int = 10
+
 # Hunger
-var hunger_max : float = 100.0
-var hunger : float = 100.0
-var hunger_drain_rate : float = 1.0
-var hunger_gain_mod : float = 1.0
+var hunger_max : float
+var hunger : float
+var hunger_drain_rate : float
+var hunger_gain_mod : float
 
 # Stamina
-var stamina_max : float = 100.0
-var stamina : float = 100.0
-var stamina_shot_cost : float = 10.0
-var stamina_regen : float = 1.0
-var stamina_sprint_cost : float = 5.0
+var stamina_max : float
+var stamina : float
+var stamina_shot_cost : float
+var stamina_regen : float
+var stamina_sprint_cost : float
 
 # Attributes
-var strength : int = 0
-var dex : int = 0
-var intel : int = 0
+var strength : int
+var dex : int
+var intel : int
 
 # Stat values
-var score : int = 0
-var move : float = 2.0
-var sprint : float = 3.0
-var speed_mod : float = 1.0
+var score : int
+var move : float
+var sprint : float
+var speed_mod : float
 var web_speed : float = 10.0
-var spawn_time : float = 3.0
-var damage : float = 50.0
-var struggle_mod : float = 1.0
+var spawn_time : float
+var damage : float
+var struggle_mod : float
 
 # Level tracking
-var xp : int = 0
-var xp_mod : float = 1.0
-var level : int = 1
-var attribute_points : int = 0
-var level_threshold : int = 10
+var xp : int
+var xp_mod : float
+var level : int
+var attribute_points : int
+var level_threshold : int
 
 # Status bools
-var is_max_level : bool = false
-var is_paused : bool = false
-var is_ended : bool = false
+var is_max_level : bool
+var is_paused : bool
+var is_ended : bool
 var intersections : Node2D
 var web : Node2D
+var controller : Node2D
 
 # Signals
 signal score_changed(amount : int)
@@ -59,7 +73,46 @@ signal game_resumed()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	Reset()
+
+func Reset():
+	# Attributes
+	level = 0
+	level_threshold = first_level_threshold
+	attribute_points = 0
+	strength = 0
+	dex = 0
+	intel = 0
+	xp = 0
+	
+	# Stats
+	score = 0
+	# Hunger
+	hunger_max = hunger_default
+	hunger = hunger_default
+	hunger_drain_rate = hunger_drain_default
+	# Stam
+	stamina_max = stamina_default
+	stamina = stamina_default
+	stamina_shot_cost = shot_cost_default
+	stamina_regen = stamina_regen_default
+	stamina_sprint_cost = sprint_cost_default
+	# Other
+	damage = damage_default
+	move = move_default
+	sprint = sprint_default
+	spawn_time = warning_default
+	
+	# Bools
+	is_max_level = false
+	is_paused = false
+	is_ended = false
+	
+	# Mods
+	xp_mod = 1.0
+	speed_mod = 1.0
+	struggle_mod = 1.0
+	hunger_gain_mod = 1.0
 
 func Score(amount : int):
 	score += amount

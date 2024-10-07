@@ -15,7 +15,6 @@ metadata/type = "nav"
 shape = SubResource("CircleShape2D_hrbxm")
 
 [node name="Label" type="Label" parent="CollisionShape2D"]
-visible = false
 z_index = 100
 anchors_preset = 8
 anchor_left = 0.5

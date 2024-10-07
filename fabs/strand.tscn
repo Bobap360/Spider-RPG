@@ -44,7 +44,6 @@ metadata/type = "web"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sticky_area"]
 
 [node name="Label" type="Label" parent="sticky_area/CollisionShape2D"]
-visible = false
 z_index = 100
 anchors_preset = 8
 anchor_left = 0.5

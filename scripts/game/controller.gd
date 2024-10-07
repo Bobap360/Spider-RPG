@@ -15,16 +15,18 @@ var navigation_node : Area2D
 @export var intersections : Node2D
 @export var starting_strand : Line2D
 @export var nav_controller : Area2D
+@export var joystick_target : Node2D
+var joystick_web_lock : bool = false
+var target_location : Vector2
+var start_location : Vector2
+var lock_movement : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# Path follow assignment
-	path = get_parent()
-	curve = path.get_parent().curve
 	speed = GameManager.move
 	GameManager.intersections = intersections
 	GameManager.web = web
-	StartCurve()
+	GameManager.controller = self
 	current_strand = starting_strand
 	current_strand.broken.connect(SafePlace)
 
@@ -41,28 +43,46 @@ func _physics_process(delta: float) -> void:
 			for i in bugs:
 				i.Damage(delta * GameManager.damage)
 		
-		var movement_vector = Vector2(Input.get_axis("Move Left", "Move Right"), Input.get_axis("Move Up", "Move Down"))
-		
-		if is_sprinting:
-			if GameManager.stamina > GameManager.stamina_sprint_cost:
-				GameManager.Stamina(-delta * GameManager.stamina_sprint_cost)
-				speed = GameManager.sprint
+		if !lock_movement:
+			var movement_vector = Vector2(Input.get_axis("Move Left", "Move Right"), Input.get_axis("Move Up", "Move Down"))
+			
+			var targeting_vector = Vector2(Input.get_axis("Target Left", "Target Right"), Input.get_axis("Target Up", "Target Down"))
+			if abs(targeting_vector.x) > 0.2 or abs(targeting_vector.y) > 0.2:
+				joystick_target.position = targeting_vector * 75
+				joystick_target.visible = true
 			else:
-				speed = GameManager.move
+				joystick_target.visible = false
+			
+			if is_sprinting:
+				if GameManager.stamina > GameManager.stamina_sprint_cost:
+					GameManager.Stamina(-delta * GameManager.stamina_sprint_cost)
+					speed = GameManager.sprint
+				else:
+					speed = GameManager.move
+			
+			if movement_vector != Vector2.ZERO:
+				if MovingToward(movement_vector, target_location):
+					global_position = global_position.move_toward(target_location, speed)
+				elif MovingToward(movement_vector, start_location):
+					global_position = global_position.move_toward(start_location, speed)
 				
-		#position += movement_vector * speed * GameManager.speed_mod
+				if navigation_node:
+					var new_direction = navigation_node.SendDirection(movement_vector, global_position)
+					if new_direction != Vector2.ZERO and new_direction != target_location:
+						start_location = navigation_node.global_position
+						target_location = new_direction
+						#global_position = navigation_node.global_position
+						#print("Updating direction to %s" % target_location)
+			#position += movement_vector * speed * GameManager.speed_mod
 		
-		# Path follow movement-ish
-		if path:
-			if movement_vector == pos_input:
-				path.progress += speed
-			elif movement_vector == -pos_input:
-				path.progress -= speed
-		#if path:
-			#if movement_vector.x > 0 or movement_vector.y < 0:
-				#path.progress += speed
-			#elif movement_vector.x < 0 or movement_vector.y > 0:
-				#path.progress -= speed
+
+func MovingToward(move_dir : Vector2, target : Vector2) -> bool:
+	var dif = move_dir - global_position.direction_to(target)
+	#print("Input offset is %s" % (abs(dif.x) + abs(dif.y)))
+	if abs(dif.x) + abs(dif.y) < 1.0:
+		return true
+	else:
+		return false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Game Over"):
@@ -76,41 +96,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_released("Sprint"):
 			speed = GameManager.move
 			is_sprinting = false
-			
+		
+		if event.is_action_pressed("Gamepad Fire"):
+			if joystick_target.position != Vector2.ZERO and !joystick_web_lock:
+				print("pew pew")
+				ShotWeb(joystick_target.global_position)
+				joystick_web_lock = true
+		if event.is_action_released("Gamepad Fire"):
+			joystick_web_lock = false
+		
 		if event.is_action_released("Fire"):
 			ShotWeb(get_global_mouse_position())
 		
 		if event.is_action_pressed("Cheat Level"):
 			GameManager.XP(GameManager.level_threshold)
-		
-		if navigation_node:
-			if event.is_action_pressed("Move Up"):
-				if navigation_node.nav_up.strand:
-					ChangeCurrentStrand(navigation_node.nav_up.strand)
-					SetNewCurve(navigation_node.nav_up.target)
-					pos_input = Vector2.UP
-					#print("Go up: %s" % pos_input)
-				
-			if event.is_action_pressed("Move Down"):
-				if navigation_node.nav_down.strand:
-					ChangeCurrentStrand(navigation_node.nav_down.strand)
-					SetNewCurve(navigation_node.nav_down.target)
-					pos_input = Vector2.DOWN
-					#print("Go down: %s" % pos_input)
-				
-			if event.is_action_pressed("Move Left"):
-				if navigation_node.nav_left.strand:
-					ChangeCurrentStrand(navigation_node.nav_left.strand)
-					SetNewCurve(navigation_node.nav_left.target)
-					pos_input = Vector2.LEFT
-					#print("Go left: %s" % pos_input)
-				
-			if event.is_action_pressed("Move Right"):
-				if navigation_node.nav_right.strand:
-					ChangeCurrentStrand(navigation_node.nav_right.strand)
-					SetNewCurve(navigation_node.nav_right.target)
-					pos_input = Vector2.RIGHT
-					#print("Go right: %s" % pos_input)
 		
 
 func ShotWeb(target : Vector2):
@@ -155,24 +154,6 @@ func on_nav_exited(area : Area2D):
 		if navigation_node == area:
 			navigation_node = null
 
-func StartCurve():
-	var new_curve : Curve2D = curve
-	new_curve.clear_points()
-	new_curve.add_point(starting_strand.node_a.global_position, Vector2.ZERO, Vector2.ZERO)
-	new_curve.add_point(starting_strand.node_b.global_position, Vector2.ZERO, Vector2.ZERO)
-	curve = new_curve
-	path.progress = 0
-
-func SetNewCurve(target : Vector2):
-	var new_curve : Curve2D = curve
-	new_curve.clear_points()
-	new_curve.add_point(navigation_node.global_position, Vector2.ZERO, Vector2.ZERO)
-	new_curve.add_point(target, Vector2.ZERO, Vector2.ZERO)
-	curve = new_curve
-	path.progress = 0
-	#pos_input = position.direction_to(target)
-	#print("Direction to target on path %s" % pos_input)
-
 func ChangeCurrentStrand(new_strand : Line2D):
 	if is_instance_valid(current_strand):
 		current_strand.broken.disconnect(SafePlace)
@@ -180,11 +161,24 @@ func ChangeCurrentStrand(new_strand : Line2D):
 	current_strand.broken.connect(SafePlace)
 
 func SafePlace():
-	current_strand.broken.disconnect(SafePlace)
-	var stored = path.progress_ratio
-	path.progress_ratio = roundf(path.progress_ratio)
-	print("Moving to safety from %s to %s" % [stored, path.progress_ratio])
-	curve.clear_points()
+	var target : Vector2
+	
+	if global_position.distance_squared_to(target_location) < global_position.distance_squared_to(start_location):
+		target = target_location
+	else:
+		target = start_location
+	
+	# Animate to safety
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", target, 0.25)
+	lock_movement = true
+	await get_tree().create_timer(0.3).timeout
+	
+	# Assign new movement variables
+	current_strand = GetCurrentStrand()
+	start_location = current_strand.node_a.global_position
+	target_location = current_strand.node_b.global_position
+	lock_movement = false
 
 func GetCurrentStrand() -> Line2D:
 	var stored = nav_controller.get_overlapping_areas()
@@ -193,5 +187,5 @@ func GetCurrentStrand() -> Line2D:
 		#print("Collision layer is %s" % i.collision_layer)
 		if i.collision_layer == 4 or i.collision_layer == 16:
 			overlaps.append(i)
-			
+	print("Returning %s" % overlaps[0].get_parent().name)
 	return overlaps[0].get_parent()
