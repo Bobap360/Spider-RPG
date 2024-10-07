@@ -13,6 +13,6 @@ func _on_area_entered(area: Area2D) -> void:
 			# Checks against self collision and valid "Stop" objects
 			if area != strand.web_area:
 				if area.collision_layer == 16 or area.collision_layer == 4:
-					print("Firing End")
+					#print("Firing End")
 					strand.End(area.get_parent())
 					queue_free()

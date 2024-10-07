@@ -1,6 +1,8 @@
 extends Control
 
 @export var fade : Control
+@export var confirm : Control
+@export var intro_screen : Control
 
 @export var game_over_screen : Control
 @export var black_screen : Control
@@ -13,6 +15,10 @@ func _ready() -> void:
 	GameManager.game_ended.connect(YouDied)
 	position = Vector2(get_viewport().size.x/2, -1000)
 	fade.self_modulate = Color(1,1,1,0)
+	
+	await get_tree().create_timer(1.0).timeout
+	var tween = create_tween()
+	tween.tween_property(intro_screen, "self_modulate", Color(1,1,1,0), 2.0)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Menu"):
@@ -23,21 +29,35 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func Show():
 	var tween = create_tween()
-	tween.tween_property(self, "position", Vector2(get_viewport().size.x/2, get_viewport().size.y/2), 0.3)
+	tween.tween_property(self, "position", Vector2(960, 540), 0.3)
 	tween.parallel().tween_property(fade, "self_modulate", Color(1, 1, 1, 1), 0.3)
 	GameManager.Pause()
 	
 func Hide():
 	var tween = create_tween()
-	tween.tween_property(self, "position", Vector2(get_viewport().size.x/2, -1000), 0.3)
+	tween.tween_property(self, "position", Vector2(960, -1000), 0.3)
 	tween.parallel().tween_property(fade, "self_modulate", Color(1, 1, 1, 0), 0.3)
 	GameManager.Resume()
 
 func Quit():
 	GameManager.Quit()
 
+func RestartConfirm():
+	confirm.visible = true
+
+func RestartCancel():
+	confirm.visible = false
+
+func Restart():
+	confirm.visible = false
+	Reload()
+
 func Reload():
+	var tween = create_tween()
+	tween.tween_property(intro_screen, "self_modulate", Color(1, 1, 1, 1), 2.0)
+	await tween.finished
 	GameManager.Reset()
+	get_tree().paused = false
 	get_tree().reload_current_scene()
 
 func PostGame():

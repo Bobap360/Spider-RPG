@@ -78,7 +78,7 @@ func _ready() -> void:
 
 func Reset():
 	# Attributes
-	level = 0
+	level = 1
 	level_threshold = first_level_threshold
 	attribute_points = 0
 	strength = 0

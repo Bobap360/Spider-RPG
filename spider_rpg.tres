@@ -141,5 +141,5 @@ Tooltip/base_type = &"Label"
 Tooltip/colors/font_color = Color(1, 1, 1, 1)
 Tooltip/colors/font_outline_color = Color(0, 0, 0, 1)
 Tooltip/colors/font_shadow_color = Color(0, 0, 0, 1)
-Tooltip/font_sizes/font_size = 18
+Tooltip/font_sizes/font_size = 24
 Tooltip/fonts/font = ExtResource("2_3034m")

@@ -82,7 +82,7 @@ func Break():
 	queue_free()
 
 func CreateNav(new_pos : Vector2) -> Node2D:
-	print("Creating New Nav Node")
+	#print("Creating New Nav Node")
 	var new_nav = GameManager.nav_node.instantiate()
 	GameManager.intersections.add_child(new_nav, true)
 	new_nav.position = new_pos

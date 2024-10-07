@@ -10,6 +10,7 @@ radius = 2.0
 
 [node name="strand" type="Line2D" node_paths=PackedStringArray("web_area", "collider", "glob", "debug_label")]
 texture_repeat = 2
+default_color = Color(1, 1, 1, 0.588235)
 texture = ExtResource("1_e1jrn")
 texture_mode = 1
 joint_mode = 2
@@ -30,6 +31,7 @@ collider = NodePath("CollisionShape2D")
 strand = NodePath("..")
 
 [node name="glob" type="Sprite2D" parent="contact_point"]
+self_modulate = Color(1, 1, 1, 0.588235)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("3_bqtd8")
 

@@ -95,6 +95,7 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_bm0k7")
 
 [node name="spawn_indicator" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.588235)
 z_index = 95
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_r20ir")

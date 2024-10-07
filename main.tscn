@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=47 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
@@ -19,7 +19,9 @@
 [ext_resource type="Script" path="res://scripts/ui/menu.gd" id="9_d5te7"]
 [ext_resource type="Script" path="res://scripts/ui/stats.gd" id="10_isho5"]
 [ext_resource type="Texture2D" uid="uid://boiotn6f2jmyj" path="res://art/spider_menu_legs_tintable.png" id="11_rcgev"]
+[ext_resource type="Texture2D" uid="uid://cxtjyu3xpox1v" path="res://art/landscape.png" id="11_uqygn"]
 [ext_resource type="Texture2D" uid="uid://bplttmxn1o2s3" path="res://art/spider_menu_eyes.png" id="12_bvxt0"]
+[ext_resource type="Texture2D" uid="uid://bd7gki4v5046p" path="res://art/background_frame.png" id="12_cw66l"]
 [ext_resource type="Script" path="res://scripts/ui/xp_bar.gd" id="13_r8ng5"]
 [ext_resource type="Script" path="res://scripts/ui/upgrade_button.gd" id="14_j206p"]
 [ext_resource type="FontFile" uid="uid://ibotlu8uj75v" path="res://fonts/EBGaramond-VariableFont_wght.ttf" id="16_eiq8f"]
@@ -106,6 +108,9 @@ border_width_bottom = 300
 border_color = Color(0, 0, 0, 0.686275)
 border_blend = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b1cx"]
+bg_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2kcko"]
 bg_color = Color(1, 1, 1, 1)
 
@@ -122,6 +127,14 @@ corner_radius_top_right = 200
 corner_radius_bottom_right = 200
 corner_radius_bottom_left = 200
 corner_detail = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56pli"]
+bg_color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+shadow_color = Color(0, 0, 0, 0.196078)
+shadow_size = 4
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ba74"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s8cvr"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 1)
@@ -157,7 +170,7 @@ border_blend = true
 
 [node name="existence" type="Node2D"]
 
-[node name="player_spider" type="Node2D" parent="." node_paths=PackedStringArray("web", "intersections", "starting_strand", "nav_controller", "joystick_target", "anim")]
+[node name="player_spider" type="Node2D" parent="." node_paths=PackedStringArray("web", "intersections", "starting_strand", "nav_controller", "joystick_target", "anim", "stamina_warning")]
 z_index = 50
 position = Vector2(473, 940)
 script = ExtResource("1_pvme1")
@@ -168,6 +181,7 @@ starting_strand = NodePath("../web/strands/post_left")
 nav_controller = NodePath("spider_nav")
 joystick_target = NodePath("joystick_targeting")
 anim = NodePath("spider_animation")
+stamina_warning = NodePath("stamina_warning")
 
 [node name="joystick_targeting" type="Node2D" parent="player_spider"]
 
@@ -208,12 +222,31 @@ collision_mask = 52
 shape = SubResource("CircleShape2D_yvbpu")
 metadata/type = "nav"
 
+[node name="stamina_warning" type="Label" parent="player_spider"]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = -77.0
+offset_top = -49.0
+offset_right = 81.0
+offset_bottom = -26.0
+theme_type_variation = &"DebugLabel"
+text = "Not enough stamina"
+
 [node name="sky" type="Polygon2D" parent="."]
 z_index = -100
 color = Color(0.632249, 0.747282, 1, 1)
 polygon = PackedVector2Array(-88, -75, -75, 1234, 2071, 1177, 2103, -85)
 
+[node name="background_field" type="Sprite2D" parent="."]
+z_index = -100
+position = Vector2(960, 540)
+texture = ExtResource("11_uqygn")
+
+[node name="background_fence" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = ExtResource("12_cw66l")
+
 [node name="borders" type="Node2D" parent="."]
+visible = false
 
 [node name="post_top" type="Polygon2D" parent="borders"]
 position = Vector2(949, 93)
@@ -242,11 +275,11 @@ polygon = PackedVector2Array(-241, -610, -239, 610, 42, 607, 42, -609)
 [node name="intersections" type="Node2D" parent="web"]
 
 [node name="nav_node" parent="web/intersections" instance=ExtResource("5_3c7bo")]
-position = Vector2(475, 131)
+position = Vector2(441, 122)
 monitorable = true
 
 [node name="nav_node2" parent="web/intersections" instance=ExtResource("5_3c7bo")]
-position = Vector2(1445, 133)
+position = Vector2(1453, 121)
 monitorable = true
 
 [node name="nav_node3" parent="web/intersections" instance=ExtResource("5_3c7bo")]
@@ -254,7 +287,43 @@ position = Vector2(1444, 951)
 monitorable = true
 
 [node name="nav_node4" parent="web/intersections" instance=ExtResource("5_3c7bo")]
-position = Vector2(473, 948)
+position = Vector2(1305, 988)
+monitorable = true
+
+[node name="nav_node5" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(1165, 939)
+monitorable = true
+
+[node name="nav_node6" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(1005, 949)
+monitorable = true
+
+[node name="nav_node7" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(933, 939)
+monitorable = true
+
+[node name="nav_node8" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(742, 958)
+monitorable = true
+
+[node name="nav_node9" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(568, 928)
+monitorable = true
+
+[node name="nav_node10" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(516, 877)
+monitorable = true
+
+[node name="nav_node11" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(524, 718)
+monitorable = true
+
+[node name="nav_node12" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(486, 507)
+monitorable = true
+
+[node name="nav_node13" parent="web/intersections" instance=ExtResource("5_3c7bo")]
+position = Vector2(502, 421)
 monitorable = true
 
 [node name="strands" type="Node2D" parent="web"]
@@ -271,8 +340,44 @@ node_b = NodePath("../../intersections/nav_node3")
 node_a = NodePath("../../intersections/nav_node3")
 node_b = NodePath("../../intersections/nav_node4")
 
-[node name="post_left" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+[node name="post_down2" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
 node_a = NodePath("../../intersections/nav_node4")
+node_b = NodePath("../../intersections/nav_node5")
+
+[node name="post_down3" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node5")
+node_b = NodePath("../../intersections/nav_node6")
+
+[node name="post_down4" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node6")
+node_b = NodePath("../../intersections/nav_node7")
+
+[node name="post_down5" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node7")
+node_b = NodePath("../../intersections/nav_node8")
+
+[node name="post_down6" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node8")
+node_b = NodePath("../../intersections/nav_node9")
+
+[node name="post_down7" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node9")
+node_b = NodePath("../../intersections/nav_node10")
+
+[node name="post_left" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node10")
+node_b = NodePath("../../intersections/nav_node11")
+
+[node name="post_left2" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node11")
+node_b = NodePath("../../intersections/nav_node12")
+
+[node name="post_left3" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node12")
+node_b = NodePath("../../intersections/nav_node13")
+
+[node name="post_left4" parent="web/strands" node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("5_6pqxp")]
+node_a = NodePath("../../intersections/nav_node13")
 node_b = NodePath("../../intersections/nav_node")
 
 [node name="bugstuff" type="Node2D" parent="."]
@@ -304,7 +409,6 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="fade" type="Panel" parent="CanvasLayer/hud"]
-visible = false
 z_index = 5
 layout_mode = 1
 anchors_preset = 15
@@ -315,9 +419,19 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tsdmm")
 
-[node name="pause_container" type="Control" parent="CanvasLayer/hud" node_paths=PackedStringArray("fade", "game_over_screen", "black_screen", "taunt", "end_buttons", "dead_spider")]
+[node name="intro_screen" type="Panel" parent="CanvasLayer/hud"]
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1b1cx")
+
+[node name="pause_container" type="Control" parent="CanvasLayer/hud" node_paths=PackedStringArray("fade", "confirm", "intro_screen", "game_over_screen", "black_screen", "taunt", "end_buttons", "dead_spider")]
 process_mode = 3
-visible = false
 z_index = 10
 layout_mode = 1
 anchors_preset = 8
@@ -334,6 +448,8 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("9_d5te7")
 fade = NodePath("../fade")
+confirm = NodePath("pause_menu/confirm_prompt")
+intro_screen = NodePath("../intro_screen")
 game_over_screen = NodePath("../game_over_screen")
 black_screen = NodePath("../game_over_screen/full_black")
 taunt = NodePath("../game_over_screen/background")
@@ -434,7 +550,16 @@ theme_override_colors/font_hover_color = Color(0, 0.605905, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0.352941, 0, 1)
 text = "Resume"
 
+[node name="btn_restart" type="Button" parent="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"TextButton"
+theme_override_colors/font_hover_color = Color(0.679014, 8.30255e-06, 4.62055e-06, 1)
+theme_override_colors/font_pressed_color = Color(0.410327, 5.83585e-07, 1.44392e-07, 1)
+text = "Restart"
+
 [node name="btn_settings" type="Button" parent="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"TextButton"
@@ -448,6 +573,78 @@ theme_type_variation = &"TextButton"
 theme_override_colors/font_hover_color = Color(0.679014, 8.30255e-06, 4.62055e-06, 1)
 theme_override_colors/font_pressed_color = Color(0.410327, 5.83585e-07, 1.44392e-07, 1)
 text = "Quit"
+
+[node name="confirm_prompt" type="Panel" parent="CanvasLayer/hud/pause_container/pause_menu"]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -137.5
+offset_right = 225.0
+offset_bottom = 137.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_56pli")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer"]
+layout_mode = 2
+
+[node name="header" type="Label" parent="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"BasicHeader"
+text = "WARNING"
+horizontal_alignment = 1
+
+[node name="body" type="Label" parent="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+theme_type_variation = &"DebugLabel"
+theme_override_font_sizes/font_size = 24
+text = "Are you sure you want to restart the game from the beginning? This cannot be undone."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_2ba74")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="btn_restart" type="Button" parent="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"TextButton"
+theme_override_colors/font_hover_color = Color(0.679014, 8.30255e-06, 4.62055e-06, 1)
+theme_override_colors/font_pressed_color = Color(0.410327, 5.83585e-07, 1.44392e-07, 1)
+text = "Restart"
+
+[node name="btn_cancel" type="Button" parent="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"TextButton"
+theme_override_colors/font_hover_color = Color(0, 0.605905, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.352941, 0, 1)
+text = "Cancel"
 
 [node name="character_stats" type="Panel" parent="CanvasLayer/hud"]
 layout_mode = 1
@@ -676,18 +873,29 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -75.5
-offset_top = 64.0
-offset_right = 75.5
-offset_bottom = 141.0
+offset_left = -55.5
+offset_top = 65.0
+offset_right = 169.5
+offset_bottom = 165.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ataj0")
 
-[node name="tooltip" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade/tooltip_panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade/tooltip_panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="tooltip" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade/tooltip_panel/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Tooltip"
-text = "+10 Max Hunger
-+10% Damage"
+text = "+10 Max Hunger"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tooltip2" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade/tooltip_panel/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Tooltip"
+text = "+10% Damage"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -733,18 +941,38 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -78.0
-offset_top = 64.0
-offset_right = 78.0
-offset_bottom = 141.0
+offset_left = -112.5
+offset_top = 65.0
+offset_right = 112.5
+offset_bottom = 165.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ataj0")
 
 [node name="tooltip" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade/tooltip_panel"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"Tooltip"
 text = "+10 Max Stamina
 +5% Movespeed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade/tooltip_panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="tooltip" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade/tooltip_panel/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Tooltip"
+text = "+10 Max Stamina"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tooltip2" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade/tooltip_panel/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Tooltip"
+text = "+5% Movespeed"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -790,18 +1018,38 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -86.5
-offset_top = 64.0
-offset_right = 86.5
-offset_bottom = 141.0
+offset_left = -194.0
+offset_top = 65.0
+offset_right = 56.0
+offset_bottom = 165.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ataj0")
 
 [node name="tooltip" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade/tooltip_panel"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"Tooltip"
 text = "+5% Warning Time
 +5% Struggle Time"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade/tooltip_panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="tooltip" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade/tooltip_panel/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Tooltip"
+text = "+5% Warning Time"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tooltip2" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade/tooltip_panel/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Tooltip"
+text = "+5% Struggle Time"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1229,7 +1477,10 @@ vertical_alignment = 1
 [connection signal="area_entered" from="player_spider/spider_nav" to="player_spider" method="on_nav_entered"]
 [connection signal="area_exited" from="player_spider/spider_nav" to="player_spider" method="on_nav_exited"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_resume" to="CanvasLayer/hud/pause_container" method="Hide"]
+[connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_restart" to="CanvasLayer/hud/pause_container" method="RestartConfirm"]
 [connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/margins/body/VBoxContainer/btn_quit" to="CanvasLayer/hud/pause_container" method="Quit"]
+[connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer/VBoxContainer/HBoxContainer/btn_restart" to="CanvasLayer/hud/pause_container" method="Restart"]
+[connection signal="pressed" from="CanvasLayer/hud/pause_container/pause_menu/confirm_prompt/MarginContainer/VBoxContainer/HBoxContainer/btn_cancel" to="CanvasLayer/hud/pause_container" method="RestartCancel"]
 [connection signal="button_down" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_button_down"]
 [connection signal="button_up" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_button_up"]
 [connection signal="mouse_entered" from="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" to="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade" method="_on_mouse_entered"]

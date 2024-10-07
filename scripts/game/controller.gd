@@ -17,6 +17,7 @@ var navigation_node : Area2D
 @export var nav_controller : Area2D
 @export var joystick_target : Node2D
 @export var anim : AnimatedSprite2D
+@export var stamina_warning : Control
 var joystick_web_lock : bool = false
 var target_location : Vector2
 var start_location : Vector2
@@ -30,6 +31,7 @@ func _ready() -> void:
 	GameManager.web = web
 	GameManager.controller = self
 	current_strand = starting_strand
+	global_position = starting_strand.node_a.global_position
 
 func _physics_process(delta: float) -> void:
 	if !GameManager.is_ended:
@@ -100,8 +102,8 @@ func MovingToward(move_dir : Vector2, target : Vector2) -> bool:
 		return false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("Game Over"):
-		GameManager.End()
+	#if event.is_action_pressed("Game Over"):
+		#GameManager.End()
 		
 	if !GameManager.is_ended:
 		if event.is_action_pressed("Sprint"):
@@ -114,7 +116,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		if event.is_action_pressed("Gamepad Fire"):
 			if joystick_target.position != Vector2.ZERO and !joystick_web_lock:
-				print("pew pew")
+				#print("pew pew")
 				ShotWeb(joystick_target.global_position)
 				joystick_web_lock = true
 		if event.is_action_released("Gamepad Fire"):
@@ -123,8 +125,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_released("Fire"):
 			ShotWeb(get_global_mouse_position())
 		
-		if event.is_action_pressed("Cheat Level"):
-			GameManager.XP(GameManager.level_threshold)
+		#if event.is_action_pressed("Cheat Level"):
+			#GameManager.XP(GameManager.level_threshold)
 		
 
 func ShotWeb(target : Vector2):
@@ -143,7 +145,14 @@ func ShotWeb(target : Vector2):
 	
 	else:
 		# Do error feedback here
-		print("Cannot shot web")
+		ShowStaminaWarning()
+		#print("Cannot shot web")
+
+func ShowStaminaWarning():
+	var tween = create_tween()
+	tween.tween_property(stamina_warning, "self_modulate", Color(1, 1, 1, 1), 0.15)
+	tween.tween_property(stamina_warning, "self_modulate", Color(1, 1, 1, 1), 0.5)
+	tween.tween_property(stamina_warning, "self_modulate", Color(1, 1, 1, 0), 0.15)
 
 func EndStrand(element : Line2D):
 	strands.erase(element)
@@ -163,7 +172,7 @@ func on_area_exited(area : Area2D):
 func on_nav_entered(area : Area2D):
 	if area.collision_layer == 32:
 		navigation_node = area
-		print("Navigation located")
+		#print("Navigation located")
 
 func on_nav_exited(area : Area2D):
 	if area.collision_layer == 32:
@@ -211,5 +220,5 @@ func GetCurrentStrand() -> Line2D:
 		#print("Collision layer is %s" % i.collision_layer)
 		if i.collision_layer == 4 or i.collision_layer == 16:
 			overlaps.append(i)
-	print("Returning %s" % overlaps[0].get_parent().name)
+	#print("Returning %s" % overlaps[0].get_parent().name)
 	return overlaps[0].get_parent()

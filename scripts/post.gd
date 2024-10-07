@@ -15,7 +15,7 @@ func _ready() -> void:
 	set_points(PackedVector2Array([node_a.global_position, node_b.global_position]))
 	node_a.strands.append(self)
 	node_b.strands.append(self)
-	print("Adding %s to %s and %s" % [self.name, node_a.name, node_b.name])
+	#print("Adding %s to %s and %s" % [self.name, node_a.name, node_b.name])
 	debug_label.text = str(self.name)
 	
 	collider.shape = RectangleShape2D.new()
