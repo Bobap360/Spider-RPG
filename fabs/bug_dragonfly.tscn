@@ -1,0 +1,285 @@
+[gd_scene load_steps=30 format=3 uid="uid://deamvypw7d27d"]
+
+[ext_resource type="Script" path="res://scripts/bug.gd" id="1_whgyq"]
+[ext_resource type="Texture2D" uid="uid://b1h4g26pwvofo" path="res://art/enemies/damselfly/damselfly_flying_01.png" id="2_ghpx5"]
+[ext_resource type="Texture2D" uid="uid://cx6uhektvhgkw" path="res://art/enemies/damselfly/damselfly_shorter_flying_01.png" id="2_iviwt"]
+[ext_resource type="Texture2D" uid="uid://cw2cau34amgxn" path="res://art/enemies/damselfly/damselfly_caught_01.png" id="2_wcqnc"]
+[ext_resource type="Texture2D" uid="uid://bbtphrbfn0aad" path="res://art/enemies/damselfly/damselfly_caught_042.png" id="3_46lrh"]
+[ext_resource type="Texture2D" uid="uid://b1ky31ogeacec" path="res://art/enemies/damselfly/damselfly_caught_02.png" id="3_f4sp5"]
+[ext_resource type="Texture2D" uid="uid://b4w1f7eub18wl" path="res://art/enemies/damselfly/damselfly_shorter_flying_02.png" id="3_fhdkl"]
+[ext_resource type="Texture2D" uid="uid://cxdlyf3vf5rnp" path="res://art/enemies/damselfly/damselfly_flying_02.png" id="3_gspsy"]
+[ext_resource type="Texture2D" uid="uid://bsi3rqopw7trd" path="res://art/enemies/damselfly/damselfly_caught_041.png" id="3_kacyn"]
+[ext_resource type="Texture2D" uid="uid://bx7r2f5543htx" path="res://art/enemies/damselfly/damselfly_caught_03.png" id="4_4a4rf"]
+[ext_resource type="Texture2D" uid="uid://cjdhexajwrjrt" path="res://art/enemies/damselfly/damselfly_shorter_flying_03.png" id="4_8r27p"]
+[ext_resource type="Texture2D" uid="uid://b8rtu0tg8l0r6" path="res://art/enemies/damselfly/damselfly_flying_03.png" id="4_r538m"]
+[ext_resource type="Texture2D" uid="uid://cvbla5kjugci2" path="res://art/enemies/damselfly/damselfly_shorter_flying_04.png" id="5_awh2n"]
+[ext_resource type="Texture2D" uid="uid://d0r0414ophs5p" path="res://art/enemies/damselfly/damselfly_flying_04.png" id="5_lqf1r"]
+[ext_resource type="Texture2D" uid="uid://dgkjldy312p7w" path="res://art/enemies/damselfly/damselfly_caught_04.png" id="5_wpwce"]
+[ext_resource type="Texture2D" uid="uid://c6mrrmfdfl3s5" path="res://art/enemies/damselfly/damselfly_caught_05.png" id="6_b14w0"]
+[ext_resource type="Texture2D" uid="uid://cvnnqkgk8acoh" path="res://art/enemies/damselfly/damselfly_shorter_flying_05.png" id="6_lgo3a"]
+[ext_resource type="Texture2D" uid="uid://b6ou6p2uf6gsl" path="res://art/enemies/damselfly/damselfly_flying_05.png" id="6_n1uxx"]
+[ext_resource type="Texture2D" uid="uid://dkh4i7k7yql4s" path="res://art/enemies/damselfly/damselfly_shorter_flying_06.png" id="7_2b6n2"]
+[ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="7_284jj"]
+[ext_resource type="Texture2D" uid="uid://w046yplevwm5" path="res://art/enemies/damselfly/damselfly_flying_06.png" id="7_kxygk"]
+[ext_resource type="Texture2D" uid="uid://rqis3s2ua7k0" path="res://art/enemies/damselfly/damselfly_shorter_flying_07.png" id="8_1jgwu"]
+[ext_resource type="Texture2D" uid="uid://crctwiko5wh4x" path="res://art/enemies/damselfly/damselfly_flying_07.png" id="8_hode5"]
+[ext_resource type="Texture2D" uid="uid://3bdig5i54lgv" path="res://art/reticle_aoe_white.png" id="8_mr15q"]
+[ext_resource type="Script" path="res://fabs/damselfly.gd" id="21_fh6mv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kkf8"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a348t"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2uuku"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_kacyn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_46lrh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_b14w0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_46lrh")
+}],
+"loop": true,
+"name": &"caught",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_iviwt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fhdkl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8r27p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8r27p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_awh2n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_awh2n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_lgo3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_lgo3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_2b6n2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_1jgwu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_2b6n2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_lgo3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_lgo3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_awh2n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_awh2n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8r27p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8r27p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fhdkl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 90.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ghpx5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_gspsy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_r538m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_r538m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lqf1r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lqf1r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n1uxx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n1uxx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_kxygk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_hode5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_kxygk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n1uxx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n1uxx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lqf1r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lqf1r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_r538m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_r538m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_gspsy")
+}],
+"loop": true,
+"name": &"default_long",
+"speed": 90.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_wcqnc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_f4sp5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_4a4rf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wpwce")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_b14w0")
+}],
+"loop": false,
+"name": &"transition",
+"speed": 24.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bf1yu"]
+radius = 7.0
+
+[node name="bug_dragonfly" type="Node2D" node_paths=PackedStringArray("indicator", "collider", "anim", "health_bar", "struggle_bar")]
+z_index = 60
+script = ExtResource("1_whgyq")
+health = 250.0
+struggle_time = 7.0
+value = 40.0
+indicator = NodePath("spawn_indicator")
+collider = NodePath("bug_box")
+anim = NodePath("AnimatedSprite2D")
+health_bar = NodePath("health_bar")
+struggle_bar = NodePath("struggle_bar")
+
+[node name="health_bar" type="ProgressBar" parent="."]
+z_index = 100
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+value = 50.0
+show_percentage = false
+
+[node name="struggle_bar" type="ProgressBar" parent="."]
+self_modulate = Color(0.670588, 0, 0, 1)
+z_index = 100
+offset_left = -20.0
+offset_top = 15.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+show_percentage = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -1)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_2uuku")
+animation = &"caught"
+frame_progress = 0.865172
+script = ExtResource("21_fh6mv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0.41598, 0.41598, 0.41598, 1)
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("7_284jj")
+
+[node name="Polygon2D" type="Polygon2D" parent="Sprite2D"]
+show_behind_parent = true
+position = Vector2(333.333, -33.3333)
+offset = Vector2(-333.333, 33.3333)
+polygon = PackedVector2Array(100, -166.667, 1133.33, -666.667, 1166.67, -566.667, 100, -133.333)
+
+[node name="Polygon2D3" type="Polygon2D" parent="Sprite2D"]
+show_behind_parent = true
+position = Vector2(333.333, -33.3333)
+offset = Vector2(-333.333, 33.3333)
+polygon = PackedVector2Array(-100, -166.667, -1133.33, -666.667, -1166.67, -566.667, -100, -133.333)
+
+[node name="Polygon2D4" type="Polygon2D" parent="Sprite2D"]
+show_behind_parent = true
+position = Vector2(333.333, -200)
+rotation = -0.505702
+offset = Vector2(-333.333, 33.3333)
+polygon = PackedVector2Array(-100, -166.667, -1133.33, -666.667, -1166.67, -566.667, -100, -133.333)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Sprite2D"]
+show_behind_parent = true
+position = Vector2(266.667, 100)
+rotation = 0.411092
+offset = Vector2(-333.333, 33.3333)
+polygon = PackedVector2Array(100, -166.667, 1133.33, -666.667, 1166.67, -566.667, 100, -133.333)
+
+[node name="spawn_indicator" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.588235)
+z_index = 95
+scale = Vector2(0.018, 0.018)
+texture = ExtResource("8_mr15q")
+
+[node name="bug_box" type="Area2D" parent="."]
+visible = false
+collision_layer = 8
+collision_mask = 6
+metadata/type = "bug"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bug_box"]
+shape = SubResource("CircleShape2D_bf1yu")
+
+[connection signal="got_caught" from="." to="AnimatedSprite2D" method="Caught"]

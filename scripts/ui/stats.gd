@@ -18,6 +18,15 @@ extends Control
 @export var xp_gain : Label
 @export var hunger_restored : Label
 
+var attributes : Dictionary = {
+		"STR" : GameManager.strength,
+		"DEX" : GameManager.dex,
+		"INT" : GameManager.intel
+		}
+var primary : String
+var secondary : String
+var tertiary : String
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	UpdateAll()
@@ -45,124 +54,114 @@ func UpdateAll():
 	CheckButtons()
 	GetClass()
 
+func SortAttributes():
+	attributes = {
+		"STR" : GameManager.strength,
+		"DEX" : GameManager.dex,
+		"INT" : GameManager.intel
+		}
+	primary = "STR"
+	
+	if attributes["DEX"] > attributes[primary]:
+		secondary = primary
+		primary = "DEX"
+	else:
+		secondary = "DEX"
+		
+	if attributes["INT"] > attributes[primary]:
+		tertiary = secondary
+		secondary = primary
+		primary = "INT"
+	elif attributes["INT"] > attributes[secondary]:
+		tertiary = secondary
+		secondary = "INT"
+	else:
+		tertiary = "INT"
 
 func GetClass():
-	var attributes : Array = [GameManager.strength, GameManager.dex, GameManager.intel]
-	var which : int = 0
-	var highest : int = 0
-	
-	for i in attributes.size():
-		if attributes[i] > highest:
-			highest = attributes[i]
-			which = i
-	
-	if highest < 5:
-		which = -1
-		
-	var diffs : Array[int] 
-	for i in attributes.size():
-		if i != which:
-			diffs.append(highest - attributes[i])
-	var max_dif : int = diffs.min()
-	
-	if max_dif == 0:
-		which = -1
-	
+	SortAttributes()
 	var new_class : String = ""
 	
-	match which:
-		-1: # Default build
-			var i = GameManager.strength + GameManager.dex + GameManager.intel
-			if i >= 60:
-				new_class += "THE MANY-LEGGED ONE"
-				
-			elif i >= 40:
-				new_class += "GIGANTULA"
-				
-			elif i >= 20:
-				new_class += "PROFICIENT SPIDER"
+	# Check the gap and total level are large enough to warrant a new class title
+	if attributes[primary] - attributes[secondary] < 2 or attributes[primary] < 5:
+		# Default build (All stats within 2 points of each other)
+		var i = GameManager.strength + GameManager.dex + GameManager.intel
+		if i >= 60:
+			new_class += "THE MANY-LEGGED ONE"
 			
-			elif i >= 10:
-				new_class += "INDECISIVE SPIDER"
-				 
-			else:
-				new_class += "SPIDER"
-			#print("Diffs less than 2")
+		elif i >= 40:
+			new_class += "GIGANTULA"
 			
-		0: # Strength build
-			if GameManager.intel > GameManager.dex:
+		elif i >= 20:
+			new_class += "PROFICIENT SPIDER"
+		
+		elif i >= 10:
+			new_class += "INDECISIVE SPIDER"
+			 
+		else:
+			new_class += "SPIDER"
+		#print("Diffs less than 2")
+	else:
+		match primary:
+			"STR": # Strength build
+				new_class += Prefix()
+				
 				if GameManager.strength >= 10:
-					new_class += "BRILLIANT "
-				elif GameManager.strength >= 5:
-					new_class += "CLEVER "
-					
-			elif GameManager.intel == GameManager.dex:
-				if GameManager.intel >= 5:
-					new_class += "PROFICIENT "
+					new_class += "RECLUSE"
+				else:
+					new_class += "WIDOW"
+				#print("Build is Str heavy by %s" % max_dif)
 				
-			else:
+			"DEX": # Dex build
+				new_class += Prefix()
+				
 				if GameManager.dex >= 10:
-					new_class += "SWIFT "
-				elif GameManager.dex >= 5:
-					new_class += "QUICK "
-			
-			if GameManager.strength >= 10:
-				new_class += "RECLUSE"
-			else:
-				new_class += "WIDOW"
-			#print("Build is Str heavy by %s" % max_dif)
-			
-		1: # Dex build
-			if GameManager.strength > GameManager.intel:
-				if GameManager.strength >= 10:
-					new_class += "DEADLY "
-				elif GameManager.strength >= 5:
-					new_class += "STRONG "
-			
-			elif GameManager.strength == GameManager.intel:
-				if GameManager.strength >= 5:
-					new_class += "PROFICIENT "
-			
-			else:
+					new_class += "HUNTSMAN"
+				else:
+					new_class += "WOLF"
+				#print("Build is Dex heavy by %s" % max_dif)
+				
+			"INT": # Int build
+				new_class += Prefix()
+						
 				if GameManager.intel >= 10:
-					new_class += "BRILLIANT "
-				elif GameManager.intel >= 5:
-					new_class += "CLEVER "
-			
-			if GameManager.dex >= 10:
-				new_class += "HUNTSMAN"
-			else:
-				new_class += "WOLF"
-			#print("Build is Dex heavy by %s" % max_dif)
-			
-		2: # Int build
-			if GameManager.strength > GameManager.dex:
-				if GameManager.strength >= 10:
-					new_class += "DEADLY "
-				elif GameManager.strength >= 5:
-					new_class += "STRONG "
-			
-			elif GameManager.strength == GameManager.dex:
-				if GameManager.strength >= 5:
-					new_class += "PROFICIENT "
-			
-			else:
-				if GameManager.dex >= 10:
-					new_class += "SWIFT "
-				elif GameManager.dex >= 5:
-					new_class += "QUICK "
-					
-			if GameManager.intel >= 10:
-				new_class += "WEAVER"
-			else:
-				new_class += "TANGLE"
-			
-			#print("Build is Int heavy by %s" % max_dif)
-			
-		_: # Error
-			printerr("Something went wrong with class check")
+					new_class += "WEAVER"
+				else:
+					new_class += "TANGLE"
+				
+				#print("Build is Int heavy by %s" % max_dif)
+				
+			_: # Error
+				printerr("Something went wrong with class check")
 		
 	spider_class.text = new_class
+
+func Prefix() -> String:
+	#print("Secondary stat at: %s" % at)
+	if attributes[secondary] >= 5:
+		if attributes[secondary] - attributes[tertiary] < 2:
+			return "PROFICIENT "
+		
+		else:
+			match secondary:
+				"STR":
+					if GameManager.strength >= 10:
+						return "DEADLY "
+					return "STRONG "
+				
+				"DEX":
+					if GameManager.dex >= 10:
+						return "SWIFT "
+					return "QUICK "
+				
+				"INT":
+					if GameManager.intel >= 10:
+						return "BRILLIANT "
+					return "CLEVER "
+				
+				_:
+					return "PREFIX ERROR"
+	return ""
 
 func CheckButtons():
 	var attributes : Array = [GameManager.strength, GameManager.dex, GameManager.intel]

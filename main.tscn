@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=56 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
@@ -18,8 +18,11 @@
 [ext_resource type="Texture2D" uid="uid://br17xi1h4qve3" path="res://art/enemies/spider/spider_attack_05.png" id="8_r0cs7"]
 [ext_resource type="Script" path="res://scripts/ui/menu.gd" id="9_d5te7"]
 [ext_resource type="Script" path="res://scripts/ui/stats.gd" id="10_isho5"]
+[ext_resource type="Script" path="res://scripts/utility/note_stamina_warning.gd" id="11_6yel8"]
+[ext_resource type="Script" path="res://scripts/utility/note_level.gd" id="11_o2kqh"]
 [ext_resource type="Texture2D" uid="uid://boiotn6f2jmyj" path="res://art/spider_menu_legs_tintable.png" id="11_rcgev"]
 [ext_resource type="Texture2D" uid="uid://cxtjyu3xpox1v" path="res://art/landscape.png" id="11_uqygn"]
+[ext_resource type="Script" path="res://scripts/utility/note_stat_changes.gd" id="12_2angd"]
 [ext_resource type="Texture2D" uid="uid://bplttmxn1o2s3" path="res://art/spider_menu_eyes.png" id="12_bvxt0"]
 [ext_resource type="Texture2D" uid="uid://bd7gki4v5046p" path="res://art/background_frame.png" id="12_cw66l"]
 [ext_resource type="Script" path="res://scripts/ui/xp_bar.gd" id="13_r8ng5"]
@@ -27,6 +30,10 @@
 [ext_resource type="FontFile" uid="uid://ibotlu8uj75v" path="res://fonts/EBGaramond-VariableFont_wght.ttf" id="16_eiq8f"]
 [ext_resource type="Texture2D" uid="uid://iwk38pgw73os" path="res://art/spider_dead.png" id="17_p1asq"]
 [ext_resource type="Texture2D" uid="uid://be8sc2c0mtmee" path="res://art/drop_shadow.png" id="18_wsfvt"]
+[ext_resource type="Resource" uid="uid://b5pgcqddr85td" path="res://resources/bug_table_60.tres" id="20_ebhga"]
+[ext_resource type="PackedScene" uid="uid://cm2dqjjl0fds" path="res://fabs/bug_gnat.tscn" id="21_gc865"]
+[ext_resource type="Script" path="res://scripts/particle_manager.gd" id="31_6cw7h"]
+[ext_resource type="Texture2D" uid="uid://dgd6lnrnrv6qr" path="res://art/web_debris_04.png" id="31_b76v8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s51p0"]
 atlas = ExtResource("4_6spi2")
@@ -168,6 +175,13 @@ border_width_bottom = 50
 border_color = Color(0.0588235, 0.0588235, 0.0588235, 0)
 border_blend = true
 
+[sub_resource type="Curve" id="Curve_1afoi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_pdco5"]
+colors = PackedColorArray(1, 1, 1, 0.588235, 1, 1, 1, 0)
+
 [node name="existence" type="Node2D"]
 
 [node name="player_spider" type="Node2D" parent="." node_paths=PackedStringArray("web", "intersections", "starting_strand", "nav_controller", "joystick_target", "anim", "stamina_warning")]
@@ -181,7 +195,7 @@ starting_strand = NodePath("../web/strands/post_left")
 nav_controller = NodePath("spider_nav")
 joystick_target = NodePath("joystick_targeting")
 anim = NodePath("spider_animation")
-stamina_warning = NodePath("stamina_warning")
+stamina_warning = NodePath("notifications/VBoxContainer/stamina_warning")
 
 [node name="joystick_targeting" type="Node2D" parent="player_spider"]
 
@@ -222,19 +236,50 @@ collision_mask = 52
 shape = SubResource("CircleShape2D_yvbpu")
 metadata/type = "nav"
 
-[node name="stamina_warning" type="Label" parent="player_spider"]
-self_modulate = Color(1, 1, 1, 0)
-offset_left = -77.0
-offset_top = -49.0
-offset_right = 81.0
-offset_bottom = -26.0
+[node name="notifications" type="Node2D" parent="player_spider"]
+position = Vector2(0, -50)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="player_spider/notifications"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="stamina_warning" type="Label" parent="player_spider/notifications/VBoxContainer"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+z_index = 50
+layout_mode = 2
 theme_type_variation = &"DebugLabel"
 text = "Not enough stamina"
+horizontal_alignment = 1
+script = ExtResource("11_6yel8")
 
-[node name="sky" type="Polygon2D" parent="."]
-z_index = -100
-color = Color(0.632249, 0.747282, 1, 1)
-polygon = PackedVector2Array(-88, -75, -75, 1234, 2071, 1177, 2103, -85)
+[node name="stat_changes" type="Label" parent="player_spider/notifications/VBoxContainer"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_type_variation = &"StatCategory"
+text = "+#xp"
+horizontal_alignment = 1
+script = ExtResource("12_2angd")
+
+[node name="level_up" type="Label" parent="player_spider/notifications/VBoxContainer"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_type_variation = &"StatCategory"
+text = "Level Up"
+horizontal_alignment = 1
+script = ExtResource("11_o2kqh")
 
 [node name="background_field" type="Sprite2D" parent="."]
 z_index = -100
@@ -244,31 +289,6 @@ texture = ExtResource("11_uqygn")
 [node name="background_fence" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
 texture = ExtResource("12_cw66l")
-
-[node name="borders" type="Node2D" parent="."]
-visible = false
-
-[node name="post_top" type="Polygon2D" parent="borders"]
-position = Vector2(949, 93)
-rotation = 1.57314
-color = Color(0.364706, 0.286275, 0.152941, 1)
-polygon = PackedVector2Array(-104.574, -1095.91, -132.55, 1052.1, 43.5105, 1070.9, 44.4142, -1103.11)
-
-[node name="post_right" type="Polygon2D" parent="borders"]
-position = Vector2(1482, 554)
-color = Color(0.364706, 0.286275, 0.152941, 1)
-polygon = PackedVector2Array(-42, -610, -43, 610, 241, 607, 237, -609)
-
-[node name="post_bottom" type="Polygon2D" parent="borders"]
-position = Vector2(949, 987)
-rotation = 1.57314
-color = Color(0.364706, 0.286275, 0.152941, 1)
-polygon = PackedVector2Array(-42.3465, -1000.9, -43.2759, 1162.1, 126.55, 1087.9, 118.634, -1006.11)
-
-[node name="post_left" type="Polygon2D" parent="borders"]
-position = Vector2(437, 554)
-color = Color(0.364706, 0.286275, 0.152941, 1)
-polygon = PackedVector2Array(-241, -610, -239, 610, 42, 607, 42, -609)
 
 [node name="web" type="Node2D" parent="."]
 
@@ -382,18 +402,25 @@ node_b = NodePath("../../intersections/nav_node")
 
 [node name="bugstuff" type="Node2D" parent="."]
 
-[node name="spawn_area" type="Area2D" parent="bugstuff" node_paths=PackedStringArray("timer", "container")]
+[node name="spawn_area" type="Area2D" parent="bugstuff" node_paths=PackedStringArray("timer", "timer_gnat", "container")]
 position = Vector2(960, 540)
 script = ExtResource("5_oxs3t")
-timer = NodePath("../spawn_timer")
+delay = 7.0
+gnat_spawnrate = 4.0
+timer = NodePath("../timer_spawns")
+timer_gnat = NodePath("../timer_gnats")
 bug = ExtResource("6_ejmxh")
 container = NodePath("../bugs")
+bug_table = ExtResource("20_ebhga")
+gnat_fab = ExtResource("21_gc865")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="bugstuff/spawn_area"]
 position = Vector2(-10, -1)
 shape = SubResource("CircleShape2D_6o2lh")
 
-[node name="spawn_timer" type="Timer" parent="bugstuff"]
+[node name="timer_spawns" type="Timer" parent="bugstuff"]
+
+[node name="timer_gnats" type="Timer" parent="bugstuff"]
 
 [node name="bugs" type="Node2D" parent="bugstuff"]
 
@@ -409,6 +436,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="fade" type="Panel" parent="CanvasLayer/hud"]
+visible = false
 z_index = 5
 layout_mode = 1
 anchors_preset = 15
@@ -420,6 +448,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tsdmm")
 
 [node name="intro_screen" type="Panel" parent="CanvasLayer/hud"]
+visible = false
 z_index = 100
 layout_mode = 1
 anchors_preset = 15
@@ -432,6 +461,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_1b1cx")
 
 [node name="pause_container" type="Control" parent="CanvasLayer/hud" node_paths=PackedStringArray("fade", "confirm", "intro_screen", "game_over_screen", "black_screen", "taunt", "end_buttons", "dead_spider")]
 process_mode = 3
+visible = false
 z_index = 10
 layout_mode = 1
 anchors_preset = 8
@@ -1471,6 +1501,28 @@ theme_override_font_sizes/font_size = 80
 text = "YOU DIED"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="particle_parent" type="Node2D" parent="." node_paths=PackedStringArray("web_debris")]
+script = ExtResource("31_6cw7h")
+web_debris = [NodePath("web_particle_container/web_debris")]
+
+[node name="web_particle_container" type="Node2D" parent="particle_parent"]
+
+[node name="web_debris" type="CPUParticles2D" parent="particle_parent/web_particle_container"]
+emitting = false
+one_shot = true
+explosiveness = 0.9
+lifetime_randomness = 0.2
+texture = ExtResource("31_b76v8")
+emission_shape = 3
+emission_rect_extents = Vector2(1920, 1)
+gravity = Vector2(0, 400)
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+scale_amount_min = 0.25
+scale_amount_max = 0.25
+scale_amount_curve = SubResource("Curve_1afoi")
+color_ramp = SubResource("Gradient_pdco5")
 
 [connection signal="area_entered" from="player_spider/spider_body" to="player_spider" method="on_area_entered"]
 [connection signal="area_exited" from="player_spider/spider_body" to="player_spider" method="on_area_exited"]

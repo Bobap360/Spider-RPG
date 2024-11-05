@@ -1,22 +1,31 @@
 extends Node2D
 
-@export var health : float = 100.0
-@export var struggle_count : int = 5
-@export var struggle_time : float = 10.0
-@export var spawn_rate : float = 1.0
-@export var value : float = 10
+@export_category("Behavior Values")
 
+## How much damage this enemy can take before dying
+@export var health : float = 100.0
+## Amount of time in seconds the bug will be caught in the web
+@export var struggle_time : float = 10.0
+## Multiplier for indicator animation time
+@export var spawn_rate : float = 1.0
+## How much xp and hunger this enemy grants on death
+@export var value : float = 10
+@export var wiggle_strength : float = 1.0
+
+@export_group("Node References")
 @export var indicator : Node2D
 @export var collider : Area2D
-@export var timer : Timer
 @export var art : Sprite2D
+@export var anim : AnimatedSprite2D
 @export var health_bar : ProgressBar
 @export var struggle_bar : ProgressBar
-@export var anim : AnimatedSprite2D
 
 var strand : Node2D
 var caught = false
 var spawning = false
+
+signal got_caught()
+signal freed()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,65 +33,81 @@ func _ready() -> void:
 	health_bar.value = health
 	health_bar.visible = false
 	struggle_bar.visible = false
-	anim.play()
+	
+	if art:
+		art.modulate.a = 0.0
+	
+	if anim:
+		anim.modulate.a = 0.0
+		anim.play("default")
+	
+	indicator.scale = indicator.scale * 4
+	
+	Spawning()
 
 func Spawning() -> void:
-	#var step : float = 1.0/24.0
-	#var i : float = 0
-	#var delay = GameManager.spawn_time * spawn_rate
-	#var increment = (indicator.scale.x - art.scale.x/2) * step / delay
-	#print(increment)
-	#
-	#while i < delay:
-		#indicator.scale -= Vector2(increment, increment)
-		#i += step
-		#timer.start(step)
-		#await timer.timeout
+	var rate = GameManager.spawn_time * spawn_rate
 	var tween = create_tween()
-	tween.tween_property(indicator, "scale", Vector2(0.03,0.03), GameManager.spawn_time * spawn_rate)
+	tween.tween_property(indicator, "scale", indicator.scale * 0.5, rate)
+	tween.parallel().tween_property(indicator, "global_rotation", indicator.global_rotation + (0.8 * rate), rate)
 	await tween.finished
 	
-	anim.visible = true
+	if anim:
+		anim.visible = true
+		
 	indicator.visible = false
 	FlyThrough()
 
+func Wiggle():
+	while caught:
+		var tween = create_tween()
+		
+		if anim:
+			tween.tween_property(anim, "position", Vector2(randf_range(-wiggle_strength, wiggle_strength), randf_range(-wiggle_strength, wiggle_strength)), 0.3)
+		else:
+			tween.tween_property(art, "position", Vector2(randf_range(-wiggle_strength, wiggle_strength), randf_range(-wiggle_strength, wiggle_strength)), 0.3)
+		await tween.finished
+
 func Struggle():
-	#for i in struggle_count:
-		#print("Bug is struggling")
-		## Animation here
-		#timer.start(struggle_delay)
-		#await timer.timeout
 	struggle_bar.visible = true
-	anim.play("default", 0.5)
+	
+	if anim:
+		Transition()
+		
 	var struggle_anim = create_tween()
 	var dist = 1.0
 	var step = 0.25
 	
-	#var times : Array = []
-	#var time_tracker = struggle_time
-	#var time_step = 0.1
-	#var new_time = 2.0
-	#
-	#while time_tracker > 0:
-		#times.push_front(new_time)
-		#new_time -= time_step
-		#time_tracker -= new_time
 	var delay = struggle_time * GameManager.struggle_mod
 	for i in 20:
 		dist += step
 		
-		struggle_anim.tween_property(anim, "position", Vector2(randf_range(-dist, dist), randf_range(-dist, dist)), delay/20)
-		
+		if anim:
+			struggle_anim.tween_property(anim, "position", Vector2(randf_range(-dist, dist), randf_range(-dist, dist)), delay/20)
+			struggle_anim.parallel().tween_property(anim, "rotation_degrees", rotation_degrees + randf_range(-5, 5), delay/20)
+		else:
+			struggle_anim.tween_property(art, "position", Vector2(randf_range(-dist, dist), randf_range(-dist, dist)), delay/20)
+			struggle_anim.parallel().tween_property(art, "rotation_degrees", rotation_degrees + randf_range(-5, 5), delay/20)
+	
 	var tween = create_tween()
 	tween.tween_property(struggle_bar, "value", struggle_bar.max_value, delay)
 	await tween.finished
 	if caught:
 		FlyAway()
-		anim.play("default", 1.0)
 		
 		if is_instance_valid(strand):
 			strand.Break()
+		
+		if anim:
+			anim.play_backwards("transition")
+			await anim.animation_finished
+			anim.play("default", 1.0)
 		#print("Bug has broken free")
+
+func Transition():
+	anim.play("transition", 1.0)
+	await anim.animation_finished
+	anim.play("caught", 1.0)
 
 func CheckWeb() -> void:
 	await get_tree().physics_frame
@@ -96,6 +121,7 @@ func CheckWeb() -> void:
 					caught = true
 					strand = i.get_parent()
 					strand.bugs.append(self)
+					got_caught.emit()
 					return
 					
 	#print("Bug is FREE")
@@ -117,8 +143,18 @@ func FlyAway() -> void:
 
 func FlyThrough() -> void:
 	var fade_in = create_tween()
-	fade_in.tween_property(anim, "self_modulate", Color(1, 1, 1, 1), 1.0)
-	fade_in.parallel().tween_property(anim, "scale", anim.scale * 0.5, 1.0)
+	var regular_size : Vector2
+	if anim:
+		regular_size = anim.scale
+		anim.scale = anim.scale * 2
+		fade_in.tween_property(anim, "modulate:a", 1.0, 1.0)
+		fade_in.parallel().tween_property(anim, "scale", regular_size, 1.0)
+	else:
+		regular_size = art.scale
+		art.scale = art.scale * 2
+		fade_in.tween_property(art, "modulate:a", 1.0, 1.0)
+		fade_in.parallel().tween_property(art, "scale", regular_size, 1.0)
+		
 	await fade_in.finished
 	fade_in.stop()
 	
@@ -130,12 +166,22 @@ func FlyThrough() -> void:
 		# Appears behind web now
 		z_index = -10
 		var fade_out = create_tween()
-		fade_out.tween_property(anim, "self_modulate", Color(1, 1, 1, 0), 1.0)
-		fade_out.parallel().tween_property(anim, "scale", Vector2.ZERO, 1.0)
+		
+		if anim:
+			fade_out.tween_property(anim, "self_modulate:a", 0.0, 1.0)
+			fade_out.parallel().tween_property(anim, "scale", Vector2.ZERO, 1.0)
+		else:
+			fade_out.tween_property(art, "modulate:a", 0.0, 1.0)
+			fade_out.parallel().tween_property(art, "scale", Vector2.ZERO, 1.0)
+		
 		await fade_out.finished
 		queue_free()
-	else:
+		
+	elif struggle_time > 0:
 		Struggle()
+		
+	else: 
+		Wiggle()
 	
 func Damage(amount : float):
 	if caught:

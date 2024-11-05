@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="LootTable" load_steps=7 format=3 uid="uid://cuxnkwtses1dh"]
+
+[ext_resource type="Script" path="res://scripts/utility/loot.gd" id="1_xoap1"]
+[ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="2_4dbov"]
+[ext_resource type="PackedScene" uid="uid://d1saeacc84nk2" path="res://fabs/bug_faerie.tscn" id="3_m74jl"]
+[ext_resource type="Script" path="res://scripts/utility/loot_table.gd" id="4_waudm"]
+
+[sub_resource type="Resource" id="Resource_0ojf2"]
+resource_name = "Fly"
+script = ExtResource("1_xoap1")
+percent_chance = 99.5025
+name = "Fly"
+drop = ExtResource("2_4dbov")
+weight = 200
+weight_from = 0
+weight_to = 200
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_1nskd"]
+resource_name = "Faerie"
+script = ExtResource("1_xoap1")
+percent_chance = 0.497512
+name = "Faerie"
+drop = ExtResource("3_m74jl")
+weight = 1
+weight_from = 200
+weight_to = 201
+weight_mod = 1.0
+
+[resource]
+resource_local_to_scene = true
+resource_name = "Bugs Level 1"
+script = ExtResource("4_waudm")
+table = Array[ExtResource("1_xoap1")]([SubResource("Resource_0ojf2"), SubResource("Resource_1nskd")])
+calculate_values = false

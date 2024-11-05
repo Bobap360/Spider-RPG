@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Loot" load_steps=3 format=3 uid="uid://cmx2vbbkqjqur"]
+
+[ext_resource type="PackedScene" uid="uid://dqorq5bmoyadi" path="res://fabs/bug_horsefly.tscn" id="1_u710a"]
+[ext_resource type="Script" path="res://scripts/utility/loot.gd" id="2_u4b07"]
+
+[resource]
+script = ExtResource("2_u4b07")
+percent_chance = 0.0
+name = "Horsefly"
+drop = ExtResource("1_u710a")
+weight = 50
+weight_from = 0
+weight_to = 0
+weight_mod = 1.0

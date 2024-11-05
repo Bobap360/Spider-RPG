@@ -1,0 +1,94 @@
+[gd_scene load_steps=8 format=3 uid="uid://dmp0syx1hn2ms"]
+
+[ext_resource type="Script" path="res://scripts/bug.gd" id="1_iumg2"]
+[ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="6_pmanf"]
+[ext_resource type="Texture2D" uid="uid://3bdig5i54lgv" path="res://art/reticle_aoe_white.png" id="7_diwk1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kkf8"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a348t"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2uuku"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"caught",
+"speed": 30.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"transition",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a1ujy"]
+
+[node name="bug_base" type="Node2D" node_paths=PackedStringArray("indicator", "collider", "art", "anim", "health_bar", "struggle_bar")]
+z_index = 60
+script = ExtResource("1_iumg2")
+indicator = NodePath("spawn_indicator")
+collider = NodePath("collision")
+art = NodePath("art")
+anim = NodePath("anim")
+health_bar = NodePath("health_bar")
+struggle_bar = NodePath("struggle_bar")
+
+[node name="health_bar" type="ProgressBar" parent="."]
+z_index = 100
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+value = 50.0
+show_percentage = false
+
+[node name="struggle_bar" type="ProgressBar" parent="."]
+self_modulate = Color(0.670588, 0, 0, 1)
+z_index = 100
+offset_left = -20.0
+offset_top = 15.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+show_percentage = false
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_2uuku")
+
+[node name="art" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.761859, 0.721623, 0.343821, 1)
+clip_children = 2
+scale = Vector2(0.035, 0.035)
+texture = ExtResource("6_pmanf")
+
+[node name="spawn_indicator" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.588235)
+z_index = 95
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("7_diwk1")
+
+[node name="collision" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 6
+metadata/type = "bug"
+
+[node name="shape" type="CollisionShape2D" parent="collision"]
+shape = SubResource("CircleShape2D_a1ujy")
+debug_color = Color(0.990228, 0, 0.280933, 0.42)

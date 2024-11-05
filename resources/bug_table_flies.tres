@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="LootTable" load_steps=11 format=3 uid="uid://dfgpld2hx6bdo"]
+
+[ext_resource type="Script" path="res://scripts/utility/loot_table.gd" id="1_j3qtx"]
+[ext_resource type="Script" path="res://scripts/utility/loot.gd" id="2_403ub"]
+[ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="3_jvw5l"]
+[ext_resource type="PackedScene" uid="uid://cm2dqjjl0fds" path="res://fabs/bug_gnat.tscn" id="3_u6xi7"]
+[ext_resource type="PackedScene" uid="uid://d4p07ao8xo8w" path="res://fabs/bug_blowfly.tscn" id="4_0k2ka"]
+[ext_resource type="PackedScene" uid="uid://dqorq5bmoyadi" path="res://fabs/bug_horsefly.tscn" id="5_p3wxs"]
+
+[sub_resource type="Resource" id="Resource_e8ykv"]
+resource_name = "Gnat"
+script = ExtResource("2_403ub")
+percent_chance = 25.0
+name = ""
+drop = ExtResource("3_u6xi7")
+weight = 200
+weight_from = 0
+weight_to = 200
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_jaxb1"]
+resource_name = "Fly"
+script = ExtResource("2_403ub")
+percent_chance = 25.0
+name = "Fly"
+drop = ExtResource("3_jvw5l")
+weight = 200
+weight_from = 200
+weight_to = 400
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_nk58r"]
+resource_name = "Blowfly"
+script = ExtResource("2_403ub")
+percent_chance = 25.0
+name = "Blowfly"
+drop = ExtResource("4_0k2ka")
+weight = 200
+weight_from = 400
+weight_to = 600
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_oe05o"]
+resource_name = "Horsefly"
+script = ExtResource("2_403ub")
+percent_chance = 25.0
+name = "Horsefly"
+drop = ExtResource("5_p3wxs")
+weight = 200
+weight_from = 600
+weight_to = 800
+weight_mod = 1.0
+
+[resource]
+resource_name = "Flies Table"
+script = ExtResource("1_j3qtx")
+table = Array[ExtResource("2_403ub")]([SubResource("Resource_e8ykv"), SubResource("Resource_jaxb1"), SubResource("Resource_nk58r"), SubResource("Resource_oe05o")])
+calculate_values = false

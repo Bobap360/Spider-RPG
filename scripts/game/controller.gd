@@ -43,10 +43,13 @@ func _physics_process(delta: float) -> void:
 				i.Firing()
 		
 		if bugs.size() > 0:
-			is_attacking = true
-			anim.play("attack")
 			for i in bugs:
-				i.Damage(delta * GameManager.damage)
+				if i.caught:
+					i.Damage(delta * GameManager.damage)
+					is_attacking = true
+			if is_attacking:
+				anim.play("attack")
+				
 		else:
 			is_attacking = false
 		
@@ -102,8 +105,8 @@ func MovingToward(move_dir : Vector2, target : Vector2) -> bool:
 		return false
 
 func _unhandled_input(event: InputEvent) -> void:
-	#if event.is_action_pressed("Game Over"):
-		#GameManager.End()
+	if event.is_action_pressed("Game Over"):
+		GameManager.End()
 		
 	if !GameManager.is_ended:
 		if event.is_action_pressed("Sprint"):
@@ -125,10 +128,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_released("Fire"):
 			ShotWeb(get_global_mouse_position())
 		
-		#if event.is_action_pressed("Cheat Level"):
-			#GameManager.XP(GameManager.level_threshold)
+		if event.is_action_pressed("Cheat Level"):
+			GameManager.XP(GameManager.level_threshold)
 		
-
 func ShotWeb(target : Vector2):
 	if GameManager.stamina > GameManager.stamina_shot_cost:
 		GameManager.Stamina(-GameManager.stamina_shot_cost)
@@ -145,14 +147,9 @@ func ShotWeb(target : Vector2):
 	
 	else:
 		# Do error feedback here
-		ShowStaminaWarning()
+		#Tools.fade_in(stamina_warning)
+		stamina_warning.notify()
 		#print("Cannot shot web")
-
-func ShowStaminaWarning():
-	var tween = create_tween()
-	tween.tween_property(stamina_warning, "self_modulate", Color(1, 1, 1, 1), 0.15)
-	tween.tween_property(stamina_warning, "self_modulate", Color(1, 1, 1, 1), 0.5)
-	tween.tween_property(stamina_warning, "self_modulate", Color(1, 1, 1, 0), 0.15)
 
 func EndStrand(element : Line2D):
 	strands.erase(element)
@@ -215,6 +212,10 @@ func SafePlace(check : Line2D):
 
 func GetCurrentStrand() -> Line2D:
 	var stored = nav_controller.get_overlapping_areas()
+	# Fallback for off-web navigation errors
+	if stored.size() == 0:
+		stored = $spider_body.get_overlapping_areas()
+		
 	var overlaps : Array[Area2D]
 	for i in stored:
 		#print("Collision layer is %s" % i.collision_layer)

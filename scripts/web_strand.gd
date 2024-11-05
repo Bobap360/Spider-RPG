@@ -12,6 +12,7 @@ var target : Vector2
 var bugs : Array[Node2D]
 
 signal completed_firing(element : Line2D)
+signal broken(new_pos : Vector2, new_scale : float, new_rot : float)
 
 func _ready() -> void:
 	debug_label.text = str(self.name)
@@ -20,10 +21,13 @@ func _ready() -> void:
 func Initialize(start : Vector2, new_target : Vector2, existing_nav : Node2D) -> void:
 	#node_a.position = start
 	#node_b.position = start
+	
+	#Merge nodes if already on an intersection
 	if existing_nav:
 		node_a = existing_nav
 	else:
 		node_a = CreateNav(start)
+
 	node_b = CreateNav(start)
 	node_a.strands.append(self)
 	node_a.monitorable = true
@@ -52,7 +56,8 @@ func End(source : Line2D):
 	#call_deferred("CreateNav", node_b.position)
 	node_b.set_deferred("monitorable", true)
 	node_a.UpdateDirections()
-	node_b.call_deferred("CreateIntersect", source)
+	if !node_b.CheckCombine(self):
+		node_b.call_deferred("CreateIntersect", source)
 	completed_firing.emit(self)
 	
 	if is_instance_valid(glob):
@@ -73,12 +78,23 @@ func Vanish():
 	queue_free()
 
 func Break():
-	for i in bugs:
-		i.FlyAway()
+	#var count : int = 0
+	#for i in bugs:
+		#count += 1
+		#i.FlyAway()
+	#print("%s bugs flew away" % count)
+	while bugs.size() > 0:
+		bugs[0].FlyAway()
 	# Breaking animation stuff goes here
 	GameManager.controller.SafePlace(self)
 	node_a.Remove(self)
 	node_b.Remove(self)
+	GameManager.particle_manager.PlayWebDebris(collider.global_position, collider.shape.size.x, collider.global_rotation)
+	
+	var tween = create_tween()
+	tween.tween_property(self, "self_modulate", Color(1, 1, 1, 0), 0.3)
+	await tween.finished
+	
 	queue_free()
 
 func CreateNav(new_pos : Vector2) -> Node2D:
@@ -93,10 +109,14 @@ func AdjustPlacement(new_a : Node2D, new_b : Node2D):
 	node_b = new_b
 	set_points(PackedVector2Array([node_a.position, node_b.position]))
 	UpdateCollider()
+	
+	#print_debug("Checking on %s and %s" % [node_a.name, node_b.name])
+	
 	if !node_a.strands.has(self):
 		node_a.strands.append(self)
 	if !node_b.strands.has(self):
 		node_b.strands.append(self)
+	
 	node_a.UpdateDirections()
 	node_b.UpdateDirections()
 

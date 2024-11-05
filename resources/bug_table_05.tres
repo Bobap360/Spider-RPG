@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="LootTable" load_steps=9 format=3 uid="uid://bp6j6hxiwcwdw"]
+
+[ext_resource type="Script" path="res://scripts/utility/loot.gd" id="1_bfkrl"]
+[ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="2_o7d8o"]
+[ext_resource type="PackedScene" uid="uid://d1saeacc84nk2" path="res://fabs/bug_faerie.tscn" id="3_edwnw"]
+[ext_resource type="PackedScene" uid="uid://dqorq5bmoyadi" path="res://fabs/bug_horsefly.tscn" id="3_olevh"]
+[ext_resource type="Script" path="res://scripts/utility/loot_table.gd" id="4_fuwsn"]
+
+[sub_resource type="Resource" id="Resource_0ojf2"]
+resource_name = "Fly"
+script = ExtResource("1_bfkrl")
+percent_chance = 66.335
+name = "Fly"
+drop = ExtResource("2_o7d8o")
+weight = 400
+weight_from = 0
+weight_to = 400
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_dbq5w"]
+resource_name = "Horsefly"
+script = ExtResource("1_bfkrl")
+percent_chance = 33.1675
+name = "Horsefly"
+drop = ExtResource("3_olevh")
+weight = 200
+weight_from = 400
+weight_to = 600
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_1nskd"]
+resource_name = "Faerie"
+script = ExtResource("1_bfkrl")
+percent_chance = 0.497512
+name = "Faerie"
+drop = ExtResource("3_edwnw")
+weight = 3
+weight_from = 600
+weight_to = 603
+weight_mod = 1.0
+
+[resource]
+resource_local_to_scene = true
+resource_name = "Bugs Level 5"
+script = ExtResource("4_fuwsn")
+table = Array[ExtResource("1_bfkrl")]([SubResource("Resource_0ojf2"), SubResource("Resource_dbq5w"), SubResource("Resource_1nskd")])
+calculate_values = false

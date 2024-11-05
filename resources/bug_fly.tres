@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Loot" load_steps=3 format=3 uid="uid://bfodjvanrkhrf"]
+
+[ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="1_5fn4t"]
+[ext_resource type="Script" path="res://scripts/utility/loot.gd" id="1_b1vep"]
+
+[resource]
+script = ExtResource("1_b1vep")
+name = "Fly"
+drop = ExtResource("1_5fn4t")
+weight = 200
+percent_chance = 0.0

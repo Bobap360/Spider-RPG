@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=3 uid="uid://n0ntkd18uv2t"]
+
+[ext_resource type="PackedScene" uid="uid://dmp0syx1hn2ms" path="res://fabs/bugs/bug_base.tscn" id="1_dl5d1"]
+[ext_resource type="Texture2D" uid="uid://oyywfxuckxwm" path="res://art/enemies/horsefly/horsefly_flying_01.png" id="2_yyy7e"]
+[ext_resource type="Texture2D" uid="uid://b01wgaqt0ghct" path="res://art/enemies/horsefly/horsefly_flying_02.png" id="3_k4a62"]
+[ext_resource type="Texture2D" uid="uid://cel8rpg38l68s" path="res://art/enemies/horsefly/horsefly_flying_03.png" id="4_mcjy3"]
+[ext_resource type="Texture2D" uid="uid://b628i7jk5tuhq" path="res://art/enemies/horsefly/horsefly_flying_04.png" id="5_ktppf"]
+[ext_resource type="Texture2D" uid="uid://dobcsl42smegx" path="res://art/enemies/horsefly/horsefly_flying_05.png" id="6_5o4q3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ucjw4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_yyy7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_k4a62")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_mcjy3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ktppf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_5o4q3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ktppf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_mcjy3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_k4a62")
+}],
+"loop": true,
+"name": &"caught",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_yyy7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_k4a62")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_mcjy3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ktppf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_5o4q3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ktppf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_mcjy3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_k4a62")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"transition",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kww1l"]
+radius = 8.0
+
+[node name="bug_fly" instance=ExtResource("1_dl5d1")]
+
+[node name="anim" parent="." index="2"]
+scale = Vector2(0.16, 0.16)
+sprite_frames = SubResource("SpriteFrames_ucjw4")
+animation = &"transition"
+
+[node name="spawn_indicator" parent="." index="4"]
+scale = Vector2(0.02, 0.02)
+
+[node name="shape" parent="collision" index="0"]
+shape = SubResource("CircleShape2D_kww1l")

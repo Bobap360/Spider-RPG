@@ -8,6 +8,21 @@ var directions : Array[Vector2]
 func _ready() -> void:
 	debug_label.text = self.name
 
+# Fires on collision with an end point
+func CheckCombine(strand : Line2D) -> bool:
+	var combine_check = get_overlapping_areas()
+	
+	# Gets navigation nodes for merge
+	for i in combine_check:
+		if i.collision_layer == 32 and i.name != "spider_nav":
+			#print("Replacing %s with %s" % [strand.node_b.name, i.name])
+			print("Can check on %s and %s from here" %[strand.node_a.name, strand.node_b.name])
+			strand.AdjustPlacement(strand.node_a, i)
+			strand.node_a.MergeToSingle()
+			queue_free()
+			return true
+	
+	return false
 func CreateIntersect(strand : Line2D):
 	var a = strand.node_a
 	var b = strand.node_b
@@ -45,6 +60,7 @@ func Remove(element : Line2D):
 
 # Turns straight line intersections into a continuous line
 func MergeToSingle():
+	print("Merge firing on %s" % self.name)
 	var a : Node2D
 	var b : Node2D
 	
@@ -77,12 +93,13 @@ func InLine(a : Node2D, b: Node2D) -> bool:
 	var dif = v1 - v2
 	dif = abs(dif)
 	
-	#print ("%s differs by %s" % [self, dif])
-	if dif.x < 0.05 and dif.y < 0.05:
-		#print("%s is a STRAIGHT LINE" % self.name)
+	print("Checking on %s and %s for merge" % [a.name, b.name])
+	print ("%s differs by %s" % [self, dif])
+	if dif.x < 0.08 and dif.y < 0.08:
+		print("%s is a STRAIGHT LINE" % self.name)
 		return true
 	else:
-		#print("%s is a CURVY BITCH" % self.name)
+		print("%s is a CURVY BITCH" % self.name)
 		return false
 		
 func SendDirection(input_dir : Vector2, start : Vector2) -> Vector2:

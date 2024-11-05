@@ -59,6 +59,7 @@ var is_ended : bool
 var intersections : Node2D
 var web : Node2D
 var controller : Node2D
+var particle_manager : Node2D
 
 # Signals
 signal score_changed(amount : int)
@@ -145,7 +146,7 @@ func XP(amount : int):
 	if level <= 60:
 		xp += amount * xp_mod
 		
-		if xp >= level_threshold:
+		while xp >= level_threshold:
 			if level < 60:
 				xp -= level_threshold
 				attribute_points += 1

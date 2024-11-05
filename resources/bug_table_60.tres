@@ -1,0 +1,95 @@
+[gd_resource type="Resource" script_class="LootTable" load_steps=17 format=3 uid="uid://b5pgcqddr85td"]
+
+[ext_resource type="Script" path="res://scripts/utility/loot_table.gd" id="1_anv02"]
+[ext_resource type="Script" path="res://scripts/utility/loot.gd" id="2_k8heb"]
+[ext_resource type="PackedScene" uid="uid://353woarrmja8" path="res://fabs/bug_fly.tscn" id="3_ox6ov"]
+[ext_resource type="PackedScene" uid="uid://dqorq5bmoyadi" path="res://fabs/bug_horsefly.tscn" id="4_k5iop"]
+[ext_resource type="PackedScene" uid="uid://d1saeacc84nk2" path="res://fabs/bug_faerie.tscn" id="5_0otry"]
+[ext_resource type="PackedScene" uid="uid://deamvypw7d27d" path="res://fabs/bug_dragonfly.tscn" id="6_ietj7"]
+[ext_resource type="PackedScene" uid="uid://b2i2eeor4co1p" path="res://fabs/bug_beetle.tscn" id="6_yo66c"]
+[ext_resource type="PackedScene" uid="uid://cqrymrki58k5k" path="res://fabs/bug_moth.tscn" id="7_5bvmy"]
+[ext_resource type="PackedScene" uid="uid://c5nktaskooypo" path="res://fabs/bug_bee.tscn" id="8_gw5k2"]
+
+[sub_resource type="Resource" id="Resource_0ojf2"]
+resource_name = "Fly"
+script = ExtResource("2_k8heb")
+percent_chance = 6.66001
+name = "Fly"
+drop = ExtResource("3_ox6ov")
+weight = 200
+weight_from = 0
+weight_to = 200
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_dbq5w"]
+resource_name = "Horsefly"
+script = ExtResource("2_k8heb")
+percent_chance = 6.66001
+name = "Horsefly"
+drop = ExtResource("4_k5iop")
+weight = 200
+weight_from = 200
+weight_to = 400
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_skqqx"]
+resource_name = "Bee"
+script = ExtResource("2_k8heb")
+percent_chance = 6.66001
+name = "Bee"
+drop = ExtResource("8_gw5k2")
+weight = 200
+weight_from = 400
+weight_to = 600
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_6hrek"]
+resource_name = "Dragonfly"
+script = ExtResource("2_k8heb")
+percent_chance = 66.6001
+name = "Dragonfly"
+drop = ExtResource("6_ietj7")
+weight = 2000
+weight_from = 600
+weight_to = 2600
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_7uvon"]
+resource_name = "Moth"
+script = ExtResource("2_k8heb")
+percent_chance = 6.66001
+name = "Moth"
+drop = ExtResource("7_5bvmy")
+weight = 200
+weight_from = 2600
+weight_to = 2800
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_8i0nv"]
+resource_name = "Beetle"
+script = ExtResource("2_k8heb")
+percent_chance = 6.66001
+name = "Beetle"
+drop = ExtResource("6_yo66c")
+weight = 200
+weight_from = 2800
+weight_to = 3000
+weight_mod = 1.0
+
+[sub_resource type="Resource" id="Resource_1nskd"]
+resource_name = "Faerie"
+script = ExtResource("2_k8heb")
+percent_chance = 0.0999001
+name = "Faerie"
+drop = ExtResource("5_0otry")
+weight = 3
+weight_from = 3000
+weight_to = 3003
+weight_mod = 1.0
+
+[resource]
+resource_local_to_scene = true
+resource_name = "Bugs Level 60"
+script = ExtResource("1_anv02")
+table = Array[ExtResource("2_k8heb")]([SubResource("Resource_0ojf2"), SubResource("Resource_dbq5w"), SubResource("Resource_skqqx"), SubResource("Resource_6hrek"), SubResource("Resource_7uvon"), SubResource("Resource_8i0nv"), SubResource("Resource_1nskd")])
+calculate_values = false

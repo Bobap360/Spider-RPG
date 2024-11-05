@@ -1,0 +1,145 @@
+[gd_scene load_steps=13 format=3 uid="uid://cm2dqjjl0fds"]
+
+[ext_resource type="Script" path="res://scripts/bug.gd" id="1_2hacy"]
+[ext_resource type="Texture2D" uid="uid://oyywfxuckxwm" path="res://art/enemies/horsefly/horsefly_flying_01.png" id="2_x2dn2"]
+[ext_resource type="Texture2D" uid="uid://b01wgaqt0ghct" path="res://art/enemies/horsefly/horsefly_flying_02.png" id="3_coc5g"]
+[ext_resource type="Texture2D" uid="uid://cel8rpg38l68s" path="res://art/enemies/horsefly/horsefly_flying_03.png" id="4_amfjh"]
+[ext_resource type="Texture2D" uid="uid://b628i7jk5tuhq" path="res://art/enemies/horsefly/horsefly_flying_04.png" id="5_n3jv0"]
+[ext_resource type="Texture2D" uid="uid://dobcsl42smegx" path="res://art/enemies/horsefly/horsefly_flying_05.png" id="6_7inm0"]
+[ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="7_kwsr6"]
+[ext_resource type="Texture2D" uid="uid://3bdig5i54lgv" path="res://art/reticle_aoe_white.png" id="8_upvlk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kkf8"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a348t"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ahv15"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_x2dn2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_coc5g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_amfjh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_n3jv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_7inm0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_n3jv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_amfjh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_coc5g")
+}],
+"loop": true,
+"name": &"caught",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_x2dn2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_coc5g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_amfjh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_n3jv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_7inm0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_n3jv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_amfjh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_coc5g")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"transition",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bf1yu"]
+radius = 4.5
+
+[node name="bug_gnat" type="Node2D" node_paths=PackedStringArray("indicator", "collider", "art", "anim", "health_bar", "struggle_bar")]
+z_index = 60
+script = ExtResource("1_2hacy")
+health = 50.0
+struggle_time = -1.0
+value = 5.0
+indicator = NodePath("spawn_indicator")
+collider = NodePath("bug_box")
+art = NodePath("Sprite2D")
+anim = NodePath("AnimatedSprite2D")
+health_bar = NodePath("health_bar")
+struggle_bar = NodePath("struggle_bar")
+
+[node name="health_bar" type="ProgressBar" parent="."]
+z_index = 100
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+value = 50.0
+show_percentage = false
+
+[node name="struggle_bar" type="ProgressBar" parent="."]
+self_modulate = Color(0.670588, 0, 0, 1)
+z_index = 100
+offset_left = -20.0
+offset_top = 15.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+show_percentage = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.09, 0.09)
+sprite_frames = SubResource("SpriteFrames_ahv15")
+animation = &"transition"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0.380392, 0.101961, 0.156863, 1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("7_kwsr6")
+
+[node name="spawn_indicator" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.588235)
+z_index = 95
+scale = Vector2(0.012, 0.012)
+texture = ExtResource("8_upvlk")
+
+[node name="bug_box" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 6
+metadata/type = "bug"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bug_box"]
+shape = SubResource("CircleShape2D_bf1yu")

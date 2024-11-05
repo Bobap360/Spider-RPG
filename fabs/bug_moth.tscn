@@ -1,0 +1,114 @@
+[gd_scene load_steps=13 format=3 uid="uid://cqrymrki58k5k"]
+
+[ext_resource type="Script" path="res://scripts/bug.gd" id="1_ww33t"]
+[ext_resource type="Texture2D" uid="uid://4v1tsvcpuy5v" path="res://art/enemies/fly/fly_sheet_01.png" id="2_k7osm"]
+[ext_resource type="Texture2D" uid="uid://wjf3wjiwmrtp" path="res://art/enemies/fly/fly_sheet_02.png" id="3_3xhmk"]
+[ext_resource type="Texture2D" uid="uid://br4202qcmvhum" path="res://art/enemies/fly/fly_sheet_03.png" id="4_osc1l"]
+[ext_resource type="Texture2D" uid="uid://ctni4ek8vs20b" path="res://art/enemies/fly/fly_sheet_04.png" id="5_lf11v"]
+[ext_resource type="Texture2D" uid="uid://dgh3ae8e2x6x1" path="res://art/enemies/fly/fly_sheet_05.png" id="6_7wdin"]
+[ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="7_encnn"]
+[ext_resource type="Texture2D" uid="uid://3bdig5i54lgv" path="res://art/reticle_aoe_white.png" id="8_l76sp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kkf8"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a348t"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2uuku"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_k7osm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3xhmk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_osc1l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3xhmk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_k7osm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lf11v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_7wdin")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lf11v")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bf1yu"]
+radius = 16.0
+
+[node name="bug_moth" type="Node2D" node_paths=PackedStringArray("indicator", "collider", "art", "health_bar", "struggle_bar")]
+z_index = 60
+script = ExtResource("1_ww33t")
+health = 400.0
+struggle_time = 8.0
+value = 50.0
+indicator = NodePath("spawn_indicator")
+collider = NodePath("bug_box")
+art = NodePath("Sprite2D")
+health_bar = NodePath("health_bar")
+struggle_bar = NodePath("struggle_bar")
+
+[node name="health_bar" type="ProgressBar" parent="."]
+z_index = 100
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+value = 50.0
+show_percentage = false
+
+[node name="struggle_bar" type="ProgressBar" parent="."]
+self_modulate = Color(0.670588, 0, 0, 1)
+z_index = 100
+offset_left = -20.0
+offset_top = 15.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+show_percentage = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+scale = Vector2(0.35, 0.35)
+sprite_frames = SubResource("SpriteFrames_2uuku")
+frame_progress = 0.51394
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.290348, 0.252869, 0.207491, 1)
+scale = Vector2(0.04, 0.07)
+texture = ExtResource("7_encnn")
+
+[node name="Polygon2D" type="Polygon2D" parent="Sprite2D"]
+show_behind_parent = true
+polygon = PackedVector2Array(75, -128.571, 346.245, -469.565, 450, -440.767, 375, 0, 450, 414.286, 375, 428.571, 100, 85.7143, -125, 85.7143, -383.602, 426.728, -450, 399.075, -375, 0, -450, -430.745, -357.235, -471.265, -100, -114.286)
+
+[node name="spawn_indicator" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.588235)
+z_index = 95
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("8_l76sp")
+
+[node name="bug_box" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 6
+metadata/type = "bug"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bug_box"]
+shape = SubResource("CircleShape2D_bf1yu")

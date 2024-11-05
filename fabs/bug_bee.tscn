@@ -1,0 +1,145 @@
+[gd_scene load_steps=12 format=3 uid="uid://c5nktaskooypo"]
+
+[ext_resource type="Script" path="res://scripts/bug.gd" id="1_uv0df"]
+[ext_resource type="Texture2D" uid="uid://5cwexpcqtbra" path="res://art/enemies/bee/bee_flying_01.png" id="2_lo6uc"]
+[ext_resource type="Texture2D" uid="uid://bcocidt7lh74n" path="res://art/enemies/bee/bee_flying_02.png" id="3_2b1ox"]
+[ext_resource type="Texture2D" uid="uid://c1f6ruu756l8h" path="res://art/enemies/bee/bee_flying_03.png" id="4_k2afk"]
+[ext_resource type="Texture2D" uid="uid://cav1elfseocd5" path="res://art/enemies/bee/bee_flying_04.png" id="5_cjie6"]
+[ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="7_mdng8"]
+[ext_resource type="Texture2D" uid="uid://3bdig5i54lgv" path="res://art/reticle_aoe_white.png" id="8_k46rq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kkf8"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a348t"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2uuku"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_lo6uc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2b1ox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_k2afk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_cjie6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_k2afk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2b1ox")
+}],
+"loop": true,
+"name": &"caught",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_lo6uc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2b1ox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_k2afk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_cjie6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_k2afk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2b1ox")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"transition",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bf1yu"]
+radius = 11.5
+
+[node name="bug_bee" type="Node2D" node_paths=PackedStringArray("indicator", "collider", "art", "anim", "health_bar", "struggle_bar")]
+z_index = 60
+script = ExtResource("1_uv0df")
+health = 200.0
+struggle_time = 8.0
+value = 30.0
+wiggle_strength = 1.4
+indicator = NodePath("spawn_indicator")
+collider = NodePath("bug_box")
+art = NodePath("Sprite2D")
+anim = NodePath("AnimatedSprite2D")
+health_bar = NodePath("health_bar")
+struggle_bar = NodePath("struggle_bar")
+
+[node name="health_bar" type="ProgressBar" parent="."]
+z_index = 100
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+value = 50.0
+show_percentage = false
+
+[node name="struggle_bar" type="ProgressBar" parent="."]
+self_modulate = Color(0.670588, 0, 0, 1)
+z_index = 100
+offset_left = -20.0
+offset_top = 15.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+show_percentage = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_2uuku")
+animation = &"transition"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.761859, 0.721623, 0.343821, 1)
+clip_children = 2
+scale = Vector2(0.035, 0.035)
+texture = ExtResource("7_mdng8")
+
+[node name="Polygon2D" type="Polygon2D" parent="Sprite2D"]
+position = Vector2(0, 28.5714)
+color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+polygon = PackedVector2Array(-228.571, 28.5714, 228.571, 28.5714, 200, 114.286, -200, 114.286)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Sprite2D"]
+position = Vector2(1.86265e-09, -28.5714)
+rotation = 3.14096
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-228.571, 28.5714, 228.571, 28.5714, 200, 114.286, -200, 114.286)
+
+[node name="spawn_indicator" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.588235)
+z_index = 95
+scale = Vector2(0.028, 0.028)
+texture = ExtResource("8_k46rq")
+
+[node name="bug_box" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 6
+metadata/type = "bug"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bug_box"]
+shape = SubResource("CircleShape2D_bf1yu")

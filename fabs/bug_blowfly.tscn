@@ -1,0 +1,144 @@
+[gd_scene load_steps=13 format=3 uid="uid://d4p07ao8xo8w"]
+
+[ext_resource type="Script" path="res://scripts/bug.gd" id="1_tgfub"]
+[ext_resource type="Texture2D" uid="uid://oyywfxuckxwm" path="res://art/enemies/horsefly/horsefly_flying_01.png" id="2_3uklj"]
+[ext_resource type="Texture2D" uid="uid://b01wgaqt0ghct" path="res://art/enemies/horsefly/horsefly_flying_02.png" id="3_q4cnw"]
+[ext_resource type="Texture2D" uid="uid://cel8rpg38l68s" path="res://art/enemies/horsefly/horsefly_flying_03.png" id="4_6w4hq"]
+[ext_resource type="Texture2D" uid="uid://b628i7jk5tuhq" path="res://art/enemies/horsefly/horsefly_flying_04.png" id="5_tel4e"]
+[ext_resource type="Texture2D" uid="uid://dobcsl42smegx" path="res://art/enemies/horsefly/horsefly_flying_05.png" id="6_pt2rd"]
+[ext_resource type="Texture2D" uid="uid://cp6wwqbrnsbvs" path="res://art/reticle_dot.png" id="7_8kfhi"]
+[ext_resource type="Texture2D" uid="uid://3bdig5i54lgv" path="res://art/reticle_aoe_white.png" id="8_f4ifg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kkf8"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a348t"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2uuku"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_3uklj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_q4cnw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_6w4hq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_tel4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pt2rd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_tel4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_6w4hq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_q4cnw")
+}],
+"loop": true,
+"name": &"caught",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_3uklj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_q4cnw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_6w4hq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_tel4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pt2rd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_tel4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_6w4hq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_q4cnw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"transition",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bf1yu"]
+radius = 14.0
+
+[node name="bug_blowfly" type="Node2D" node_paths=PackedStringArray("indicator", "collider", "art", "anim", "health_bar", "struggle_bar")]
+z_index = 60
+script = ExtResource("1_tgfub")
+health = 200.0
+value = 20.0
+indicator = NodePath("spawn_indicator")
+collider = NodePath("bug_box")
+art = NodePath("Sprite2D")
+anim = NodePath("AnimatedSprite2D")
+health_bar = NodePath("health_bar")
+struggle_bar = NodePath("struggle_bar")
+
+[node name="health_bar" type="ProgressBar" parent="."]
+z_index = 100
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -15.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+value = 50.0
+show_percentage = false
+
+[node name="struggle_bar" type="ProgressBar" parent="."]
+self_modulate = Color(0.670588, 0, 0, 1)
+z_index = 100
+offset_left = -20.0
+offset_top = 15.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6kkf8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a348t")
+show_percentage = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.27, 0.27)
+sprite_frames = SubResource("SpriteFrames_2uuku")
+animation = &"transition"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0.380392, 0.101961, 0.156863, 1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("7_8kfhi")
+
+[node name="spawn_indicator" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.588235)
+z_index = 95
+scale = Vector2(0.035, 0.035)
+texture = ExtResource("8_f4ifg")
+
+[node name="bug_box" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 6
+metadata/type = "bug"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bug_box"]
+shape = SubResource("CircleShape2D_bf1yu")
