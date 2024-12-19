@@ -9,13 +9,20 @@ const hunger_default : float = 100.0
 const stamina_default : float = 100.0
 const shot_cost_default : float = 10.0
 const damage_default : float = 50.0
-const sprint_default : float = 3.0
+const sprint_default : float = 1.5
 const move_default : float = 2.0
 const warning_default : float = 3.0
 const hunger_drain_default : float = 1.0
 const stamina_regen_default : float = 1.0
 const sprint_cost_default : float = 5.0
 const first_level_threshold : int = 10
+const struggle_default : float = 1.0
+const web_speed_default : float = 10.0
+
+# Increments
+const xp_step : float = 0.02
+const speed_step : float = 0.02
+const damage_step : float = 0.02
 
 # Hunger
 var hunger_max : float
@@ -39,18 +46,22 @@ var intel : int
 var score : int
 var move : float
 var sprint : float
-var speed_mod : float
+var speed_mod : float = 0.02
 var web_speed : float = 10.0
 var spawn_time : float
 var damage : float
+var damage_mod : float
 var struggle_mod : float
+var struggle_slow : float
 
 # Level tracking
 var xp : int
 var xp_mod : float
+var xp_bonus : float
 var level : int
 var attribute_points : int
 var level_threshold : int
+var total_attributes : int
 
 # Status bools
 var is_max_level : bool
@@ -104,6 +115,7 @@ func Reset():
 	move = move_default
 	sprint = sprint_default
 	spawn_time = warning_default
+	web_speed = web_speed_default
 	
 	# Bools
 	is_max_level = false
@@ -112,9 +124,11 @@ func Reset():
 	
 	# Mods
 	xp_mod = 1.0
+	xp_bonus = 0.0
 	speed_mod = 1.0
 	struggle_mod = 1.0
 	hunger_gain_mod = 1.0
+	damage_mod = 1.0
 
 func Score(amount : int):
 	score += amount
@@ -144,7 +158,7 @@ func Quit():
 
 func XP(amount : int):
 	if level <= 60:
-		xp += amount * xp_mod
+		xp += roundf(amount * xp_mod)
 		
 		while xp >= level_threshold:
 			if level < 60:
@@ -183,25 +197,28 @@ func Hunger(amount : float):
 		End()
 
 func LevelStrength():
+	total_attributes += 1
 	attribute_points -= 1
 	strength += 1
-	damage += 5
+	#damage += 5
 	hunger_max += 10
-	stats_changed.emit()
+	UpdateStats()
 
 func LevelDexterity():
+	total_attributes += 1
 	attribute_points -= 1
 	dex += 1
-	speed_mod += 0.05
+	#speed_mod += 0.05
 	stamina_max += 10
-	stats_changed.emit()
+	UpdateStats()
 	
 func LevelIntelligence():
+	total_attributes += 1
 	attribute_points -= 1
 	intel += 1
 	spawn_time += 0.15
 	struggle_mod += 0.05
-	stats_changed.emit()
+	UpdateStats()
 
 func NewStrand() -> Line2D:
 	var new_strand = strand.instantiate()
@@ -212,3 +229,19 @@ func NewPost() -> Line2D:
 	var new_post = post.instantiate()
 	web.add_child(new_post, true)
 	return new_post
+
+func UpdateStats():
+	speed_mod = 1.0 + speed_step * dex
+	xp_mod = 1.0 + xp_bonus + (xp_step * intel)
+	damage_mod = 1.0 + damage_step * strength
+	
+	stats_changed.emit()
+
+func GetMove() -> float:
+	return move * speed_mod
+
+func GetSprint() -> float:
+	return move * speed_mod * sprint
+
+func GetDamage() -> float:
+	return damage * damage_mod

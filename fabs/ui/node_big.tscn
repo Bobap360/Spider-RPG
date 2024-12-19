@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5y5tyj012qql"]
+
+[ext_resource type="Texture2D" uid="uid://bk833q67vmxq6" path="res://art/skill_web/node_big.png" id="1_6dmi6"]
+[ext_resource type="Script" path="res://scripts/ui/skill_node.gd" id="2_0np3g"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3xprb"]
+radius = 26.0
+
+[node name="node_big" type="Sprite2D" node_paths=PackedStringArray("node_colors", "area")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_6dmi6")
+script = ExtResource("2_0np3g")
+node_colors = [NodePath("color"), NodePath("color2")]
+area = NodePath("Area2D")
+
+[node name="Area2D" type="Area2D" parent="."]
+show_behind_parent = true
+collision_layer = 64
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_3xprb")
+
+[node name="color" type="Polygon2D" parent="."]
+show_behind_parent = true
+scale = Vector2(0.5, 0.5)
+color = Color(0.196078, 0.34902, 0.647059, 1)
+polygon = PackedVector2Array(0, -48, -24, -42, -44, -22, -48, 0, -42, 26, -22, 42, 0, 48, 22, 42, 42, 24, 48, 0, 44, -20, 26, -42)
+
+[node name="color2" type="Polygon2D" parent="."]
+show_behind_parent = true
+scale = Vector2(0.5, 0.5)
+color = Color(0.196078, 0.34902, 0.647059, 1)
+polygon = PackedVector2Array(0, -48, 0, 48, 22, 42, 42, 24, 48, 0, 44, -20, 26, -42)
+
+[connection signal="input_event" from="Area2D" to="." method="activate"]
+[connection signal="mouse_entered" from="Area2D" to="." method="enter"]
+[connection signal="mouse_exited" from="Area2D" to="." method="exit"]

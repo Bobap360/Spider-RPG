@@ -1,0 +1,1190 @@
+[gd_scene load_steps=61 format=3 uid="uid://cfc25we4j5htq"]
+
+[ext_resource type="Script" path="res://scripts/ui/zoom_control.gd" id="1_g6aqx"]
+[ext_resource type="Texture2D" uid="uid://c5gs5blxf2bwv" path="res://art/skill_web/skill_web_nodes.png" id="1_ltlaq"]
+[ext_resource type="Texture2D" uid="uid://bk833q67vmxq6" path="res://art/skill_web/node_big.png" id="2_igsuf"]
+[ext_resource type="Script" path="res://scripts/ui/color_wheel.gd" id="2_t7bmu"]
+[ext_resource type="Script" path="res://scripts/ui/skill_connection.gd" id="3_eu4uj"]
+[ext_resource type="Script" path="res://scripts/ui/skill_node.gd" id="3_s4u2v"]
+[ext_resource type="Script" path="res://scripts/ui/skill_tooltip.gd" id="3_tilj2"]
+[ext_resource type="Texture2D" uid="uid://cer0pwawhh8rq" path="res://art/texture_web_128.png" id="5_m4hi2"]
+[ext_resource type="PackedScene" uid="uid://c5y5tyj012qql" path="res://fabs/ui/node_big.tscn" id="5_toly1"]
+[ext_resource type="PackedScene" uid="uid://jr6pn4q05a5g" path="res://fabs/ui/node_small.tscn" id="8_4yuca"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bkkr0"]
+size = Vector2(1920, 1080)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5adg"]
+bg_color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_se4si"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_vu7vb"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_4jpjv"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_suyqv"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_cfbnq"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_uhy0j"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_7ok2a"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_x35xs"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_qcd1k"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_g42ob"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_0aiit"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_obte0"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_k5ghm"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_xav0e"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_swbau"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ojmks"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_l7l1i"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_jhl32"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_agswj"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_5bpdk"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_se5ow"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_iq051"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_fuw4m"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_7582h"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_x4uiv"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_o8gts"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ca1i7"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_dyn75"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_u1fk1"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_s3xoq"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_om70y"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_1s8ou"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_exek6"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_roc3b"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_madcc"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_tfvhi"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_2rlxx"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_regy3"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_0280x"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_f44mo"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_h4yd3"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_7hx60"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_wdk2n"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_lc3r1"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_xsnd2"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_fgbyt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3xprb"]
+radius = 26.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xwc3i"]
+bg_color = Color(0.196078, 0.196078, 0.196078, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.392157)
+shadow_size = 2
+shadow_offset = Vector2(2, 2)
+
+[node name="Skill_Web" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_g6aqx")
+zoom_max = 3.0
+
+[node name="drag_area" type="Area2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="drag_area"]
+shape = SubResource("RectangleShape2D_bkkr0")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a5adg")
+
+[node name="layout_ref" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_ltlaq")
+
+[node name="ColorWheel" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0.0980392)
+position = Vector2(960, 540)
+scale = Vector2(0.235, 0.235)
+script = ExtResource("2_t7bmu")
+point_thresholds = Array[int]([5, 10, 15, 20])
+scale_thresholds = Array[float]([0.4, 0.595, 0.8, 1.0])
+
+[node name="slice_int" type="Polygon2D" parent="ColorWheel"]
+position = Vector2(-960, -540)
+color = Color(0.196078, 0.34902, 0.647059, 1)
+polygon = PackedVector2Array(960, 541, 1317, 334, 1320, 367, 1324, 392, 1332, 429, 1344, 469, 1355, 501, 1371, 540, 1355, 574, 1342, 608, 1332, 639, 1323, 680, 1319, 713, 1316, 746, 1290, 765, 1265, 785, 1240, 807, 1212, 836, 1186, 868, 1166, 896, 1123, 902, 1093, 907, 1057, 916, 1023, 926, 999, 935, 960, 951)
+
+[node name="slice_dex" type="Polygon2D" parent="ColorWheel"]
+position = Vector2(947.654, -561.384)
+rotation = 2.0944
+color = Color(0.294118, 0.658824, 0.278431, 1)
+polygon = PackedVector2Array(960, 541, 1317, 334, 1320, 367, 1324, 392, 1332, 429, 1344, 469, 1355, 501, 1371, 540, 1355, 574, 1342, 608, 1332, 639, 1323, 680, 1319, 713, 1316, 746, 1290, 765, 1265, 785, 1240, 807, 1212, 836, 1186, 868, 1166, 896, 1123, 902, 1093, 907, 1057, 916, 1023, 926, 999, 935, 960, 951)
+
+[node name="slice_str" type="Polygon2D" parent="ColorWheel"]
+position = Vector2(12.3461, 1101.38)
+rotation = -2.09439
+color = Color(0.670588, 0.180392, 0.180392, 1)
+polygon = PackedVector2Array(960, 541, 1317, 334, 1320, 367, 1324, 392, 1332, 429, 1344, 469, 1355, 501, 1371, 540, 1355, 574, 1342, 608, 1332, 639, 1323, 680, 1319, 713, 1316, 746, 1290, 765, 1265, 785, 1240, 807, 1212, 836, 1186, 868, 1166, 896, 1123, 902, 1093, 907, 1057, 916, 1023, 926, 999, 935, 960, 951)
+
+[node name="Connections" type="Node2D" parent="."]
+
+[node name="connection43" type="Line2D" parent="Connections"]
+self_modulate = Color(0.392157, 0.392157, 0.392157, 1)
+texture_repeat = 2
+points = PackedVector2Array(1007, 623, 984, 581)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection43"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection43/Area2D"]
+shape = SubResource("SegmentShape2D_se4si")
+
+[node name="connection2" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1044, 492, 1104, 457)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection2"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection2/Area2D"]
+shape = SubResource("SegmentShape2D_vu7vb")
+
+[node name="connection47" type="Line2D" parent="Connections"]
+self_modulate = Color(0.392157, 0.392157, 0.392157, 1)
+texture_repeat = 2
+points = PackedVector2Array(1044, 492, 1003, 515)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection47"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection47/Area2D"]
+shape = SubResource("SegmentShape2D_4jpjv")
+
+[node name="connection3" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1172, 417, 1103, 457)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection3"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection3/Area2D"]
+shape = SubResource("SegmentShape2D_suyqv")
+
+[node name="connection4" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1172, 417, 1243, 376)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection4"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection4/Area2D"]
+shape = SubResource("SegmentShape2D_cfbnq")
+
+[node name="connection5" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1242, 375, 1315, 336)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection5"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection5/Area2D"]
+shape = SubResource("SegmentShape2D_uhy0j")
+
+[node name="connection6" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1053, 540, 1124, 540)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection6"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection6/Area2D"]
+shape = SubResource("SegmentShape2D_7ok2a")
+
+[node name="connection46" type="Line2D" parent="Connections"]
+self_modulate = Color(0.392157, 0.392157, 0.392157, 1)
+texture_repeat = 2
+points = PackedVector2Array(1053, 540, 1008, 541)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection46"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection46/Area2D"]
+shape = SubResource("SegmentShape2D_x35xs")
+
+[node name="connection25" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1054, 547, 1047, 565, 1045, 581)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection25"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection25/Area2D"]
+shape = SubResource("SegmentShape2D_qcd1k")
+
+[node name="connection15" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1042, 588, 1102, 622)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection15"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection15/Area2D"]
+shape = SubResource("SegmentShape2D_g42ob")
+
+[node name="connection45" type="Line2D" parent="Connections"]
+self_modulate = Color(0.392157, 0.392157, 0.392157, 1)
+texture_repeat = 2
+points = PackedVector2Array(1042, 588, 1002, 565)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection45"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection45/Area2D"]
+shape = SubResource("SegmentShape2D_0aiit")
+
+[node name="connection26" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1007, 623, 1042, 682)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection26"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection26/Area2D"]
+shape = SubResource("SegmentShape2D_obte0")
+
+[node name="connection34" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1001, 625, 983, 626, 967, 634)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection34"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection34/Area2D"]
+shape = SubResource("SegmentShape2D_k5ghm")
+
+[node name="connection35" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(961, 706, 960, 637)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection35"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection35/Area2D"]
+shape = SubResource("SegmentShape2D_xav0e")
+
+[node name="connection44" type="Line2D" parent="Connections"]
+self_modulate = Color(0.392157, 0.392157, 0.392157, 1)
+texture_repeat = 2
+points = PackedVector2Array(960, 589, 960, 637)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection44"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection44/Area2D"]
+shape = SubResource("SegmentShape2D_swbau")
+
+[node name="connection36" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(960, 707, 960, 783)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection36"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection36/Area2D"]
+shape = SubResource("SegmentShape2D_ojmks")
+
+[node name="connection42" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(967, 703, 983, 695, 1000, 690, 1017, 686, 1035, 684)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection42"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection42/Area2D"]
+shape = SubResource("SegmentShape2D_l7l1i")
+
+[node name="connection37" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(960, 870, 960, 783)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection37"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection37/Area2D"]
+shape = SubResource("SegmentShape2D_jhl32")
+
+[node name="connection41" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1075, 754, 1046, 756, 1017, 763, 987, 772, 967, 782)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection41"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection41/Area2D"]
+shape = SubResource("SegmentShape2D_agswj")
+
+[node name="connection38" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(960, 870, 960, 949)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection38"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection38/Area2D"]
+shape = SubResource("SegmentShape2D_5bpdk")
+
+[node name="connection40" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(960, 870, 984, 859, 1019, 846, 1058, 835, 1093, 829, 1124, 825)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection40"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection40/Area2D"]
+shape = SubResource("SegmentShape2D_se5ow")
+
+[node name="connection39" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1157, 897, 1115, 903, 1072, 912, 1038, 921, 1003, 933, 969, 947)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection39"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection39/Area2D"]
+shape = SubResource("SegmentShape2D_iq051")
+
+[node name="connection27" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1082, 752, 1042, 682)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection27"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection27/Area2D"]
+shape = SubResource("SegmentShape2D_fuw4m")
+
+[node name="connection33" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1096, 628, 1083, 636, 1067, 650, 1057, 661, 1047, 677)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection33"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection33/Area2D"]
+shape = SubResource("SegmentShape2D_7582h")
+
+[node name="connection28" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1082, 752, 1123, 824)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection28"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection28/Area2D"]
+shape = SubResource("SegmentShape2D_x4uiv")
+
+[node name="connection32" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1088, 747, 1102, 727, 1122, 704, 1146, 683, 1165, 669)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection32"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection32/Area2D"]
+shape = SubResource("SegmentShape2D_o8gts")
+
+[node name="connection29" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1165, 896, 1123, 824)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection29"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection29/Area2D"]
+shape = SubResource("SegmentShape2D_ca1i7")
+
+[node name="connection31" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1237, 709, 1211, 729, 1188, 748, 1163, 774, 1143, 799, 1129, 818)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection31"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection31/Area2D"]
+shape = SubResource("SegmentShape2D_dyn75")
+
+[node name="connection30" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1170, 890, 1189, 864, 1211, 837, 1237, 810, 1261, 789, 1287, 767, 1309, 751)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection30"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection30/Area2D"]
+shape = SubResource("SegmentShape2D_u1fk1")
+
+[node name="connection24" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1038, 594, 1024, 606, 1013, 618)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection24"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection24/Area2D"]
+shape = SubResource("SegmentShape2D_s3xoq")
+
+[node name="connection16" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1172, 662, 1102, 622)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection16"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection16/Area2D"]
+shape = SubResource("SegmentShape2D_om70y")
+
+[node name="connection23" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1123, 545, 1113, 563, 1108, 577, 1104, 596, 1103, 616)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection23"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection23/Area2D"]
+shape = SubResource("SegmentShape2D_1s8ou")
+
+[node name="connection22" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1172, 662, 1176, 624, 1182, 597, 1190, 573, 1204, 544)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection22"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection22/Area2D"]
+shape = SubResource("SegmentShape2D_exek6")
+
+[node name="connection17" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1172, 662, 1245, 704)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection17"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection17/Area2D"]
+shape = SubResource("SegmentShape2D_roc3b")
+
+[node name="connection21" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1287, 540, 1272, 581, 1261, 611, 1249, 657, 1245, 704)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection21"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection21/Area2D"]
+shape = SubResource("SegmentShape2D_madcc")
+
+[node name="connection18" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1315, 745, 1245, 704)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection18"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection18/Area2D"]
+shape = SubResource("SegmentShape2D_tfvhi")
+
+[node name="connection19" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1315, 745, 1245, 704)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection19"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection19/Area2D"]
+shape = SubResource("SegmentShape2D_2rlxx")
+
+[node name="connection20" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1315, 745, 1322, 687, 1333, 639, 1348, 592, 1370, 540)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection20"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection20/Area2D"]
+shape = SubResource("SegmentShape2D_regy3")
+
+[node name="connection14" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1055, 533, 1049, 518, 1046, 499)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection14"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection14/Area2D"]
+shape = SubResource("SegmentShape2D_0280x")
+
+[node name="connection7" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1205, 539, 1124, 540)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection7"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection7/Area2D"]
+shape = SubResource("SegmentShape2D_f44mo")
+
+[node name="connection13" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1103, 458, 1105, 484, 1113, 513, 1124, 540)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection13"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection13/Area2D"]
+shape = SubResource("SegmentShape2D_h4yd3")
+
+[node name="connection12" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1205, 539, 1191, 508, 1182, 481, 1178, 456, 1172, 415)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection12"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection12/Area2D"]
+shape = SubResource("SegmentShape2D_7hx60")
+
+[node name="connection8" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1205, 539, 1288, 540)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection8"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection8/Area2D"]
+shape = SubResource("SegmentShape2D_wdk2n")
+
+[node name="connection9" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1370, 540, 1288, 540)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection9"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection9/Area2D"]
+shape = SubResource("SegmentShape2D_lc3r1")
+
+[node name="connection10" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1370, 540, 1345, 475, 1330, 419, 1315, 337)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection10"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection10/Area2D"]
+shape = SubResource("SegmentShape2D_xsnd2")
+
+[node name="connection11" type="Line2D" parent="Connections"]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+texture_repeat = 2
+points = PackedVector2Array(1288, 540, 1270, 494, 1260, 463, 1252, 429, 1244, 374)
+width = 5.0
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+script = ExtResource("3_eu4uj")
+
+[node name="Area2D" type="Area2D" parent="Connections/connection11"]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Connections/connection11/Area2D"]
+shape = SubResource("SegmentShape2D_fgbyt")
+
+[node name="Center" type="Node2D" parent="."]
+
+[node name="Line2D" type="Line2D" parent="Center"]
+texture_repeat = 2
+points = PackedVector2Array(1002, 565, 917, 516)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+
+[node name="Line2D2" type="Line2D" parent="Center"]
+texture_repeat = 2
+points = PackedVector2Array(1003, 515, 917, 565)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+
+[node name="Line2D3" type="Line2D" parent="Center"]
+texture_repeat = 2
+points = PackedVector2Array(984, 498, 935, 583)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+
+[node name="Line2D4" type="Line2D" parent="Center"]
+texture_repeat = 2
+points = PackedVector2Array(960, 491, 960, 589)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+
+[node name="Line2D5" type="Line2D" parent="Center"]
+texture_repeat = 2
+points = PackedVector2Array(935, 497, 984, 582)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+
+[node name="Line2D6" type="Line2D" parent="Center"]
+texture_repeat = 2
+points = PackedVector2Array(911, 540, 1009, 541)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+
+[node name="Line2D8" type="Line2D" parent="Center"]
+texture_repeat = 2
+points = PackedVector2Array(936, 540, 938, 535, 939, 528, 944, 525, 948, 520, 954, 519, 960, 517, 965, 519, 971, 519, 976, 525, 981, 528, 982, 535, 984, 540, 981, 546, 981, 553, 976, 556, 972, 561, 966, 561, 960, 564, 954, 562, 948, 561, 945, 556, 939, 552, 938, 546)
+closed = true
+width = 4.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+
+[node name="Line2D7" type="Line2D" parent="Center"]
+texture_repeat = 2
+points = PackedVector2Array(960, 589, 967, 585, 975, 583, 984, 582, 990, 575, 995, 570, 1002, 565, 1003, 555, 1005, 548, 1009, 541, 1006, 534, 1004, 524, 1003, 515, 995, 510, 989, 504, 984, 498, 974, 498, 968, 496, 960, 491, 954, 495, 945, 497, 935, 497, 932, 504, 926, 510, 917, 516, 917, 524, 915, 532, 911, 540, 915, 547, 917, 556, 917, 565, 926, 569, 932, 575, 935, 583, 943, 583, 952, 585)
+closed = true
+width = 4.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_m4hi2")
+texture_mode = 1
+
+[node name="Nodes" type="Node2D" parent="."]
+
+[node name="node_center" type="Sprite2D" parent="Nodes" node_paths=PackedStringArray("node_colors")]
+visible = false
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(961, 540)
+scale = Vector2(2.18, 2.18)
+texture = ExtResource("2_igsuf")
+script = ExtResource("3_s4u2v")
+node_colors = [NodePath("color"), NodePath("color")]
+purchased = true
+
+[node name="Area2D" type="Area2D" parent="Nodes/node_center"]
+show_behind_parent = true
+collision_layer = 64
+collision_mask = 128
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Nodes/node_center/Area2D"]
+shape = SubResource("CircleShape2D_3xprb")
+
+[node name="color" type="Polygon2D" parent="Nodes/node_center"]
+show_behind_parent = true
+scale = Vector2(0.5, 0.5)
+color = Color(0.196078, 0.34902, 0.647059, 1)
+polygon = PackedVector2Array(0, -48, -24, -42, -44, -22, -48, 0, -42, 26, -22, 42, 0, 48, 22, 42, 42, 24, 48, 0, 44, -20, 26, -42)
+
+[node name="node_big13" parent="Nodes" instance=ExtResource("5_toly1")]
+position = Vector2(1172, 664)
+tooltip = "This is a regular INT node"
+point_threshold = 10
+disabled = true
+
+[node name="node_big21" parent="Nodes" instance=ExtResource("5_toly1")]
+position = Vector2(960, 951)
+rotation = 3.14159
+tooltip = "This is a DEX + INT node"
+point_threshold = 20
+secondary = 1
+disabled = true
+
+[node name="node_big23" parent="Nodes" instance=ExtResource("5_toly1")]
+position = Vector2(1315, 746)
+tooltip = "This is a regular INT node"
+point_threshold = 20
+disabled = true
+
+[node name="node_big25" parent="Nodes" instance=ExtResource("5_toly1")]
+position = Vector2(1315, 336)
+rotation = -2.0944
+tooltip = "This is an INT + STR node"
+point_threshold = 20
+secondary = 2
+disabled = true
+
+[node name="node_small" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1045, 491)
+rotation = -2.0944
+secondary = 2
+
+[node name="node_small2" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1057, 540)
+
+[node name="node_small3" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1044, 589)
+
+[node name="node_small4" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1009, 625)
+
+[node name="node_small5" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(960, 638)
+type = 1
+
+[node name="node_small6" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(960, 707)
+point_threshold = 5
+type = 1
+disabled = true
+
+[node name="node_small7" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1043, 684)
+point_threshold = 5
+disabled = true
+
+[node name="node_small8" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1103, 624)
+point_threshold = 5
+disabled = true
+
+[node name="node_small9" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1127, 540)
+point_threshold = 5
+disabled = true
+
+[node name="node_small10" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1105, 457)
+rotation = -2.0944
+point_threshold = 5
+secondary = 2
+disabled = true
+
+[node name="node_small11" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1174, 416)
+rotation = -2.0944
+point_threshold = 10
+secondary = 2
+disabled = true
+
+[node name="node_small12" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1206, 540)
+point_threshold = 10
+disabled = true
+
+[node name="node_small13" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1083, 754)
+point_threshold = 10
+disabled = true
+
+[node name="node_small14" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(960, 787)
+point_threshold = 10
+type = 1
+disabled = true
+
+[node name="node_small15" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(960, 869)
+point_threshold = 15
+type = 1
+disabled = true
+
+[node name="node_small16" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1125, 825)
+point_threshold = 15
+disabled = true
+
+[node name="node_small17" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1245, 705)
+point_threshold = 15
+disabled = true
+
+[node name="node_small18" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1289, 540)
+point_threshold = 15
+disabled = true
+
+[node name="node_small19" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1245, 375)
+rotation = -2.0944
+point_threshold = 15
+secondary = 2
+disabled = true
+
+[node name="node_small20" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1371, 540)
+point_threshold = 20
+disabled = true
+
+[node name="node_small21" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(1165, 896)
+point_threshold = 20
+disabled = true
+
+[node name="node_small22" parent="Nodes" instance=ExtResource("8_4yuca")]
+position = Vector2(708, 377)
+point_threshold = 20
+disabled = true
+
+[node name="Tooltip" type="Panel" parent="." node_paths=PackedStringArray("body")]
+layout_mode = 0
+offset_left = 845.0
+offset_top = 223.0
+offset_right = 1045.0
+offset_bottom = 283.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xwc3i")
+script = ExtResource("3_tilj2")
+body = NodePath("center/text")
+offset = Vector2(0, -40)
+
+[node name="center" type="CenterContainer" parent="Tooltip"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="text" type="Label" parent="Tooltip/center"]
+layout_mode = 2
+text = "This is a tooltip"
+horizontal_alignment = 1
+
+[node name="FullWeb" type="Polygon2D" parent="."]
+visible = false
+color = Color(1, 0, 0, 0)
+polygon = PackedVector2Array(754, 896, 727, 855, 691, 814, 651, 778, 604, 746, 600, 704, 591, 655, 577, 606, 549, 540, 573, 486, 588, 440, 598, 394, 604, 334, 651, 298, 692, 260, 726, 222, 754, 184, 816, 175, 861, 164, 911, 148, 960, 129, 1013, 152, 1059, 166, 1110, 177, 1166, 184, 1199, 230, 1235, 271, 1261, 296, 1294, 321, 1316, 334, 1326, 402, 1335, 442, 1351, 490, 1371, 540, 1350, 587, 1334, 633, 1321, 693, 1316, 746, 1278, 774, 1239, 808, 1204, 845, 1166, 896, 1115, 903, 1063, 914, 1012, 930, 960, 951, 907, 930, 860, 916, 812, 905)
+
+[connection signal="mouse_entered" from="drag_area" to="." method="entered"]
+[connection signal="mouse_exited" from="drag_area" to="." method="exited"]
+[connection signal="input_event" from="Nodes/node_center/Area2D" to="Nodes/node_center" method="pressed"]
+[connection signal="mouse_entered" from="Nodes/node_center/Area2D" to="Nodes/node_center" method="enter"]
+[connection signal="mouse_exited" from="Nodes/node_center/Area2D" to="Nodes/node_center" method="exit"]

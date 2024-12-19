@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfvt7si5fvpq6"]
+
+[ext_resource type="Texture2D" uid="uid://cer0pwawhh8rq" path="res://art/texture_web_128.png" id="1_4ylvu"]
+[ext_resource type="Script" path="res://scripts/ui/skill_connection.gd" id="2_oa8n3"]
+
+[node name="connection" type="Line2D" node_paths=PackedStringArray("area")]
+self_modulate = Color(0.392157, 0.392157, 0.392157, 1)
+texture_repeat = 2
+points = PackedVector2Array(1007, 623, 984, 581)
+width = 5.0
+texture = ExtResource("1_4ylvu")
+texture_mode = 1
+script = ExtResource("2_oa8n3")
+area = NodePath("Area2D")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]

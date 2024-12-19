@@ -33,6 +33,7 @@ func _ready() -> void:
 	current_strand = starting_strand
 	global_position = starting_strand.node_a.global_position
 
+
 func _physics_process(delta: float) -> void:
 	if !GameManager.is_ended:
 		GameManager.Hunger(-delta * GameManager.hunger_drain_rate)
@@ -63,12 +64,11 @@ func _physics_process(delta: float) -> void:
 			else:
 				joystick_target.visible = false
 			
-			if is_sprinting:
-				if GameManager.stamina > GameManager.stamina_sprint_cost:
-					GameManager.Stamina(-delta * GameManager.stamina_sprint_cost)
-					speed = GameManager.sprint
-				else:
-					speed = GameManager.move
+			if is_sprinting and GameManager.stamina > GameManager.stamina_sprint_cost:
+				GameManager.Stamina(-delta * GameManager.stamina_sprint_cost)
+				speed = GameManager.GetSprint()
+			else:
+				speed = GameManager.GetMove()
 			
 			if movement_vector != Vector2.ZERO:
 				if MovingToward(movement_vector, target_location):
@@ -94,7 +94,7 @@ func _physics_process(delta: float) -> void:
 				if !is_attacking:
 					anim.stop()
 			#position += movement_vector * speed * GameManager.speed_mod
-		
+
 
 func MovingToward(move_dir : Vector2, target : Vector2) -> bool:
 	var dif = move_dir - global_position.direction_to(target)
@@ -104,17 +104,18 @@ func MovingToward(move_dir : Vector2, target : Vector2) -> bool:
 	else:
 		return false
 
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Game Over"):
 		GameManager.End()
 		
 	if !GameManager.is_ended:
 		if event.is_action_pressed("Sprint"):
-			speed = GameManager.sprint
+			speed = GameManager.GetSprint()
 			is_sprinting = true
 			
 		if event.is_action_released("Sprint"):
-			speed = GameManager.move
+			speed = GameManager.GetMove()
 			is_sprinting = false
 		
 		if event.is_action_pressed("Gamepad Fire"):
@@ -130,7 +131,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		if event.is_action_pressed("Cheat Level"):
 			GameManager.XP(GameManager.level_threshold)
-		
+
+
 func ShotWeb(target : Vector2):
 	if GameManager.stamina > GameManager.stamina_shot_cost:
 		GameManager.Stamina(-GameManager.stamina_shot_cost)
@@ -151,13 +153,17 @@ func ShotWeb(target : Vector2):
 		stamina_warning.notify()
 		#print("Cannot shot web")
 
+
 func EndStrand(element : Line2D):
 	strands.erase(element)
+
 
 func on_area_entered(area : Area2D):
 	if area.has_meta("type"):
 		if area.get_meta("type") == "bug":
 			bugs.append(area.get_parent())
+			GameManager.struggle_mod = GameManager.struggle_slow
+
 
 func on_area_exited(area : Area2D):
 		if area.has_meta("type"):
@@ -165,22 +171,28 @@ func on_area_exited(area : Area2D):
 				var new_bug = area.get_parent()
 				if bugs.has(new_bug):
 					bugs.erase(new_bug)
+				if bugs.size() <= 0:
+					GameManager.struggle_mod = GameManager.struggle_default
+
 
 func on_nav_entered(area : Area2D):
 	if area.collision_layer == 32:
 		navigation_node = area
 		#print("Navigation located")
 
+
 func on_nav_exited(area : Area2D):
 	if area.collision_layer == 32:
 		if navigation_node == area:
 			navigation_node = null
+
 
 func ChangeCurrentStrand(new_strand : Line2D):
 	if is_instance_valid(current_strand):
 		current_strand.broken.disconnect(SafePlace)
 	current_strand = new_strand
 	current_strand.broken.connect(SafePlace)
+
 
 func SafePlace(check : Line2D):
 	current_strand = GetCurrentStrand()
@@ -209,6 +221,7 @@ func SafePlace(check : Line2D):
 		start_location = current_strand.node_a.global_position
 		target_location = current_strand.node_b.global_position
 		lock_movement = false
+
 
 func GetCurrentStrand() -> Line2D:
 	var stored = nav_controller.get_overlapping_areas()

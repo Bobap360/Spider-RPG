@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://ckjw4fmb28yp6"]
+[gd_scene load_steps=57 format=3 uid="uid://ckjw4fmb28yp6"]
 
 [ext_resource type="Script" path="res://scripts/game/controller.gd" id="1_pvme1"]
 [ext_resource type="PackedScene" uid="uid://0uudghagpufw" path="res://fabs/strand.tscn" id="2_7m7h1"]
@@ -34,6 +34,7 @@
 [ext_resource type="PackedScene" uid="uid://cm2dqjjl0fds" path="res://fabs/bug_gnat.tscn" id="21_gc865"]
 [ext_resource type="Script" path="res://scripts/particle_manager.gd" id="31_6cw7h"]
 [ext_resource type="Texture2D" uid="uid://dgd6lnrnrv6qr" path="res://art/web_debris_04.png" id="31_b76v8"]
+[ext_resource type="PackedScene" uid="uid://dperjy5i14wr8" path="res://ui_skill_web.tscn" id="33_fbcsm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s51p0"]
 atlas = ExtResource("4_6spi2")
@@ -145,8 +146,8 @@ shadow_offset = Vector2(2, 2)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s8cvr"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 1)
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
+corner_radius_top_left = 25
+corner_radius_bottom_left = 25
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ck2g1"]
 
@@ -403,7 +404,7 @@ node_b = NodePath("../../intersections/nav_node")
 [node name="bugstuff" type="Node2D" parent="."]
 
 [node name="spawn_area" type="Area2D" parent="bugstuff" node_paths=PackedStringArray("timer", "timer_gnat", "container")]
-position = Vector2(960, 540)
+position = Vector2(960, 528)
 script = ExtResource("5_oxs3t")
 delay = 7.0
 gnat_spawnrate = 4.0
@@ -870,7 +871,7 @@ text = "Str
 0"
 horizontal_alignment = 1
 
-[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength" node_paths=PackedStringArray("t", "tooltip")]
+[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength" node_paths=PackedStringArray("t", "tooltip", "label_ref")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -880,7 +881,10 @@ grow_vertical = 2
 theme_type_variation = &"AttributeButton"
 script = ExtResource("14_j206p")
 t = NodePath("Label")
-tooltip = NodePath("tooltip_panel")
+tooltip = NodePath("tooltip")
+description = "+2% damage per Strength (+%s%)"
+label_ref = NodePath("tooltip/description")
+type = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade"]
 visible = false
@@ -895,6 +899,25 @@ theme_override_font_sizes/font_size = 36
 text = "+1"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="tooltip" type="PanelContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade"]
+visible = false
+z_index = 1
+layout_mode = 0
+offset_left = -1.0
+offset_top = 65.0
+offset_right = 244.0
+offset_bottom = 185.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ataj0")
+
+[node name="description" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade/tooltip"]
+custom_minimum_size = Vector2(225, 100)
+layout_mode = 2
+theme_type_variation = &"Tooltip"
+text = "+2% damage per Strength (x)"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="tooltip_panel" type="PanelContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade"]
 visible = false
@@ -916,6 +939,7 @@ theme_override_constants/separation = 10
 alignment = 1
 
 [node name="tooltip" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade/tooltip_panel/VBoxContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"Tooltip"
 text = "+10 Max Hunger"
@@ -923,6 +947,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="tooltip2" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/strength/btn_upgrade/tooltip_panel/VBoxContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"Tooltip"
 text = "+10% Damage"
@@ -938,7 +963,7 @@ text = "DEX
 0"
 horizontal_alignment = 1
 
-[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity" node_paths=PackedStringArray("t", "tooltip")]
+[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity" node_paths=PackedStringArray("t", "tooltip", "label_ref")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -948,7 +973,10 @@ grow_vertical = 2
 theme_type_variation = &"AttributeButton"
 script = ExtResource("14_j206p")
 t = NodePath("Label")
-tooltip = NodePath("tooltip_panel")
+tooltip = NodePath("tooltip")
+description = "+2% movespeed per Dexterity (+%s%)"
+label_ref = NodePath("tooltip/description")
+type = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade"]
 visible = false
@@ -963,6 +991,29 @@ theme_override_font_sizes/font_size = 36
 text = "+1"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="tooltip" type="PanelContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade"]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -122.5
+offset_top = 65.0
+offset_right = 122.5
+offset_bottom = 185.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ataj0")
+
+[node name="description" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade/tooltip"]
+custom_minimum_size = Vector2(225, 100)
+layout_mode = 2
+theme_type_variation = &"Tooltip"
+text = "+2% damage per Strength (x)"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="tooltip_panel" type="PanelContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/dexterity/btn_upgrade"]
 visible = false
@@ -1015,7 +1066,7 @@ text = "INT
 0"
 horizontal_alignment = 1
 
-[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence" node_paths=PackedStringArray("t", "tooltip")]
+[node name="btn_upgrade" type="Button" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence" node_paths=PackedStringArray("t", "tooltip", "label_ref")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1025,7 +1076,9 @@ grow_vertical = 2
 theme_type_variation = &"AttributeButton"
 script = ExtResource("14_j206p")
 t = NodePath("Label")
-tooltip = NodePath("tooltip_panel")
+tooltip = NodePath("tooltip")
+description = "+2% XP gained per Intelligence (+%s%)"
+label_ref = NodePath("tooltip/description")
 
 [node name="Label" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade"]
 visible = false
@@ -1040,6 +1093,29 @@ theme_override_font_sizes/font_size = 36
 text = "+1"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="tooltip" type="PanelContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade"]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -194.0
+offset_top = 65.0
+offset_right = 51.0
+offset_bottom = 185.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ataj0")
+
+[node name="description" type="Label" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade/tooltip"]
+custom_minimum_size = Vector2(225, 100)
+layout_mode = 2
+theme_type_variation = &"Tooltip"
+text = "+2% damage per Strength (x)"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="tooltip_panel" type="PanelContainer" parent="CanvasLayer/hud/character_stats/margins/body/layout/attributes/intelligence/btn_upgrade"]
 visible = false
@@ -1322,6 +1398,37 @@ size_flags_horizontal = 8
 theme_type_variation = &"BasicHeader"
 theme_override_font_sizes/font_size = 16
 text = "%"
+
+[node name="skill_window" type="Panel" parent="CanvasLayer/hud"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -416.0
+offset_top = -540.0
+offset_bottom = 540.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s8cvr")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/hud/skill_window"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="skill_window" parent="CanvasLayer/hud/skill_window/MarginContainer" instance=ExtResource("33_fbcsm")]
+layout_mode = 2
 
 [node name="game_over_screen" type="Control" parent="CanvasLayer/hud"]
 visible = false

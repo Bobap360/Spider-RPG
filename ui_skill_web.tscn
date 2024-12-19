@@ -1,0 +1,1314 @@
+[gd_scene load_steps=18 format=3 uid="uid://dperjy5i14wr8"]
+
+[ext_resource type="Script" path="res://scripts/ui/skill_tooltip.gd" id="1_03yno"]
+[ext_resource type="Script" path="res://scripts/ui/skill_web_tools.gd" id="2_0md28"]
+[ext_resource type="Script" path="res://scripts/ui/zoom_control.gd" id="2_nifns"]
+[ext_resource type="Texture2D" uid="uid://c5gs5blxf2bwv" path="res://art/skill_web/skill_web_nodes.png" id="3_woqcd"]
+[ext_resource type="PackedScene" uid="uid://cfvt7si5fvpq6" path="res://fabs/ui/connection.tscn" id="4_1vp15"]
+[ext_resource type="Script" path="res://scripts/ui/color_wheel.gd" id="4_6nkhd"]
+[ext_resource type="Script" path="res://scripts/ui/color_slice.gd" id="4_eywku"]
+[ext_resource type="Texture2D" uid="uid://cer0pwawhh8rq" path="res://art/texture_web_128.png" id="5_sdwrl"]
+[ext_resource type="Texture2D" uid="uid://bk833q67vmxq6" path="res://art/skill_web/node_big.png" id="7_7ocqy"]
+[ext_resource type="Script" path="res://scripts/ui/skills.gd" id="7_uuiqv"]
+[ext_resource type="Script" path="res://scripts/ui/skill_node.gd" id="8_nwhnc"]
+[ext_resource type="PackedScene" uid="uid://c5y5tyj012qql" path="res://fabs/ui/node_big.tscn" id="9_vuy4u"]
+[ext_resource type="PackedScene" uid="uid://jr6pn4q05a5g" path="res://fabs/ui/node_small.tscn" id="10_5ngvx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p0vh4"]
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5adg"]
+bg_color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3xprb"]
+radius = 26.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xwc3i"]
+bg_color = Color(0.196078, 0.196078, 0.196078, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.392157)
+shadow_size = 2
+shadow_offset = Vector2(2, 2)
+
+[node name="skill_window" type="Panel"]
+offset_right = 416.0
+offset_bottom = 1080.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_p0vh4")
+
+[node name="center" type="Control" parent="." node_paths=PackedStringArray("body")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_nifns")
+zoom_max = 3.0
+body = NodePath("Skill_Web")
+
+[node name="Skill_Web" type="Control" parent="center"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -540.0
+offset_right = 480.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="web_tools" type="Control" parent="center/Skill_Web" node_paths=PackedStringArray("skill_node_container", "connection_container")]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_0md28")
+skill_node_container = NodePath("../Nodes")
+connection_container = NodePath("../Connections")
+
+[node name="Background" type="Panel" parent="center/Skill_Web"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a5adg")
+
+[node name="layout_ref" type="TextureRect" parent="center/Skill_Web"]
+visible = false
+layout_mode = 0
+offset_left = -480.0
+offset_right = 1440.0
+offset_bottom = 1080.0
+texture = ExtResource("3_woqcd")
+
+[node name="ColorWheel" type="Node2D" parent="center/Skill_Web" node_paths=PackedStringArray("slices")]
+modulate = Color(1, 1, 1, 0.0980392)
+position = Vector2(480, 540)
+script = ExtResource("4_6nkhd")
+point_thresholds = Array[int]([5, 10, 15, 20])
+scale_thresholds = Array[float]([0.4, 0.595, 0.8, 1.0])
+slices = [NodePath("center_anchor_int"), NodePath("center_anchor_dex"), NodePath("center_anchor_str")]
+
+[node name="center_anchor_int" type="Node2D" parent="center/Skill_Web/ColorWheel"]
+scale = Vector2(0.235, 0.235)
+script = ExtResource("4_eywku")
+point_thresholds = Array[int]([5, 10, 15, 20])
+scale_thresholds = Array[float]([0.4, 0.595, 0.8, 1.0])
+
+[node name="slice_int" type="Polygon2D" parent="center/Skill_Web/ColorWheel/center_anchor_int"]
+position = Vector2(-960, -540)
+color = Color(0.196078, 0.34902, 0.647059, 1)
+polygon = PackedVector2Array(960, 541, 1317, 334, 1320, 367, 1324, 392, 1332, 429, 1344, 469, 1355, 501, 1371, 540, 1355, 574, 1342, 608, 1332, 639, 1323, 680, 1319, 713, 1316, 746, 1290, 765, 1265, 785, 1240, 807, 1212, 836, 1186, 868, 1166, 896, 1123, 902, 1093, 907, 1057, 916, 1023, 926, 999, 935, 960, 951)
+
+[node name="center_anchor_dex" type="Node2D" parent="center/Skill_Web/ColorWheel"]
+scale = Vector2(0.235, 0.235)
+script = ExtResource("4_eywku")
+point_thresholds = Array[int]([5, 10, 15, 20])
+scale_thresholds = Array[float]([0.4, 0.595, 0.8, 1.0])
+type = 1
+
+[node name="slice_dex" type="Polygon2D" parent="center/Skill_Web/ColorWheel/center_anchor_dex"]
+position = Vector2(947.654, -561.384)
+rotation = 2.0944
+color = Color(0.294118, 0.658824, 0.278431, 1)
+polygon = PackedVector2Array(960, 541, 1317, 334, 1320, 367, 1324, 392, 1332, 429, 1344, 469, 1355, 501, 1371, 540, 1355, 574, 1342, 608, 1332, 639, 1323, 680, 1319, 713, 1316, 746, 1290, 765, 1265, 785, 1240, 807, 1212, 836, 1186, 868, 1166, 896, 1123, 902, 1093, 907, 1057, 916, 1023, 926, 999, 935, 960, 951)
+
+[node name="center_anchor_str" type="Node2D" parent="center/Skill_Web/ColorWheel"]
+scale = Vector2(0.235, 0.235)
+script = ExtResource("4_eywku")
+point_thresholds = Array[int]([5, 10, 15, 20])
+scale_thresholds = Array[float]([0.4, 0.595, 0.8, 1.0])
+type = 2
+
+[node name="slice_str" type="Polygon2D" parent="center/Skill_Web/ColorWheel/center_anchor_str"]
+position = Vector2(12.3457, 1101.38)
+rotation = -2.09439
+color = Color(0.670588, 0.180392, 0.180392, 1)
+polygon = PackedVector2Array(960, 541, 1317, 334, 1320, 367, 1324, 392, 1332, 429, 1344, 469, 1355, 501, 1371, 540, 1356.27, 573.633, 1344.7, 609.676, 1335.63, 641.389, 1326.52, 681.164, 1320.78, 717.109, 1316, 746, 1290, 765, 1265, 785, 1240, 807, 1212, 836, 1186, 868, 1166, 896, 1122.49, 900.544, 1092.21, 904.999, 1055.46, 912.65, 1020.81, 922.667, 996.455, 932.853, 960, 951)
+
+[node name="Connections" type="Node2D" parent="center/Skill_Web"]
+position = Vector2(480, 540)
+
+[node name="connection" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(1009, 624, 984, 581)
+
+[node name="connection18" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1011, 628, 1041, 681)
+
+[node name="connection43" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1014, 619, 1025, 605, 1038, 594)
+
+[node name="connection42" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1001, 625, 990, 625, 978, 628, 966, 633)
+
+[node name="connection27" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1097, 627, 1077, 641, 1060, 657, 1046, 677)
+
+[node name="connection19" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1083, 753, 1046, 688)
+
+[node name="connection31" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1083, 753, 1101, 728, 1122, 704, 1149, 680, 1164, 669)
+
+[node name="connection20" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1085, 757, 1125, 826)
+
+[node name="connection38" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(966, 866, 999, 852, 1041, 839, 1081, 830, 1119, 826)
+
+[node name="connection21" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1166, 897, 1127, 829)
+
+[node name="connection40" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1169, 892, 1183, 872, 1222, 825, 1267, 783, 1307, 752)
+
+[node name="connection2" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 633, 960, 588)
+
+[node name="connection46" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(914, 619, 935, 583)
+
+[node name="connection47" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(881, 586, 917, 565)
+
+[node name="connection48" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(866, 540, 911, 540)
+
+[node name="connection49" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(880, 494, 917, 516)
+
+[node name="connection50" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(914, 461, 936, 498)
+
+[node name="connection51" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 449, 960, 492)
+
+[node name="connection52" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(1005, 462, 984, 498)
+
+[node name="connection22" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 642, 960, 705)
+
+[node name="connection62" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(908, 630, 880, 678)
+
+[node name="connection75" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(908, 617, 901, 607, 892, 598, 882, 592)
+
+[node name="connection71" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(869, 592, 823, 619)
+
+[node name="connection99" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(875, 582, 874, 569, 870, 557, 865, 546)
+
+[node name="connection85" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(856, 540, 800, 540)
+
+[node name="connection100" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(865, 533, 870, 521, 873, 509, 874, 498)
+
+[node name="connection93" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(868, 487, 822, 460)
+
+[node name="connection103" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(873, 402, 864, 416, 853, 429, 837, 444, 822, 454)
+
+[node name="connection101" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(881, 488, 892, 480, 901, 471, 907, 462)
+
+[node name="connection97" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(908, 450, 879, 400)
+
+[node name="connection106" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(841, 334, 873, 389)
+
+[node name="connection117" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(844, 326, 859, 325, 885, 322, 911, 315, 932, 307, 949, 299)
+
+[node name="connection107" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(833, 320, 799, 261)
+
+[node name="connection116" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(953, 214, 921, 227, 887, 238, 851, 247, 821, 252, 802, 254)
+
+[node name="connection108" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(758, 190, 791, 248)
+
+[node name="connection115" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(762, 183, 782, 181, 811, 176, 846, 168, 887, 156, 922, 144, 949, 133)
+
+[node name="connection104" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(953, 377, 942, 383, 922, 390, 904, 394, 883, 396)
+
+[node name="connection102" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(919, 455, 932, 454, 943, 451, 954, 446)
+
+[node name="connection98" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 435, 960, 379)
+
+[node name="connection109" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 304, 960, 367)
+
+[node name="connection110" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 284, 960, 217)
+
+[node name="connection119" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1117, 254, 1095, 252, 1061, 246, 1020, 236, 981, 221, 966, 214)
+
+[node name="connection118" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(970, 299, 982, 305, 1007, 314, 1033, 321, 1056, 325, 1076, 326)
+
+[node name="connection111" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 139, 960, 205)
+
+[node name="connection120" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(970, 134, 983, 140, 1006, 149, 1036, 160, 1074, 170, 1119, 178, 1158, 183)
+
+[node name="connection105" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1036, 396, 1016, 395, 997, 391, 977, 383, 966, 377)
+
+[node name="connection94" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(752, 420, 809, 453)
+
+[node name="connection95" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(740, 413, 680, 378)
+
+[node name="connection113" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(791, 261, 773, 288, 747, 318, 721, 341, 696, 361, 681, 371)
+
+[node name="connection112" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(751, 413, 765, 403, 786, 385, 806, 364, 820, 348, 832, 332)
+
+[node name="connection96" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(612, 339, 669, 372)
+
+[node name="connection114" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(613, 327, 633, 313, 662, 288, 695, 257, 723, 225, 750, 190)
+
+[node name="connection89" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(815, 464, 813, 482, 810, 500, 803, 520, 797, 534)
+
+[node name="connection86" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(718, 540, 787, 540)
+
+[node name="connection90" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(717, 534, 724, 520, 731, 504, 738, 483, 742, 461, 745, 440, 746, 425)
+
+[node name="connection87" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(706, 540, 635, 540)
+
+[node name="connection91" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(674, 383, 672, 403, 666, 434, 659, 464, 650, 495, 640, 519, 633, 534)
+
+[node name="connection88" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(555, 540, 624, 540)
+
+[node name="connection92" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(552, 533, 560, 517, 571, 490, 580, 466, 588, 438, 595, 410, 600, 377, 603, 345)
+
+[node name="connection80" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(797, 547, 804, 562, 810, 579, 814, 597, 815, 615)
+
+[node name="connection76" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(874, 679, 868, 667, 852, 648, 836, 635, 822, 626)
+
+[node name="connection72" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(756, 658, 810, 627)
+
+[node name="connection81" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(747, 652, 747, 635, 744, 610, 737, 585, 726, 562, 718, 546)
+
+[node name="connection73" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(736, 669, 681, 701)
+
+[node name="connection82" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(634, 546, 643, 566, 657, 603, 667, 636, 672, 664, 674, 696)
+
+[node name="connection74" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(614, 740, 669, 708)
+
+[node name="connection83" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(603, 734, 601, 711, 596, 674, 586, 634, 574, 598, 563, 570, 552, 546)
+
+[node name="connection70" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(919, 625, 932, 626, 944, 629, 954, 634)
+
+[node name="connection63" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(840, 748, 873, 690)
+
+[node name="connection77" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(833, 748, 822, 732, 807, 714, 789, 696, 768, 678, 756, 670)
+
+[node name="connection69" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(953, 703, 944, 697, 922, 689, 900, 685, 884, 684)
+
+[node name="connection64" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(834, 758, 798, 820)
+
+[node name="connection78" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(680, 708, 704, 725, 731, 748, 754, 771, 777, 799, 791, 819)
+
+[node name="connection65" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(757, 892, 794, 828)
+
+[node name="connection79" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(750, 889, 737, 869, 718, 844, 694, 817, 674, 798, 654, 780, 634, 766, 611, 750)
+
+[node name="connection26" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1038, 684, 1013, 686, 988, 693, 960, 705)
+
+[node name="connection23" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 785, 960, 709)
+
+[node name="connection30" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(967, 783, 988, 771, 1020, 760, 1057, 754, 1077, 754)
+
+[node name="connection24" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 791, 960, 864)
+
+[node name="connection68" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(953, 783, 942, 776, 919, 766, 897, 759, 868, 754, 845, 754)
+
+[node name="connection25" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 944, 960, 872)
+
+[node name="connection67" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(803, 826, 831, 829, 862, 835, 891, 842, 927, 854, 953, 866)
+
+[node name="connection66" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(949, 947, 930, 939, 901, 928, 868, 918, 839, 911, 802, 903, 761, 897)
+
+[node name="connection39" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(970, 947, 1000, 934, 1063, 914, 1121, 902, 1160, 897)
+
+[node name="connection3" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(1042, 587, 1002, 564)
+
+[node name="connection14" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1044, 589, 1104, 623)
+
+[node name="connection44" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1045, 582, 1048, 564, 1054, 547)
+
+[node name="connection28" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1122, 545, 1113, 564, 1106, 583, 1103, 602, 1103, 618)
+
+[node name="connection15" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1165, 659, 1104, 623)
+
+[node name="connection16" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1178, 666, 1240, 702)
+
+[node name="connection37" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1129, 819, 1144, 797, 1177, 760, 1211, 729, 1238, 710)
+
+[node name="connection17" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1309, 741, 1251, 708)
+
+[node name="connection4" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(1057, 540, 1008, 540)
+
+[node name="connection10" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1057, 540, 1126, 540)
+
+[node name="connection45" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1054, 533, 1049, 517, 1046, 499)
+
+[node name="connection11" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1204, 540, 1126, 540)
+
+[node name="connection33" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1204, 535, 1192, 511, 1183, 483, 1177, 452, 1174, 423)
+
+[node name="connection32" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1203, 546, 1191, 570, 1181, 600, 1175, 630, 1173, 653)
+
+[node name="connection12" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1204, 540, 1288, 540)
+
+[node name="connection36" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1245, 698, 1249, 664, 1258, 621, 1272, 578, 1287, 546)
+
+[node name="connection13" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1369, 540, 1288, 540)
+
+[node name="connection41" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1368, 546, 1352, 581, 1335, 628, 1322, 686, 1317, 736)
+
+[node name="connection5" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+position = Vector2(-960, -540)
+points = PackedVector2Array(1045, 491, 1003, 515)
+
+[node name="connection6" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1045, 491, 1101, 459)
+
+[node name="connection58" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1012, 450, 1040, 402)
+
+[node name="connection84" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1002, 456, 990, 456, 977, 453, 966, 446)
+
+[node name="connection59" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1080, 332, 1046, 390)
+
+[node name="connection60" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1087, 320, 1121, 261)
+
+[node name="connection61" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1162, 189, 1128, 249)
+
+[node name="connection54" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1047, 402, 1053, 412, 1067, 429, 1079, 441, 1089, 448, 1099, 454)
+
+[node name="connection53" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1039, 487, 1028, 478, 1020, 470, 1014, 461)
+
+[node name="connection29" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1124, 534, 1114, 514, 1106, 489, 1104, 465)
+
+[node name="connection7" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1175, 416, 1107, 455)
+
+[node name="connection55" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1168, 412, 1156, 404, 1133, 385, 1113, 365, 1095, 343, 1088, 332)
+
+[node name="connection8" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1175, 416, 1243, 377)
+
+[node name="connection56" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1128, 260, 1140, 278, 1163, 306, 1180, 324, 1199, 341, 1222, 360, 1239, 371)
+
+[node name="connection34" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1286, 535, 1273, 509, 1260, 469, 1249, 419, 1246, 382)
+
+[node name="connection9" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1311, 337, 1243, 377)
+
+[node name="connection57" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1307, 328, 1290, 317, 1259, 294, 1228, 264, 1200, 231, 1180, 204, 1170, 190)
+
+[node name="connection35" parent="center/Skill_Web/Connections" instance=ExtResource("4_1vp15")]
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(-960, -540)
+points = PackedVector2Array(1317, 346, 1322, 382, 1336, 446, 1355, 502, 1369, 534)
+
+[node name="Center" type="Node2D" parent="center/Skill_Web"]
+position = Vector2(480, 540)
+
+[node name="Line2D" type="Line2D" parent="center/Skill_Web/Center"]
+texture_repeat = 2
+position = Vector2(-960, -540)
+points = PackedVector2Array(1002, 565, 917, 516)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_sdwrl")
+texture_mode = 1
+
+[node name="Line2D2" type="Line2D" parent="center/Skill_Web/Center"]
+texture_repeat = 2
+position = Vector2(-960, -540)
+points = PackedVector2Array(1003, 515, 917, 565)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_sdwrl")
+texture_mode = 1
+
+[node name="Line2D3" type="Line2D" parent="center/Skill_Web/Center"]
+texture_repeat = 2
+position = Vector2(-960, -540)
+points = PackedVector2Array(984, 498, 935, 583)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_sdwrl")
+texture_mode = 1
+
+[node name="Line2D4" type="Line2D" parent="center/Skill_Web/Center"]
+texture_repeat = 2
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 491, 960, 589)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_sdwrl")
+texture_mode = 1
+
+[node name="Line2D5" type="Line2D" parent="center/Skill_Web/Center"]
+texture_repeat = 2
+position = Vector2(-960, -540)
+points = PackedVector2Array(935, 497, 984, 582)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_sdwrl")
+texture_mode = 1
+
+[node name="Line2D6" type="Line2D" parent="center/Skill_Web/Center"]
+texture_repeat = 2
+position = Vector2(-960, -540)
+points = PackedVector2Array(911, 540, 1009, 541)
+width = 5.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_sdwrl")
+texture_mode = 1
+
+[node name="Line2D8" type="Line2D" parent="center/Skill_Web/Center"]
+texture_repeat = 2
+position = Vector2(-960, -540)
+points = PackedVector2Array(936, 540, 938, 535, 939, 528, 944, 525, 948, 520, 954, 519, 960, 517, 965, 519, 971, 519, 976, 525, 981, 528, 982, 535, 984, 540, 981, 546, 981, 553, 976, 556, 972, 561, 966, 561, 960, 564, 954, 562, 948, 561, 945, 556, 939, 552, 938, 546)
+closed = true
+width = 4.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_sdwrl")
+texture_mode = 1
+
+[node name="Line2D7" type="Line2D" parent="center/Skill_Web/Center"]
+texture_repeat = 2
+position = Vector2(-960, -540)
+points = PackedVector2Array(960, 589, 967, 585, 975, 583, 984, 582, 990, 575, 995, 570, 1002, 565, 1003, 555, 1005, 548, 1009, 541, 1006, 534, 1004, 524, 1003, 515, 995, 510, 989, 504, 984, 498, 974, 498, 968, 496, 960, 491, 954, 495, 945, 497, 935, 497, 932, 504, 926, 510, 917, 516, 917, 524, 915, 532, 911, 540, 915, 547, 917, 556, 917, 565, 926, 569, 932, 575, 935, 583, 943, 583, 952, 585)
+closed = true
+width = 4.0
+default_color = Color(0.882353, 0.882353, 0.882353, 1)
+texture = ExtResource("5_sdwrl")
+texture_mode = 1
+
+[node name="Nodes" type="Node2D" parent="center/Skill_Web"]
+position = Vector2(480, 540)
+script = ExtResource("7_uuiqv")
+color_nodes = true
+
+[node name="node_center" type="Sprite2D" parent="center/Skill_Web/Nodes" node_paths=PackedStringArray("node_colors", "area")]
+visible = false
+self_modulate = Color(0.137255, 0.137255, 0.137255, 1)
+scale = Vector2(2.18, 2.18)
+texture = ExtResource("7_7ocqy")
+script = ExtResource("8_nwhnc")
+node_colors = [NodePath("color"), NodePath("color")]
+area = NodePath("Area2D")
+purchased = true
+
+[node name="Area2D" type="Area2D" parent="center/Skill_Web/Nodes/node_center"]
+show_behind_parent = true
+collision_layer = 64
+collision_mask = 128
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="center/Skill_Web/Nodes/node_center/Area2D"]
+shape = SubResource("CircleShape2D_3xprb")
+
+[node name="color" type="Polygon2D" parent="center/Skill_Web/Nodes/node_center"]
+show_behind_parent = true
+scale = Vector2(0.5, 0.5)
+color = Color(0.196, 0.349, 0.647, 1)
+polygon = PackedVector2Array(0, -48, -24, -42, -44, -22, -48, 0, -42, 26, -22, 42, 0, 48, 22, 42, 42, 24, 48, 0, 44, -20, 26, -42)
+
+[node name="node_big" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(212, 124)
+tooltip = "Gain the ability to Cocoon enemies instead of consuming them"
+point_threshold = 10
+disabled = true
+
+[node name="node_upgrade_moth_damsel" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(0, 411)
+rotation = 3.14159
+tooltip = "Fewer flies spawn, more Moths and Damselflies"
+point_threshold = 20
+secondary = 1
+disabled = true
+
+[node name="node_upgrade_damsel_beetle" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(-356, -206)
+rotation = 2.0944
+tooltip = "Fewer flies spawn, more Damselflies and Beetles"
+point_threshold = 20
+type = 2
+secondary = 1
+disabled = true
+
+[node name="node_upgrade_beetle_moth" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(355, -204)
+rotation = -2.0944
+tooltip = "Fewer flies spawn, more Beetles and Moths"
+point_threshold = 20
+secondary = 2
+disabled = true
+
+[node name="node_unlock_moths" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(355, 206)
+tooltip = "Moths will start appearing"
+point_threshold = 20
+disabled = true
+
+[node name="node_unlock_beetle" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(0, -411)
+tooltip = "Beetles will now pass by occasionally"
+point_threshold = 20
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_charge_attack" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(0, -247)
+tooltip = "Gain the ability to perform a Charge Attack against enemies"
+point_threshold = 10
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_jump" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(-214, 123)
+tooltip = "Gain the ability to Jump across gaps"
+point_threshold = 10
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_unlock_damselfly" parent="center/Skill_Web/Nodes" instance=ExtResource("9_vuy4u")]
+position = Vector2(-356, 206)
+tooltip = "Damselflies will start appearing"
+point_threshold = 20
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_small" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(85, -49)
+rotation = -2.0944
+secondary = 2
+
+[node name="node_small2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(97, 0)
+
+[node name="node_small3" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(84, 49)
+
+[node name="node_small4" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(49, 85)
+
+[node name="node_web_speed" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(0, 98)
+tooltip = "Web travel speed +20%"
+type = 1
+
+[node name="node_web_speed2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(0, 167)
+tooltip = "Web travel speed +20%"
+point_threshold = 5
+type = 1
+disabled = true
+
+[node name="node_small7" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(83, 144)
+point_threshold = 5
+disabled = true
+
+[node name="node_small8" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(143, 84)
+point_threshold = 5
+disabled = true
+
+[node name="node_small9" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(167, 0)
+point_threshold = 5
+disabled = true
+
+[node name="node_small10" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(145, -83)
+rotation = -2.0944
+point_threshold = 5
+secondary = 2
+disabled = true
+
+[node name="node_small11" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(214, -124)
+rotation = -2.0944
+point_threshold = 10
+secondary = 2
+disabled = true
+
+[node name="node_small12" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(246, 0)
+point_threshold = 10
+disabled = true
+
+[node name="node_small13" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(123, 214)
+point_threshold = 10
+disabled = true
+
+[node name="node_small15" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(0, 329)
+point_threshold = 15
+type = 1
+disabled = true
+
+[node name="node_small16" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(165, 285)
+point_threshold = 15
+disabled = true
+
+[node name="node_small17" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(285, 165)
+point_threshold = 15
+disabled = true
+
+[node name="node_small18" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(329, 0)
+point_threshold = 15
+disabled = true
+
+[node name="node_small19" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(285, -165)
+rotation = -2.0944
+point_threshold = 15
+secondary = 2
+disabled = true
+
+[node name="node_small20" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(411, 0)
+point_threshold = 20
+disabled = true
+
+[node name="node_small21" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(205, 356)
+point_threshold = 20
+disabled = true
+
+[node name="node_hunger_gain" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(49, -85)
+tooltip = "10% more Hunger from kills"
+type = 2
+secondary = 2
+
+[node name="node_hunger_gain2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(83, -144)
+tooltip = "10% more Hunger from kills"
+point_threshold = 5
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_hunger_max" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(0, -98)
+tooltip = "+25 Max Hunger"
+type = 2
+secondary = 2
+
+[node name="node_hunger_max2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(0, -167)
+tooltip = "+25 Max Hunger"
+point_threshold = 5
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_hunger_drain" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-49, -85)
+tooltip = "Hunger Drains 10% Slower"
+type = 2
+secondary = 2
+
+[node name="node_hunger_drain2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-83, -144)
+tooltip = "Hunger Drains 10% Slower"
+point_threshold = 5
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_slow_break" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(123, -214)
+tooltip = "Enemies escape 25% slower while being attacked"
+point_threshold = 10
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_damage" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(206, -356)
+tooltip = "10% increased Damage"
+point_threshold = 20
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_damage2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-206, -356)
+tooltip = "10% increased Damage"
+point_threshold = 20
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_charge_hybrid" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(0, -329)
+tooltip = "+Damage and -Cost for Charge Attack"
+point_threshold = 15
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_charge_cost" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-165, -285)
+tooltip = "-x Charge Attack Cost"
+point_threshold = 15
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_charge_damage" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(164, -285)
+tooltip = "+x Charge Attack Damage"
+point_threshold = 15
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_slow_break2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-123, -213)
+tooltip = "Enemies escape 25% slower while being attacked"
+point_threshold = 10
+type = 2
+secondary = 2
+disabled = true
+
+[node name="node_sprint_speed3" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-85, -49)
+rotation = 2.0944
+tooltip = "+20% Sprint Speed"
+point_threshold = 20
+type = 2
+secondary = 1
+
+[node name="node_sprint_speed" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-145, -83)
+rotation = 2.0944
+tooltip = "+20% Sprint Speed"
+point_threshold = 5
+type = 2
+secondary = 1
+disabled = true
+
+[node name="node_multistrike" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-285, -165)
+rotation = 2.0944
+tooltip = "Hit multiple enemies at once"
+point_threshold = 15
+type = 2
+secondary = 1
+disabled = true
+
+[node name="node_sprint_cost" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-98, 0)
+tooltip = "-0.5 Sprint Cost"
+type = 1
+secondary = 1
+
+[node name="node_sprint_cost2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-167, 0)
+tooltip = "-0.5 Sprint Cost"
+point_threshold = 5
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_max_stam" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-85, 49)
+tooltip = "+25 Max Stamina"
+type = 1
+secondary = 1
+
+[node name="node_max_stam2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-144, 83)
+tooltip = "+25 Max Stamina"
+point_threshold = 5
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_web_cost" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-49, 84)
+tooltip = "-1 Web Stamina Cost"
+type = 1
+secondary = 1
+
+[node name="node_web_cost2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-83, 144)
+tooltip = "-1 Web Stamina Cost"
+point_threshold = 5
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_stam_regen" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(0, 247)
+tooltip = "+12.5% Stamina Regen"
+point_threshold = 10
+type = 1
+disabled = true
+
+[node name="node_stam_regen2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-123, 215)
+tooltip = "+12.5% Stamina Regen"
+point_threshold = 10
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_stam_regen3" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-247, 0)
+tooltip = "+12.5% Stamina Regen"
+point_threshold = 10
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_stam_regen4" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-214, -123)
+rotation = 2.0944
+tooltip = "+12.5% Stamina Regen"
+point_threshold = 10
+type = 2
+secondary = 1
+disabled = true
+
+[node name="node_jump_cost" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-165, 285)
+tooltip = "-x Jump Cost"
+point_threshold = 15
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_jump_hybrid" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-285, 164)
+tooltip = "-Cost and +Speed for Jump"
+point_threshold = 15
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_jump_speed" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-329, 0)
+tooltip = "+x Jump Speed"
+point_threshold = 15
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_movespeed" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-206, 356)
+tooltip = "10% increased movespeed"
+point_threshold = 20
+type = 1
+secondary = 1
+disabled = true
+
+[node name="node_movespeed2" parent="center/Skill_Web/Nodes" instance=ExtResource("10_5ngvx")]
+position = Vector2(-411, 0)
+tooltip = "10% increased movespeed"
+point_threshold = 20
+type = 1
+secondary = 1
+disabled = true
+
+[node name="Tooltip" type="PanelContainer" parent="." node_paths=PackedStringArray("body")]
+layout_mode = 0
+offset_right = 250.0
+offset_bottom = 73.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xwc3i")
+script = ExtResource("1_03yno")
+body = NodePath("MarginContainer/text")
+offset = Vector2(0, -40)
+
+[node name="MarginContainer" type="MarginContainer" parent="Tooltip"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="text" type="Label" parent="Tooltip/MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "This is a default tooltip"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[connection signal="mouse_entered" from="." to="center" method="entered"]
+[connection signal="mouse_exited" from="." to="center" method="exited"]
+[connection signal="input_event" from="center/Skill_Web/Nodes/node_center/Area2D" to="center/Skill_Web/Nodes/node_center" method="pressed"]
+[connection signal="mouse_entered" from="center/Skill_Web/Nodes/node_center/Area2D" to="center/Skill_Web/Nodes/node_center" method="enter"]
+[connection signal="mouse_exited" from="center/Skill_Web/Nodes/node_center/Area2D" to="center/Skill_Web/Nodes/node_center" method="exit"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_unlock_beetle" to="center/Skill_Web/Nodes" method="beetle_unlock"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_charge_attack" to="center/Skill_Web/Nodes" method="charge_attack_unlock"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_jump" to="center/Skill_Web/Nodes" method="jump_unlock"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_unlock_damselfly" to="center/Skill_Web/Nodes" method="damselfly_unlock"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_web_speed" to="center/Skill_Web/Nodes" method="web_speed"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_web_speed2" to="center/Skill_Web/Nodes" method="web_speed"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_hunger_gain" to="center/Skill_Web/Nodes" method="hunger_gain"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_hunger_gain2" to="center/Skill_Web/Nodes" method="hunger_gain"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_hunger_max" to="center/Skill_Web/Nodes" method="max_hunger"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_hunger_max2" to="center/Skill_Web/Nodes" method="max_hunger"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_hunger_drain" to="center/Skill_Web/Nodes" method="hunger_drain_rate"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_hunger_drain2" to="center/Skill_Web/Nodes" method="hunger_drain_rate"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_slow_break" to="center/Skill_Web/Nodes" method="slow_break"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_damage" to="center/Skill_Web/Nodes" method="damage_increase"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_damage2" to="center/Skill_Web/Nodes" method="damage_increase"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_charge_hybrid" to="center/Skill_Web/Nodes" method="charge_attack_hybrid"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_charge_cost" to="center/Skill_Web/Nodes" method="charge_attack_cost"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_charge_damage" to="center/Skill_Web/Nodes" method="charge_attack_damage"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_slow_break2" to="center/Skill_Web/Nodes" method="slow_break"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_sprint_speed3" to="center/Skill_Web/Nodes" method="stamina_sprint_speed"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_sprint_speed" to="center/Skill_Web/Nodes" method="stamina_sprint_speed"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_multistrike" to="center/Skill_Web/Nodes" method="multistrike"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_sprint_cost" to="center/Skill_Web/Nodes" method="stamina_sprint_cost"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_sprint_cost2" to="center/Skill_Web/Nodes" method="stamina_sprint_cost"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_max_stam" to="center/Skill_Web/Nodes" method="max_stamina"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_max_stam2" to="center/Skill_Web/Nodes" method="max_stamina"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_web_cost" to="center/Skill_Web/Nodes" method="web_cost"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_web_cost2" to="center/Skill_Web/Nodes" method="web_cost"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_stam_regen" to="center/Skill_Web/Nodes" method="stamina_regen"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_stam_regen2" to="center/Skill_Web/Nodes" method="stamina_regen"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_stam_regen3" to="center/Skill_Web/Nodes" method="stamina_regen"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_stam_regen4" to="center/Skill_Web/Nodes" method="stamina_regen"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_jump_cost" to="center/Skill_Web/Nodes" method="jump_cost"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_jump_hybrid" to="center/Skill_Web/Nodes" method="jump_hybrid"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_jump_speed" to="center/Skill_Web/Nodes" method="jump_speed"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_movespeed" to="center/Skill_Web/Nodes" method="movespeed"]
+[connection signal="pressed" from="center/Skill_Web/Nodes/node_movespeed2" to="center/Skill_Web/Nodes" method="movespeed"]

@@ -19,6 +19,7 @@ config/icon="res://art/itsy_bitsy_logo.png"
 
 GameManager="*res://scripts/game_manager.gd"
 GameData="*res://scripts/game_data.gd"
+SkillManager="*res://scripts/ui/skill_web.gd"
 
 [display]
 

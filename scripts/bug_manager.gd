@@ -71,6 +71,7 @@ func Cycle():
 		timer.start(delay)
 		await timer.timeout
 
+# Distribution weighted toward center
 func ChooseRandomLocation() -> Vector2:
 	var angle = randf_range(0, TAU)
 	var distance = randf_range(0, 478)
@@ -78,6 +79,7 @@ func ChooseRandomLocation() -> Vector2:
 	var y = global_position.y + sin(angle) * distance
 	return Vector2(x,y)
 
+# Even distribution algorithm
 func PickRandomLocation() -> Vector2:
 	var theta : float = randf() * 2 * PI
 	return Vector2(cos(theta), sin(theta)) * sqrt(randf()) * radius + global_position

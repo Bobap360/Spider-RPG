@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://dliwvy6ge863l"]
+
+[ext_resource type="Script" path="res://area_test.gd" id="1_ueaw2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_icgwj"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="Node2D"]
+position = Vector2(767, 446)
+script = ExtResource("1_ueaw2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Area2D"]
+shape = SubResource("CircleShape2D_icgwj")
+
+[node name="Area2D2" type="Area2D" parent="Node2D"]
+position = Vector2(781, 447)
+script = ExtResource("1_ueaw2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Area2D2"]
+shape = SubResource("CircleShape2D_icgwj")

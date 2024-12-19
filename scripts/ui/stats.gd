@@ -41,7 +41,7 @@ func UpdateAll():
 	
 	attribute_points.text = "POINTS: %s" % GameManager.attribute_points
 	
-	damage.text = str(GameManager.damage)
+	damage.text = str(GameManager.GetDamage())
 	speed.text = str(GameManager.speed_mod * 100.0)
 	web_cost.text = str(GameManager.stamina_shot_cost)
 	sprint_cost.text = str(GameManager.stamina_sprint_cost)
@@ -53,6 +53,7 @@ func UpdateAll():
 	hunger_restored.text = str(GameManager.hunger_gain_mod * 100.0)
 	CheckButtons()
 	GetClass()
+
 
 func SortAttributes():
 	attributes = {
@@ -77,6 +78,7 @@ func SortAttributes():
 		secondary = "INT"
 	else:
 		tertiary = "INT"
+
 
 func GetClass():
 	SortAttributes()
@@ -136,6 +138,7 @@ func GetClass():
 		
 	spider_class.text = new_class
 
+
 func Prefix() -> String:
 	#print("Secondary stat at: %s" % at)
 	if attributes[secondary] >= 5:
@@ -163,8 +166,9 @@ func Prefix() -> String:
 					return "PREFIX ERROR"
 	return ""
 
+
 func CheckButtons():
-	var attributes : Array = [GameManager.strength, GameManager.dex, GameManager.intel]
+	var values : Array = [GameManager.strength, GameManager.dex, GameManager.intel]
 	
 	if GameManager.attribute_points <= 0:
 		for i in attribute_buttons:
@@ -172,7 +176,7 @@ func CheckButtons():
 			i.Hide()
 	else:
 		for i in attribute_buttons.size():
-			if attributes[i] >= 20:
+			if values[i] >= 20:
 				attribute_buttons[i].disabled = true
 				attribute_buttons[i].Hide()
 			else:
